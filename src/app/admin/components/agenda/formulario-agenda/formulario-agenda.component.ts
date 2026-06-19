@@ -1,7 +1,6 @@
 import { Agenda, AgendaRequest } from '@/shared/sincroled/models/agenda.model';
 import { Cor } from '@/shared/sincroled/models/cor.model';
 import { Dispositivo } from '@/shared/sincroled/models/dispositivo.model';
-import { ComandoService } from '@/shared/sincroled/services/comando.service';
 import { CorService } from '@/shared/sincroled/services/cor.service';
 import { DispositivoService } from '@/shared/sincroled/services/dispositivo.service';
 import { CommonModule } from '@angular/common';
@@ -11,7 +10,6 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PopoverModule } from 'primeng/popover';

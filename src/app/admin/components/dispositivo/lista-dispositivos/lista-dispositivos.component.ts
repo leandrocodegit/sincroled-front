@@ -1,6 +1,6 @@
 
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConfiguracaoCorPortaComponent } from '../../cor/configuracao-cor-porta/configuracao-cor-porta.component';
 import { ComandosIluminacaoComponent } from '../../cor/comandos-iluminacao/comandos-iluminacao.component';
 import { ConfiguracaoSensorComponent } from '../configuracao-sensor/configuracao-sensor.component';
@@ -10,8 +10,6 @@ import { DispositivoService } from '@/shared/sincroled/services/dispositivo.serv
 import { DispositivoFormClienteComponent } from '../dipositivo-form-cliente/dipositivo-form-cliente.component';
 import { ConfiguracaoParametroCorComponent } from '../../cor/configuracao-parametro-cor/configuracao-parametro-cor.component';
 import { ButtonModule } from 'primeng/button';
-import { ComandoService } from '@/shared/sincroled/services/comando.service';
-import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigurarWifiComponent } from '../configurar-wifi/configurar-wifi.component';

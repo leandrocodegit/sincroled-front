@@ -1,17 +1,10 @@
 import { HttpHeaders } from "@angular/common/http";
 
-const protocolo = 'https://';
-const host = 'dev.simodapp.com';
-const sincroled = 'painel.sincroled.com.br';
-const porta = ":2087"
 export const environment = {
-  url: protocolo + host + porta,
-  debug: protocolo + host + ':4200/debug/',
   production: false,
-  portal: false,
-  router: 'painel',
-  urlApi: protocolo + host + porta,
-  urlbroker: 'https://painel.sincroled.com.br:9000/comando',
+  portal: true,
+  router: 'portal',
+  urlApi: 'https://dev.simodapp.com:2053',
   urlWebSocket: 'painel.sincroled.com.br',
   timeout: 100000,
   sitekey: '1x00000000000000000000AA',

@@ -1,16 +1,10 @@
 import { HttpHeaders } from "@angular/common/http";
 
-const protocolo = 'https://';
-const host = 'dev.simodapp.com';
-const sincroled = 'painel.sincroled.com.br';
-const porta = ":2087"
 export const environment = {
-  url: protocolo + host + porta,
-  production: false,
-  portal: false,
-  router: '/painel',
-  urlApi: protocolo + host + porta,
-  urlbroker: 'https://painel.sincroled.com.br:9000/comando',
+  production: true,
+  portal: true,
+  router: 'portal',
+  urlApi: 'https://dev.simodapp.com:2053',
   urlWebSocket: 'painel.sincroled.com.br',
   timeout: 30000,
   sitekey: '0x4AAAAAABer05zX5CdsZSWY',
@@ -23,11 +17,11 @@ export const environment = {
     scope: `openid profile email`,
     showDebugInformation: true,
     strictDiscoveryDocumentValidation: false,
-   // timeoutFactor: 0.75,
-   // sessionChecksEnabled: true,
-   // silentRefreshTimeout: 5000,
-  //  silentRefreshRedirectUri: window.location.origin + '/assets/silent-refresh.html',
-  //  useSilentRefresh: true,
+    timeoutFactor: 0.75,
+    sessionChecksEnabled: true,
+    silentRefreshTimeout: 5000,
+    silentRefreshRedirectUri: window.location.origin + '/assets/silent-refresh.html',
+    useSilentRefresh: true,
     decreaseExpirationBySec: 10000,
     clockSkewInSec: 0,
     requireHttps: true
