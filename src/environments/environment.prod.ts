@@ -4,7 +4,7 @@ export const environment = {
   production: true,
   portal: true,
   router: 'portal',
-  urlApi: 'https://dev.simodapp.com:2053',
+  urlApi: 'https://dev.simodapp.com:2087',
   urlWebSocket: 'painel.sincroled.com.br',
   timeout: 30000,
   sitekey: '0x4AAAAAABer05zX5CdsZSWY',

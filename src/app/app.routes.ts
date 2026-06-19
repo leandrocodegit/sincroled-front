@@ -70,17 +70,12 @@ const painelRoutes: Routes = [
     ],
 
   },
-
   { path: 'login', component: LoginSocialComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'auth', component: AutenticacaoComponent },
-  { path: '**', component: LoginSocialComponent }
-  /*  {
-     path: '', component: Landing, children: [
-       { path: '', component: Home },
-       { path: 'cadastro', component: CadastroComponent },
-     ]
-   }, */
+  { path: '**', component: DashboardComponent }
 ];
 
-export const routes: Routes = environment.portal ? portalRoutes : painelRoutes;
+export const routes: Routes = painelRoutes;
+
+
