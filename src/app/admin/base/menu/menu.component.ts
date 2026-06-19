@@ -212,7 +212,7 @@ export class AppMenu implements OnInit {
         label: '',
         items: [{ label: 'Mapa', icon: 'pi pi-map', separator: false, routerLink: ['/painel/mapa'] }]
       },
-       ...(this.authService.isAdmin() ? [{
+       ...(this.authService.isPermiteIntegracao() ? [{
         order: 9,
         label: '',
         items: [{ label: 'Integração', icon: 'pi pi-sitemap', separator: false, routerLink: ['/painel/integracao'] }]

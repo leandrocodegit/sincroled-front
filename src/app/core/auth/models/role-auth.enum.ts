@@ -11,6 +11,7 @@ export enum Role {
   DEVIN = 'DEVIN',
   DEVRE = 'DEVRE',
   DEVED = 'DEVED',
+  INT = 'INT',
   UNKNOWN = 'UNKNOWN'
 }
 
@@ -27,5 +28,6 @@ export const RoleDescriptions: Record<Role, string> = {
   [Role.DEVIN]: 'Desativar Dispositivo',
   [Role.DEVRE]: 'Remover Dispositivo',
   [Role.DEVED]: 'Editar Dispositivo',
+  [Role.INT]: 'Editar Integração',
   [Role.UNKNOWN]: 'Desconhecido'
 };

@@ -238,6 +238,10 @@ export class AuthService {
     return this.grupos.has(Role.WIFI);
   }
 
+  isPermiteIntegracao(): boolean {
+    return this.grupos.has(Role.INT);
+  }
+
   isPermiteEditarCliente(): boolean {
     return this.grupos.has(Role.CLI);
   }

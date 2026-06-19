@@ -2,7 +2,7 @@
 <app-titulo-pesquisa
   [value]="{ customLabel: 'Nova permissão', routerLink: 'permissoes/form', hideBack: true, showCustom: true, }"
   (customEmit)="editarPermissao()" />
-<app-tabela [auth]="{edit: 'ADM', delete: 'ADM', users: 'AUS', config: 'ADM'}" [page]="pagina" [itens]="permissoes"
+<app-tabela [auth]="{edit: 'INT', delete: 'AUS', users: 'AUS', config: 'AUS'}" [page]="pagina" [itens]="permissoes"
   [cols]="colsPermissoes" [view]="{ editEvent: true, delete: true, users: true, customConfig: true }"
   (editarEmit)="editarPermissao($event)" (configEmit)="configurarPermissao($event)"
   (excluirEmit)="removerPermisao($event)" (grupoUsuarioEmit)="grupoUsuario($event)" />
