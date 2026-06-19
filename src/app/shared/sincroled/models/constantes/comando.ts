@@ -12,7 +12,8 @@ export enum Comando {
     TIMER_CRIADO = 'TIMER_CRIADO',
     OCORRENCIA = 'OCORRENCIA',
     VIBRACAO = 'VIBRACAO',
-    AGENDA_EXECUTADA = 'AGENDA_EXECUTADA'
+    AGENDA_EXECUTADA = 'AGENDA_EXECUTADA',
+    FIRMWARE = 'FIRMWARE'
 }
 
 export const ComandoValue: Record<Comando, string> = {
@@ -30,4 +31,5 @@ export const ComandoValue: Record<Comando, string> = {
   [Comando.TIMER_CRIADO]: 'Criado Temporizador',
   [Comando.VIBRACAO]: 'Impacto Detectado',
   [Comando.AGENDA_EXECUTADA]: 'Agenda Executada',
+  [Comando.FIRMWARE]: 'Firmware Atualizado',
 };

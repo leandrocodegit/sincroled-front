@@ -190,6 +190,8 @@ export class DashboardComponent implements OnInit {
       return 'pi pi-clock';
     else if (comando == Comando.AGENDA_EXECUTADA)
       return 'pi pi-calendar';
+    else if (comando == Comando.FIRMWARE)
+      return 'pi pi-upload';
     else 'pi pi-check-circle';
   }
 }

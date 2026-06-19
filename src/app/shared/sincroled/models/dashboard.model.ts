@@ -13,7 +13,8 @@ export interface Dashboard {
   agendas: DashboardItem[];
   agendasExecucao: DashboardItem[];
   logsConexao: Logconexao[];
-  logs: Log[]
+  logs: Log[];
+  logsHoje: number
 }
 
 
