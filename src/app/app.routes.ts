@@ -25,8 +25,7 @@ import { ListaAgendasComponent } from './admin/components/agenda/lista-agendas/l
 import { ListaClientesComponent } from './admin/components/cliente/lista-clientes/lista-clientes.component';
 import { SincronizarComponent } from './admin/components/dispositivo/sincronizar/sincronizar.component';
 import { ListaIntegracaoComponent } from './admin/components/integracao/lista-integracao/lista-integracao.component';
-
-const portalRoutes: Routes = [];
+ 
 
 const painelRoutes: Routes = [
   {

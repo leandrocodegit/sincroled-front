@@ -1,6 +1,6 @@
 import { Menu } from "../../../shared/models/modulo.model";
 
-export var MENU: Menu[] = [
+export var MENUs: Menu[] = [
   {
     order: 0,
     label: '',

@@ -20,7 +20,6 @@ import { InstanciaService } from '@/shared/services/process-instance.service';
 import { Protocolo } from '@/shared/models/protocolo.model';
 import { AppMenuitem } from '../sidebar/app.menuitem';
 import { PaginaService } from '@/shared/services/pagina.service';
-import { MENU } from '../sidebar/menu.itens';
 
 /** Comprimento mínimo para disparar a busca de protocolo. */
 const PROTOCOLO_MIN_LENGTH = 7;
@@ -50,24 +49,24 @@ export class AppMenu implements OnInit {
 
   // ─── Injeções ─────────────────────────────────────────────────────────────
 
-  public  readonly loadService      = inject(LoadService);
-  public  readonly layoutService    = inject(LayoutService);
-  private readonly authService      = inject(AuthService);
+  public readonly loadService = inject(LoadService);
+  public readonly layoutService = inject(LayoutService);
+  private readonly authService = inject(AuthService);
   private readonly protocoloService = inject(ProtocoloService);
   private readonly instanciaService = inject(InstanciaService);
-  private readonly paginaService   = inject(PaginaService);
-  private readonly router           = inject(Router);
-  private readonly destroyRef       = inject(DestroyRef);
+  private readonly paginaService = inject(PaginaService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
-  protected tenants:            any[]      = [];
-  protected tenant:             any;
-  protected model:              Menu[]     = MENU;
-  protected filteredProtocolos: any[]      = [];
-  protected protocolo:          string     = '';
-  protected protocoloResult?:   Protocolo;
-  protected event?:             MouseEvent;
+  protected tenants: any[] = [];
+  protected tenant: any;
+  protected model: Menu[] = [];
+  protected filteredProtocolos: any[] = [];
+  protected protocolo: string = '';
+  protected protocoloResult?: Protocolo;
+  protected event?: MouseEvent;
 
   /**
    * Subject de busca: o pipe reativo substitui a subscription manual
@@ -176,6 +175,51 @@ export class AppMenu implements OnInit {
   // ─── Montagem de menus ────────────────────────────────────────────────────
 
   menuInterno(): void {
+
+    this.model = [
+      {
+        order: 0,
+        label: '',
+        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', separator: false, routerLink: ['/painel'] }]
+      },
+      {
+        order: 0,
+        label: '',
+        items: [{ label: 'Dispositivos', icon: 'pi pi-microchip', separator: false, routerLink: ['/painel/dispositivo'] }]
+      },
+      ...(this.authService.isPermiteEditarCliente() ? [{
+        order: 0,
+        label: '',
+        items: [{ label: 'Clientes', icon: 'pi pi-id-card', separator: false, routerLink: ['/painel/cliente'] }]
+      }] : []),
+      {
+        order: 2,
+        label: '',
+        items: [{ label: 'Usuários', icon: 'pi pi-users', separator: false, routerLink: ['/painel/users'] }]
+      },
+      {
+        order: 3,
+        label: '',
+        items: [{ label: 'Agendas', icon: 'pi pi-calendar', separator: false, routerLink: ['/painel/agenda'] }]
+      },
+      {
+        order: 3,
+        label: '',
+        items: [{ label: 'Cores', icon: 'pi pi-palette', separator: false, routerLink: ['/painel/cores'] }]
+      },
+      {
+        order: 3,
+        label: '',
+        items: [{ label: 'Mapa', icon: 'pi pi-map', separator: false, routerLink: ['/painel/mapa'] }]
+      },
+       ...(this.authService.isAdmin() ? [{
+        order: 9,
+        label: '',
+        items: [{ label: 'Integração', icon: 'pi pi-sitemap', separator: false, routerLink: ['/painel/integracao'] }]
+      }] : []),
+    ];
+
+
     this.model = this.model.sort((a, b) => a.order - b.order);
   }
 
