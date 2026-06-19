@@ -46,7 +46,7 @@ export class ComandosIluminacaoComponent implements OnInit, OnDestroy {
 
   listaCores(): void {
     if (!this.listaComandos.length) {
-      this.corService.listaCores('PRESET').subscribe({
+      this.corService.listaCores(['PRESET']).subscribe({
         next: response => { this.listaComandos = response.content; }
       });
     }

@@ -79,7 +79,7 @@ export class ListaIntegracaoComponent {
 
   listaCores() {
     this.corLoad = true;
-    this.corService.listaCores('EVENTO').subscribe({
+    this.corService.listaCores(['EVENTO', 'TODOS']).subscribe({
       next: response => {
         this.cores = response.content;
       },

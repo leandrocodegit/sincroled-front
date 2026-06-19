@@ -22,7 +22,7 @@ export class CorService {
   constructor(
     private readonly http: HttpClient) { }
 
-  public listaCores(tipoACao?: string): Observable<Page<Cor>> {
+  public listaCores(tipoACao?: string[]): Observable<Page<Cor>> {
     return this.http.get<Page<Cor>>(`${environment.urlApi}/cor?${tipoACao ? `tipoAcao=${tipoACao}` : ''}`)
   }
 
