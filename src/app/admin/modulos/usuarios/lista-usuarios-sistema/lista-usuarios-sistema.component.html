@@ -1,0 +1,53 @@
+@if(iconField){
+<p-inputicon (click)="op.toggle($event)" class="pi pi-users text-indigo-600" />
+}
+@else if(icon){
+<i (click)="op.toggle($event)" class="pi pi-users w-4 h-4 lg:mr-2 text-indigo-600"></i>
+}@else{
+<button (click)="op.toggle($event)"
+  class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
+  <i class="pi pi-users w-4 h-4 lg:mr-2"></i>
+  <span class="hidden lg:block">{{btLabel}}</span>
+</button>
+}
+
+<p-popover #op>
+  <div class="p-4">
+    <div class="flex gap-5 mb-4">
+      <p-iconfield iconPosition="left" [style]="{'width': '100%'}">
+        <input pInputText type="text" #input [(ngModel)]="searchTerm" (input)="filterUsers()"
+          placeholder="Pesquisar usuário por nome..." style="width: 100%;border-radius: 20px;padding: 12px;" />
+        <p-inputicon class="pi pi-search" />
+      </p-iconfield>
+    </div>
+    <div class="mt-2">
+      <div *ngIf="availableUsers.length > 0; else noAvailableUsers" style="min-width: 400px;">
+        <div *ngFor="let user of availableUsers"
+          class="flex items-center justify-between gap-3 p-2 rounded-lg transition-colors duration-200 hover:bg-surface-100 dark:hover:bg-surface-700">
+          <div class="flex items-center gap-3">
+            <div
+              class="h-10 w-10 flex-shrink-0 text-teal-700 bg-teal-50 border border-teal-700 rounded-full flex items-center justify-center font-bold">
+              {{getInitials(user)}}
+            </div>
+            <div class="flex flex-col">
+              <span class="font-semibold">{{ user.firstName }} {{ user.lastName }}</span>
+              <span class="text-xs text-gray-500">{{ user.email }}</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button [loading]="isLoad" pButton type="button"
+              [label]="!usuarioSelecionados.has(user.email) ? 'Selecionar' : 'Remover'"
+              [severity]="!usuarioSelecionados.has(user.email) ? 'info' : 'danger'"
+              class="p-button-sm p-button-outlined hover:!border-orange-500 hover:!text-orange-500"
+              (click)="selectEmit.emit(user)"></button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noAvailableUsers>
+        <div class="text-center p-4">
+          <p class="text-surface-500">Nenhum usuário disponível encontrado.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</p-popover>

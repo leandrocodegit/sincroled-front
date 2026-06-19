@@ -1,0 +1,45 @@
+<i (click)="visible = true; play()" pTooltip="Abrir chamado" class="pi pi-desktop {{styleClass}} cursor-pointer"></i>
+<p-drawer [modal]="true" [(visible)]="visible" [style]="{width: '500px'}">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="text-2xl font-extrabold tracking-wide text-gray-900">
+            CAPTURAR TELA
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">Ecrã + Voz em tempo real</p>
+    </div>
+
+    <!-- Status -->
+    <div id="statusBox"
+        class="flex items-center justify-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 mb-4">
+        <div class="h-3 w-3 rounded-full bg-yellow-500 animate-pulse"></div>
+        <span id="statusTxt" class="text-sm font-medium text-gray-700">
+            Aguardando Configuração
+        </span>
+    </div>
+
+    <!-- Timer -->
+    <div id="timer" class="text-center text-3xl font-mono font-bold text-gray-900 mb-6">
+        00:00:00
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-col gap-3 mb-4">
+        <button id="btnInit"
+            class="w-full rounded-xl bg-indigo-600 px-4 py-3 text-white font-semibold shadow-md hover:bg-indigo-700 transition">
+            1. Configurar Áudio e Vídeo
+        </button>
+
+        <button id="btnAction" 
+            class="w-full rounded-xl bg-emerald-600 px-4 py-3 text-white font-semibold shadow-md hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-emerald-600"
+            disabled>
+            2. Iniciar Gravação
+        </button>
+    </div>
+
+    <!-- Mic indicator -->
+    <div id="micStatus" class="text-center rounded-xl bg-gray-100 px-4 py-3 text-sm font-semibold text-gray-800">
+        🎤 Microfone: Pendente
+    </div>
+
+</p-drawer>

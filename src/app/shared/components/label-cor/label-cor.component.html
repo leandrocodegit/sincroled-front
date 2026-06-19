@@ -1,0 +1,12 @@
+<div *ngIf="cor" class="w-full max-w-[150px] space-y-1">
+  <div *ngFor="let param of cor.parametros">
+    <div class="flex justify-between text-[9px] text-gray-400">
+      <span class="truncate max-w-[70px] font-medium">{{ param.efeito }} <app-configuracao-parametro-cor *ngIf="device" [icon]="true" [parametro]="param" [deviceId]="device.id" /></span>
+      <span>L: {{ param.leds }}</span>
+    </div>
+    <div class="flex gap-0.5 h-1 rounded overflow-hidden bg-gray-100 dark:bg-gray-800">
+      <div *ngFor="let color of param.corHexa" [style.backgroundColor]="color" class="flex-1"></div>
+    </div>
+  </div>
+</div>
+<span *ngIf="!cor" class="text-xs text-gray-400">Nenhum</span>

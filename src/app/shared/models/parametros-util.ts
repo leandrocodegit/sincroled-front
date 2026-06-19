@@ -1,0 +1,2 @@
+export const TAREFA_OWNER = 'TAREFA_OWNER'
+export const TAREFA_REENVIO = 'REENVIO_DOCUMENTOS'

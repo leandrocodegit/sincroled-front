@@ -1,0 +1,44 @@
+:host {
+  // Cores do Terminal de Inspeção
+  ::ng-deep {
+    .bg-black-alpha-90 {
+      background-color: #12131a !important;
+    }
+
+    // Classes de estilização injetadas pelo Pipe customizado
+    .json-key {
+      color: #79c0ff; /* Azul claro para propriedades/chaves */
+      font-weight: 600;
+    }
+    .json-string {
+      color: #a5d6ff; /* Azul esverdeado para textos/strings */
+    }
+    .json-number {
+      color: #ffa657; /* Laranja suave para números (rssi, tipo, conexao) */
+    }
+    .json-boolean {
+      color: #ff7b72; /* Vermelho/Coral para booleanos (true/false) */
+      font-weight: bold;
+    }
+    .json-null {
+      color: #8b949e; /* Cinza fosco para campos nulos */
+      font-style: italic;
+    }
+
+    // Utilitário para tamanho menor de fonte interno
+    .text-xxs {
+      font-size: 0.65rem;
+    }
+
+    // Customização fina para barras de rolagem do PrimeNG dentro do terminal
+    .p-scrollpanel.custombar .p-scrollpanel-bar {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+  }
+
+  // Estilização dos badges de efeito do hardware
+  .font-mono {
+    font-family: 'Courier New', Courier, monospace !important;
+  }
+}

@@ -1,0 +1,328 @@
+<div class="h-full bg-[#f8fafc] dark:bg-[#0f1117] text-gray-800 dark:text-gray-100 p-2 lg:p-6 rounded-lg">
+
+  <header
+    class="mb-6 border-b border-gray-200 dark:border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight text-slate-700 dark:text-white m-0">Dashboard de Dispositivos</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gerenciamento de hardware IoT</p>
+    </div>
+
+    <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+      <p-button type="button" (onClick)="listarDispositivos()" size="small" [rounded]="true">
+        <span class="material-symbols-outlined">refresh</span>
+      </p-button>
+      <div
+        class="text-sm text-slate-700 dark:text-white bg-white dark:bg-neutral-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 hidden md:block">
+        Total: <span class="font-bold text-indigo-500 dark:text-indigo-400">{{ devices.length }}</span>
+      </div>
+
+      <div
+        class="bg-white dark:bg-neutral-800 p-1 rounded-full border border-gray-200 dark:border-gray-700 flex items-center inline-flex">
+        <button (click)="toggleView(true)"
+          [ngClass]="isGridView ? 'bg-indigo-600 text-white' : 'text-gray-400 dark:text-gray-500'"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
+          title="Visualização em Grade">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          Grade
+        </button>
+        <button (click)="toggleView(false)"
+          [ngClass]="!isGridView ? 'bg-indigo-600 text-white' : 'text-gray-400 dark:text-gray-500'"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
+          title="Visualização em Lista">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          Lista
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="isGridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let device of devices"
+      class="bg-white dark:bg-[#0f1117] rounded-xl shadow-md border border-gray-200 dark:border-neutral-700/50 flex flex-col justify-between overflow-hidden transition-all duration-200 hover:shadow-lg dark:hover:shadow-cyan-400/30">
+
+      <div class="p-5 w-full">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span
+              class="text-[10px] font-mono bg-gray-200 dark:bg-neutral-900 text-gray-700 dark:text-gray-300 px-1.5 py-0.5 rounded">ID:
+              {{ device.id }}</span>
+            <span *ngIf="device?.versao"
+              class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">v{{
+              device.versao }}</span>
+            <span *ngIf="device?.modelo"
+              class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">{{
+              device.modelo }}</span>
+          </div>
+          <div class="flex">
+            <app-configurar-wifi *ngIf="authService.isPermiteAlterarWIFI()" [device]="device" />
+            <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <div class="mb-3">
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white m-0 uppercase">{{ device.nome }}</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400 m-0">Cliente: <span
+                class="font-medium text-gray-800 dark:text-gray-200">{{ device?.cliente?.nome ?? '- - -'
+                }}</span><app-dispositivo-form-cliente *ngIf="authService.isPermiteEditarCliente()" [device]="device" />
+            </p>
+          </div>
+          <app-nivel-wifi class="mr-4"
+            *ngIf="device?.conexao?.tipoConexao == 'WIFI' && device.conexao.status === 'Online'"
+            [conexao]="device.conexao" />
+        </div>
+
+        <div class="flex gap-1">
+          <span [pTooltip]="device.conexao?.ip" tooltipPosition="top"
+            [ngClass]="device.conexao.status === 'Online' ? 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20'"
+            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+            <span [ngClass]="device.conexao.status === 'Online' ? 'bg-green-400' : 'bg-red-400 animate-pulse'"
+              class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+            {{ device.conexao.status }}
+          </span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+            <span class="h-1.5 rounded-full text-center"></span>
+            {{ device.conexao.tipoConexao}}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-sm my-3">
+          <div class="bg-gray-50 dark:bg-neutral-900/50 p-2 rounded-lg border border-gray-200 dark:border-gray-700/50">
+            <div class="flex justify-between items-center gap-1 ml-auto">
+              <span class="block text-[10px] text-gray-400 uppercase font-bold tracking-wider">SENSOR</span>
+              <div *ngIf="device.operacao?.corVibracao" [pTooltip]="device.operacao?.corVibracao.nome"
+                tooltipPosition="top" class="flex gap-1 ml-auto">
+                <span *ngFor="let cor of device.operacao?.corVibracao?.parametros?.[0]?.corHexa?.slice(0, 3)"
+                  class="w-2 h-2 rounded-full" [style.background]="cor">
+                </span>
+              </div>
+            </div>
+
+            <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'text-green-500' : 'text-red-500'"
+              class="font-semibold text-xs">{{ device.conexao.statusMCU }}</span>
+          </div>
+          <div
+            class="bg-gray-50 dark:bg-neutral-900/50 p-2 rounded-lg border border-gray-200 dark:border-gray-700/50 flex flex-col justify-between">
+            <span class="block text-[10px] text-gray-400 uppercase font-bold tracking-wider">Sensib. Vibração</span>
+            <div class="flex items-center justify-between gap-1 mt-0.5">
+              <div>
+                <span class="text-gray-800 dark:text-gray-200 font-bold text-xs">{{ (device.sensibilidadeVibracao / 50 *
+                  100).toFixed(1) }}%</span>
+                <app-configuracao-sensor *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
+              </div>
+              <div>
+                <span *ngIf="device?.conexao?.vbHabilitado && device?.operacao?.corVibracao"
+                  class="material-symbols-outlined">
+                  mobile_vibrate
+                </span>
+                <span *ngIf="device?.conexao?.btHabilitado && device?.operacao?.corBotao"
+                  class="material-symbols-outlined">
+                  watch_button_press
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-xs bg-gray-50 dark:bg-neutral-900/30 p-2 rounded-lg mb-3">
+          <div class="text-gray-500 dark:text-gray-400 flex items-center gap-1">
+            <span class="font-bold uppercase text-[10px]">Modo:</span>
+            <span class="text-gray-700 dark:text-gray-200 font-medium">{{ device.operacao.modoOperacao }}
+              <app-configuracao-cor-porta [deviceId]="device.id"
+                *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [icon]="true" [cor]="device.cor" />
+            </span>
+          </div>
+          <div *ngIf="device?.operacao?.agenda && device.operacao.modoOperacao == 'AGENDA'"
+            class="mt-1 text-indigo-600 dark:text-indigo-400 font-medium truncate"
+            [title]="device.operacao.agenda.nome">
+            <app-formulario-agenda [agendaParaEditar]="device.operacao.agenda" [icon]="true" /> {{
+            device.operacao.agenda.nome }}
+          </div>
+        </div>
+
+        <div *ngIf="device.cor" class="space-y-1.5">
+          <div *ngFor="let param of device.cor.parametros">
+            <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
+              <div class="flex items-center gap-2">
+                <span class="font-medium">{{ param.efeito }}</span>
+                <app-configuracao-parametro-cor *ngIf="authService.isPermiteGerenciarCores()" [icon]="true"
+                  [parametro]="param" [deviceId]="device.id" />
+              </div>
+              <span>Leds: {{ param.leds }}</span>
+            </div>
+            <div class="flex gap-0 h-1.5 rounded overflow-hidden bg-gray-200 dark:bg-gray-800">
+              <div *ngFor="let color of param.corHexa" [style.backgroundColor]="color" class="flex-1" [title]="color">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-gray-50 dark:bg-neutral-900/40 p-4 border-t border-gray-200 dark:border-neutral-700 flex justify-between items-center">
+        <div>
+          <span class="text-[9px] text-gray-400 block uppercase font-bold">Atualizado</span>
+          <span class="text-xs text-gray-600 dark:text-gray-400 font-mono">{{ device.conexao.ultimaAtualizacao |
+            date:'dd/MM HH:mm' }}</span>
+        </div>
+        <div class="flex">
+          <p-button
+                *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
+                [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
+                [rounded]="true" [outlined]="true"
+                [styleClass]="'relative ' + (device.operacao?.modoOperacao === 'OCORRENCIA' ? 'shadow-[0_0_0_0_rgba(245,158,11,0.7)]' : '')"
+                (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
+
+                <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
+                  class="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping pointer-events-none">
+                </span>
+
+                <span class="material-symbols-outlined relative z-10"
+                  [ngClass]="{'animate-pulse text-amber-600': device.operacao?.modoOperacao === 'OCORRENCIA'}">
+                  notification_sound
+                </span>
+              </p-button>
+          <app-comandos-iluminacao [deviceId]="device.id"
+            *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
+          <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+          <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="!isGridView"
+    class="w-full overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-800/40 shadow-sm">
+    <table class="w-full text-left border-collapse whitespace-nowrap">
+      <thead>
+        <tr
+          class="bg-gray-100 dark:bg-neutral-800 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+          <th class="py-3 px-4">Dispositivo / Cliente</th>
+          <th class="py-3 px-4 w-28">Status Redes</th>
+          <th class="py-3 px-4 w-24">Sensor</th>
+          <th class="py-3 px-4 w-32">Sensibilidade</th>
+          <th class="py-3 px-4">Modo/Agenda</th>
+          <th class="py-3 px-4 w-44">Efeitos Ativos</th>
+          <th class="py-3 px-4 text-center w-24"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-300">
+        <tr *ngFor="let device of devices" class="hover:bg-gray-50 dark:hover:bg-neutral-800/40 transition-colors">
+
+          <td class="p-3">
+            <div class="flex items-center gap-2">
+              <div>
+                <div class="flex flex-nowrap items-center">
+                  <span class="font-bold text-gray-900 dark:text-white block uppercase">
+                    Disp. {{ device.nome}}</span>
+                  <div class="flex">
+                    <app-configurar-wifi *ngIf="authService.isPermiteAlterarWIFI()" [device]="device" />
+                    <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
+                  </div>
+
+                </div>
+                <span class="text-xs text-gray-400 block">Cli: {{ device?.cliente?.nome ?? '---'
+                  }}<app-dispositivo-form-cliente *ngIf="authService.isPermiteEditarCliente()"
+                    [device]="device" /></span>
+              </div>
+
+            </div>
+          </td>
+
+          <td class="py-3 px-4">
+            <div class="flex gap-1">
+              <span [pTooltip]="device.conexao?.ip" tooltipPosition="top"
+                [ngClass]="device.conexao.status === 'Online' ? 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20'"
+                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+                <span [ngClass]="device.conexao.status === 'Online' ? 'bg-green-400' : 'bg-red-400 animate-pulse'"
+                  class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+                {{ device.conexao.status }}
+              </span>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+                <span class="h-1.5 rounded-full text-center"></span>
+                {{ device.conexao.tipoConexao}}
+              </span>
+            </div>
+          </td>
+
+          <td class="py-3 px-4">
+            <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'text-green-500' : 'text-red-500'"
+              class="font-bold text-xs uppercase">
+              ● {{ device.conexao.statusMCU }}
+            </span>
+          </td>
+
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-gray-900 dark:text-white">{{ (device.sensibilidadeVibracao / 50 *
+                100).toFixed(1) }}%</span>
+              <app-configuracao-sensor *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
+              <span *ngIf="device?.conexao?.vbHabilitado && device?.operacao?.corVibracao"
+                class="material-symbols-outlined">
+                mobile_vibrate
+              </span>
+              <span *ngIf="device?.conexao?.btHabilitado && device?.operacao?.corBotao"
+                class="material-symbols-outlined">
+                watch_button_press
+              </span>
+            </div>
+          </td>
+
+          <td class="py-3 px-4 max-w-[180px] truncate">
+            <span
+              class="text-xs font-medium bg-gray-100 dark:bg-neutral-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300">{{
+              device.operacao.modoOperacao }}</span>
+            <span *ngIf="device?.operacao?.agenda && device.operacao.modoOperacao == 'AGENDA'"
+              class="block text-[11px] text-indigo-500 mt-0.5 truncate" [title]="device.operacao.agenda.nome">
+              <app-formulario-agenda [agendaParaEditar]="device.operacao.agenda" [icon]="true" /> {{
+              device.operacao.agenda.nome }}
+            </span>
+            <app-configuracao-cor-porta [deviceId]="device.id"
+              *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [icon]="true" [cor]="device.cor" />
+          </td>
+
+          <td class="py-3 px-4">
+            <app-label-cor [cor]="device.cor" [device]="device" />
+          </td>
+
+          <td class="py-3 px-4">
+            <div class="flex items-center justify-end">
+              <p-button
+                *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
+                [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
+                [rounded]="true" [outlined]="true"
+                [styleClass]="'!bg-orange-200/40 relative ' + (device.operacao?.modoOperacao === 'OCORRENCIA' ? 'shadow-[0_0_0_0_rgba(245,158,11,0.7)]' : '')"
+                (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
+
+                <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
+                  class="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping pointer-events-none">
+                </span>
+
+                <span class="material-symbols-outlined relative z-10"
+                  [ngClass]="{'animate-pulse text-amber-600': device.operacao?.modoOperacao === 'OCORRENCIA'}">
+                  notification_sound
+                </span>
+              </p-button>
+              <app-comandos-iluminacao [deviceId]="device.id"
+                *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
+              <app-configuracao-cor-porta [deviceId]="device.id"
+                *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [cor]="device.cor" />
+
+              <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+              <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

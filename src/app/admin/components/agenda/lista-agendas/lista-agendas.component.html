@@ -1,0 +1,242 @@
+<div class="p-6 bg-gray-50 dark:bg-neutral-950 min-h-screen transition-colors duration-200">
+
+  <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <span>📅</span> Agendamentos de Efeitos
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-neutral-400">Gerencie as programações e automações enviadas ao hardware
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3 self-end md:self-auto">
+      <app-formulario-agenda />
+      <div
+        class="inline-flex rounded-full p-1 bg-gray-200 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-800">
+        <button (click)="viewMode = 'grid'; toggleView()" [class]="viewMode === 'grid'
+          ? 'bg-white dark:bg-neutral-800 text-indigo-600 dark:text-white shadow-sm'
+          : 'text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-200'"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5">
+          <span>🎚️</span> Grid
+        </button>
+        <button (click)="viewMode = 'list'; toggleView()" [class]="viewMode === 'list'
+          ? 'bg-white dark:bg-neutral-800 text-indigo-600 dark:text-white shadow-sm'
+          : 'text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-200'"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5">
+          <span>📝</span> Lista
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (viewMode === 'grid') {
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 animate-fade-in">
+    @for (agenda of agendas; track agenda.id) {
+    <div
+      class="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
+
+      <div
+        class="p-5 border-b border-gray-100 dark:border-neutral-800/60 bg-gray-50/50 dark:bg-neutral-950/20 flex items-start justify-between gap-4">
+        <div>
+          <div class="flex flex-col items-start flex-wrap">
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white m-0 uppercase">{{ agenda.nome }}</h2>
+            <span
+              class="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-neutral-800 text-gray-500 dark:text-neutral-400 border border-gray-200 dark:border-neutral-700">
+              ID: {{ agenda.id.substring(0,8) }}...
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-neutral-400 font-mono">
+            <span class="flex items-center gap-1">🗓️ {{ agenda.inicio | date:'dd/MM/yyyy' }}</span>
+            <span>➔</span>
+            <span class="flex items-center gap-1">🏁 {{ agenda.termino | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end gap-2">
+          <span
+            [class]="agenda.ativo
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'
+                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'">
+            ● {{ agenda.status }}
+          </span>
+
+          <label class="relative inline-flex items-center cursor-pointer mt-1">
+            <input [disabled]="!authService.isPermiteEditarAgenda()" (change)="ativarAgenda(agenda)" type="checkbox" [checked]="agenda.ativo" class="sr-only peer">
+            <div
+              class="w-9 h-5 bg-gray-200 dark:bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-neutral-600 peer-checked:bg-indigo-600">
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="p-5 space-y-4 flex-1">
+        <div
+          class="bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30 rounded-xl p-3 flex justify-between items-center flex-wrap gap-2">
+          <div>
+            <span
+              class="text-[10px] uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400 block">Perfil
+              de Cor</span>
+            <span class="text-sm font-semibold text-gray-800 dark:text-neutral-200">✨ {{ agenda.cor?.nome }}</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs font-mono text-gray-600 dark:text-neutral-300">
+            <span>⚡ Vel: {{ agenda.cor?.velocidade }}</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-neutral-500">Configuração de
+            Portas</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            @for (param of agenda.cor?.parametros; track param.pino) {
+            <div
+              class="p-3 rounded-xl border bg-gray-50/40 dark:bg-neutral-900/40 border-gray-100 dark:border-neutral-800/50 flex flex-col justify-between gap-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-700 dark:text-neutral-300 font-mono">🔌 Porta {{ param.pino
+                  }}</span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500 dark:text-neutral-400">
+                <span>🎬 {{ param.efeito }}</span>
+                <span class="font-mono">💡 {{ param.leds }} LEDs</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-1">
+                @for (hex of param.corHexa; track hex) {
+                <div [style.backgroundColor]="hex" class="w-5 h-5 rounded-full shadow-sm" [title]="hex"></div>
+                }
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="px-5 py-3 border-t border-gray-100 dark:border-neutral-800/60 bg-gray-50/30 dark:bg-neutral-950/10 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-1">
+          <span class="text-xs text-gray-400 dark:text-neutral-500">Dispositivos:</span>
+          @if (agenda.todos) {
+          <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Todos</span>
+          } @else {
+          <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+            {{agenda?.dispositivos?.length ?? 'Nenhum'}}</span>
+          }
+        </div>
+        <div class="flex items-center gap-2">
+          @if(!agenda.todos){
+          <app-selecao-dispositivo [selecionados]="agenda.dispositivos" [outlined]="true"
+            (onSalve)="alterarAgenda(agenda, $event)" />
+          }
+          <app-formulario-agenda (onSalve)="listarAgendas()" [agendaParaEditar]="agenda" [outlined]="true" />
+          <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)" size="small" [outlined]="true" [rounded]="true">
+            <span class="material-symbols-outlined">
+              delete
+            </span>
+          </p-button>
+        </div>
+      </div>
+
+    </div>
+    } @empty {
+    <div class="col-span-full py-12 flex flex-col items-center justify-center text-gray-400 dark:text-neutral-500">
+      <span class="text-4xl mb-2">📭</span>
+      <p>Nenhum agendamento encontrado.</p>
+    </div>
+    }
+  </div>
+  }
+
+  @if (viewMode === 'list') {
+  <div
+    class="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl shadow-sm overflow-hidden animate-fade-in">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr
+            class="border-b border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-950/40 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-neutral-400">
+            <th class="py-3 px-4">Nome do Agendamento</th>
+            <th class="py-3 px-4">Vigência</th>
+            <th class="py-3 px-4">Perfil Aplicado</th>
+            <th class="py-3 px-4">Alvos</th>
+            <th class="py-3 px-4 text-center">Status</th>
+            <th class="py-3 px-4 text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-150 dark:divide-neutral-800/60 text-sm text-gray-700 dark:text-neutral-200">
+          @for (agenda of agendas; track agenda.id) {
+          <tr class="hover:bg-gray-50/50 dark:hover:bg-neutral-950/20 transition-colors">
+
+            <td class="py-3.5 px-4">
+              <div class="font-semibold text-gray-900 dark:text-white uppercase">{{ agenda.nome }}</div>
+              <div class="text-[10px] font-mono text-gray-400 dark:text-neutral-500">ID: {{ agenda.id.substring(0,8) }}
+              </div>
+            </td>
+
+            <td class="py-3.5 px-4 font-mono text-xs text-gray-600 dark:text-neutral-400 whitespace-nowrap">
+              <span>{{ agenda.inicio | date:'dd/MM' }}</span> ➔ <span>{{ agenda.termino | date:'dd/MM/yy' }}</span>
+            </td>
+
+            <td class="py-3.5 px-4">
+              <div class="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase">
+                <span>✨</span> {{ agenda.cor?.nome }}
+                <span
+                  class="text-[10px] bg-indigo-50 dark:bg-indigo-950/40 px-1.5 py-0.5 rounded text-indigo-500 font-mono">
+                  {{ agenda.cor?.time }}m
+                </span>
+              </div>
+            </td>
+
+            <td class="py-3.5 px-4 whitespace-nowrap">
+              @if (agenda.todos) {
+              <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Todos</span>
+              } @else {
+              <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                {{agenda?.dispositivos?.length ?? 'Nenhum'}}</span>
+              }
+            </td>
+
+            <td class="py-3.5 px-4">
+              <div class="flex items-center justify-center gap-2">
+                <span [class]="agenda.ativo ? 'text-emerald-500' : 'text-amber-500'"
+                  class="text-xs font-medium hidden lg:inline">
+                  {{ agenda.status }}
+                </span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input (change)="ativarAgenda(agenda)" type="checkbox" [checked]="agenda.ativo" class="sr-only peer">
+                  <div
+                    class="w-8 h-4 bg-gray-200 dark:bg-neutral-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-neutral-600 peer-checked:bg-indigo-600">
+                  </div>
+                </label>
+              </div>
+            </td>
+
+            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+              <div class="flex items-center justify-end gap-1.5">
+                @if(!agenda.todos){
+                <app-selecao-dispositivo [selecionados]="agenda.dispositivos" [outlined]="true"
+                  (onSalve)="alterarAgenda(agenda, $event)" />
+                }
+                <app-formulario-agenda (onSalve)="listarAgendas()" [agendaParaEditar]="agenda" [outlined]="true" />
+                <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)" size="small" [outlined]="true" [rounded]="true">
+                  <span class="material-symbols-outlined">
+                    delete
+                  </span>
+                </p-button>
+              </div>
+            </td>
+
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="py-12 text-center text-gray-400 dark:text-neutral-500">
+              <span class="text-3xl block mb-2">📭</span>
+              <p>Nenhum agendamento encontrado.</p>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+
+</div>

@@ -1,0 +1,78 @@
+<p-button type="submit" pTooltip="Acionar Evento" tooltipPosition="top"
+  severity="info" [rounded]="true" [outlined]="true" (onClick)="view = true" size="small">
+  <span class="material-symbols-outlined">
+    edit
+  </span>
+</p-button>
+
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false"
+  styleClass="min-w-[99vw] lg:min-w-[35vw]" [style]="{ maxWidth: '1100px' }">
+  <!-- Corpo do Formulário usando Grid Responsivo -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-2 md:px-4 py-4">
+
+    <!-- Coluna 1: Dados do Dispositivo -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Campo Nome -->
+      <div class="flex flex-col gap-2">
+        <label for="nome" class="text-sm font-semibold text-color">Nome *</label>
+        <input pInputText id="nome" type="text" [(ngModel)]="device.nome" placeholder="Nome" class="w-full" />
+      </div>
+
+      <!-- Campo Latitude -->
+      <div class="flex flex-col gap-2">
+        <label for="latitude" class="text-sm font-semibold text-color">Latitude *</label>
+        <input pInputText id="latitude" type="text" [(ngModel)]="device.conexao.latitude" placeholder="Latitude"
+          class="w-full" />
+      </div>
+
+      <!-- Campo Longitude + Botão de Mapa -->
+      <div class="flex flex-col gap-2">
+        <label for="longitude" class="text-sm font-semibold text-color">Longitude *</label>
+        <div class="flex gap-2 w-full">
+          <input pInputText id="longitude" type="text" [(ngModel)]="device.conexao.longitude" placeholder="Longitude"
+            class="flex-1" />
+
+          <p-button icon="pi pi-map-marker" severity="primary" styleClass="h-[42px] w-[42px]"
+            (onClick)="selecionarCordenadas()" pTooltip="Selecionar no Mapa" tooltipPosition="top">
+          </p-button>
+        </div>
+      </div>
+
+      <!-- Seção de Checkboxes / Flags -->
+      <div class="flex flex-col gap-3 mt-2 mb-6">
+        <div class="flex align-items-center gap-2">
+          <p-checkbox (onChange)="ativar(device)" [(ngModel)]="device.ativo" [binary]="true" inputId="ativo"></p-checkbox>
+          <label for="ativo" class="cursor-pointer text-sm">Ativo</label>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [(ngModel)]="device.permiteComando" [binary]="true" inputId="permiteComando"></p-checkbox>
+          <label for="permiteComando" class="cursor-pointer text-sm">Permite comandos</label>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [(ngModel)]="device.ignorarAgenda" [binary]="true" inputId="ignorarAgenda"></p-checkbox>
+          <label for="ignorarAgenda" class="cursor-pointer text-sm">Ignorar agenda</label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Coluna 2: Componente de Endereço -->
+    <div class="w-full">
+      <app-endereco [endereco]="device.endereco"></app-endereco>
+    </div>
+
+  </div>
+
+  <!-- Rodapé com as Ações do Formulário -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-3 border-t border-solid border-300 pt-4 w-full">
+      <p-button label="Fechar" severity="secondary" outlined="true" styleClass="px-5" (onClick)="fechar()">
+      </p-button>
+      <p-button label="Salvar" severity="primary" styleClass="px-5" (onClick)="salvar()">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>

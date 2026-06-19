@@ -1,0 +1,197 @@
+<p-button *ngIf="authService.isPermiteSincronizar()" type="submit" (onClick)="view = true" [rounded]="true" size="small"
+  pTooltip="Sincronizar" [outlined]="true" tooltipPosition="top">
+  <span class="material-symbols-outlined">
+    cloud_upload
+  </span>
+</p-button>
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="true" [resizable]="false" styleClass="lg:min-w-[400px] p-2"
+  [dismissableMask]="true">
+
+  <section class="text-zinc-100 flex items-center justify-center p-5 font-mono">
+
+    <div class="w-full">
+
+      <div class="flex gap-4 my-4">
+        <p-button [disabled]="carregando()" [loading]="carregando()" [label]="carregando() ? 'Reiniciando...' : 'Reinciar Modulo'" *ngIf="authService.isPermiteSincronizar()" type="submit"
+          (onClick)="enviarComando('LED_RESTART')" [rounded]="true" size="small" [outlined]="false">
+          <span class="material-symbols-outlined">
+            power_settings_circle
+          </span>
+        </p-button>
+      </div>
+
+      <!-- Cabeçalho -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs uppercase tracking-[0.25em] text-zinc-500">Sistema de Controle IoT</span>
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight">Sincronizar dados do dispositivo</h1>
+      </div>
+
+      <!-- Device ID -->
+      <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6">
+        <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Device ID</p>
+        <p class="text-sm text-emerald-400 truncate">{{ deviceId }}</p>
+      </div>
+
+      <!-- Botão de envio -->
+      <button [disabled]="carregando()" (click)="enviarComando()" class="w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all duration-200
+             bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-zinc-950
+             disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:scale-100
+             focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-950">
+        <span *ngIf="!carregando()">↑ Enviar Comando</span>
+        <span *ngIf="carregando()" class="flex items-center justify-center gap-3">
+          <svg class="animate-spin h-4 w-4 text-zinc-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          <span *ngIf="statusAtual() !== 'OK'">Aguardando confirmação do device…</span>
+          <span *ngIf="statusAtual() === 'OK'">Device recebeu — aguardando processamento…</span>
+        </span>
+      </button>
+
+      <!-- Badge de status -->
+      <div class="mt-5 flex items-center gap-3">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Status:</span>
+
+        <span
+          class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300"
+          [ngClass]="{
+          'bg-zinc-800 text-zinc-400':                                 statusAtual() === 'AGUARDANDO',
+          'bg-amber-950 text-amber-400 border border-amber-700':       statusAtual() === 'ENVIANDO',
+          'bg-sky-950 text-sky-400 border border-sky-700':             statusAtual() === 'OK',
+          'bg-emerald-950 text-emerald-400 border border-emerald-700': statusAtual() === 'SUCESSO',
+          'bg-yellow-950 text-yellow-400 border border-yellow-700':    statusAtual() === 'WARN',
+          'bg-red-950 text-red-400 border border-red-700':             statusAtual() === 'ERROR',
+          'bg-orange-950 text-orange-400 border border-orange-700':    statusAtual() === 'TIMEOUT'
+        }">
+          <!-- Ping animado em ENVIANDO e OK (ainda em andamento) -->
+          <span *ngIf="statusAtual() === 'ENVIANDO'" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping">
+          </span>
+          <span *ngIf="statusAtual() === 'OK'" class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping">
+          </span>
+          <span *ngIf="statusAtual() !== 'ENVIANDO' && statusAtual() !== 'OK'" class="w-1.5 h-1.5 rounded-full"
+            [ngClass]="{
+            'bg-zinc-500':    statusAtual() === 'AGUARDANDO',
+            'bg-emerald-400': statusAtual() === 'SUCESSO',
+            'bg-yellow-400':  statusAtual() === 'WARN',
+            'bg-red-400':     statusAtual() === 'ERROR',
+            'bg-orange-400':  statusAtual() === 'TIMEOUT'
+          }">
+          </span>
+          {{ statusAtual() }}
+        </span>
+      </div>
+
+      <!-- ── Banners de estado ─────────────────────────────────────────────── -->
+
+      <!-- OK: device recebeu, ainda processando -->
+      <div *ngIf="statusAtual() === 'OK'"
+        class="mt-5 flex gap-3 items-start bg-sky-950/40 border border-sky-800/50 rounded-xl px-4 py-3 w-full">
+        <svg class="animate-spin h-5 w-5 text-sky-400 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <div>
+          <p class="text-sm font-semibold text-sky-300">Comando recebido pelo dispositivo</p>
+          <p class="text-xs text-sky-600 mt-0.5 ">
+            O device confirmou o recebimento. Aguardando confirmação de processamento…
+          </p>
+        </div>
+      </div>
+
+      <!-- SUCESSO -->
+      <div *ngIf="statusAtual() === 'SUCESSO'"
+        class="mt-5 flex gap-3 items-start bg-emerald-950/40 border border-emerald-800/50 rounded-xl px-4 py-3">
+        <span class="text-emerald-400 text-xl leading-none flex-shrink-0">✓</span>
+        <div>
+          <p class="text-sm font-semibold text-emerald-300">Comando processado com sucesso</p>
+          <p class="text-xs text-emerald-600 mt-0.5">O device confirmou a execução do comando.</p>
+        </div>
+      </div>
+
+      <!-- WARN -->
+      <div *ngIf="statusAtual() === 'WARN'"
+        class="mt-5 flex gap-3 items-start bg-yellow-950/40 border border-yellow-800/50 rounded-xl px-4 py-3">
+        <span class="text-yellow-400 text-xl leading-none flex-shrink-0">⚡</span>
+        <div>
+          <p class="text-sm font-semibold text-yellow-300">Comando processado com advertência</p>
+          <p class="text-xs text-yellow-600 mt-0.5">Verifique os detalhes no log abaixo.</p>
+        </div>
+      </div>
+
+      <!-- TIMEOUT -->
+      <div *ngIf="statusAtual() === 'TIMEOUT'"
+        class="mt-5 flex gap-3 items-start bg-orange-950/40 border border-orange-800/50 rounded-xl px-4 py-3">
+        <span class="text-orange-400 text-xl leading-none flex-shrink-0">⏱</span>
+        <div>
+          <p class="text-sm font-semibold text-orange-300">Device não respondeu a tempo</p>
+          <p class="text-xs text-orange-500 mt-0.5">
+            O backend encerrou a espera sem confirmação. Verifique a conectividade e tente novamente.
+          </p>
+        </div>
+      </div>
+
+      <!-- ERROR -->
+      <div *ngIf="statusAtual() === 'ERROR'"
+        class="mt-5 flex gap-3 items-start bg-red-950/50 border border-red-800/60 rounded-xl px-4 py-3">
+        <span class="text-red-400 text-xl leading-none flex-shrink-0">⚠</span>
+        <div>
+          <p class="text-sm font-semibold text-red-300">Erro no processamento</p>
+          <p class="text-xs text-red-500 mt-0.5">{{ erroMensagem() }}</p>
+        </div>
+      </div>
+
+      <!-- Log de eventos -->
+      <div *ngIf="eventos().length" class="mt-6 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+        <div class="px-4 py-2.5 border-b border-zinc-800 flex items-center justify-between">
+          <span class="text-[10px] uppercase tracking-widest text-zinc-500">Log de eventos</span>
+          <span class="text-[10px] text-zinc-600">{{ eventos().length }} evento(s)</span>
+        </div>
+
+        <ul class="divide-y divide-zinc-800/60 max-h-64 overflow-y-auto">
+          <li *ngFor="let e of eventos()"
+            class="flex items-start gap-3 px-4 py-3 text-xs transition-colors hover:bg-zinc-800/30" [ngClass]="{
+            'bg-sky-950/20':    e.status === 'OK',
+            'bg-orange-950/20': e.status === 'TIMEOUT',
+            'bg-red-950/20':    e.status === 'ERROR',
+            'bg-yellow-950/10': e.status === 'WARN'
+          }">
+            <span class="mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0" [ngClass]="{
+              'bg-amber-400':   e.status === 'ENVIANDO',
+              'bg-sky-400':     e.status === 'OK',
+              'bg-emerald-400': e.status === 'SUCESSO',
+              'bg-yellow-400':  e.status === 'WARN',
+              'bg-red-400':     e.status === 'ERROR',
+              'bg-orange-400':  e.status === 'TIMEOUT',
+              'bg-zinc-500':    e.status === 'AGUARDANDO'
+            }">
+            </span>
+
+            <div class="flex-1 min-w-0">
+              <p class="break-words" [ngClass]="{
+                'text-zinc-300':   e.status === 'ENVIANDO' || e.status === 'SUCESSO',
+                'text-sky-300':    e.status === 'OK',
+                'text-yellow-300': e.status === 'WARN',
+                'text-red-300':    e.status === 'ERROR',
+                'text-orange-300 font-semibold': e.status === 'TIMEOUT'
+              }">
+                {{ e.mensagem }}
+              </p>
+              <span *ngIf="e.payload" class="inline-block mt-1 text-[10px] uppercase tracking-widest text-zinc-600">
+                tipoResposta: {{ e.payload.tipoResposta }}
+              </span>
+            </div>
+
+            <time class="text-zinc-600 flex-shrink-0 tabular-nums">
+              {{ e.timestamp | date: 'HH:mm:ss' }}
+            </time>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</p-dialog>

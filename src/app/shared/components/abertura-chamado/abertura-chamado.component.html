@@ -1,0 +1,112 @@
+<i (click)="visible = true" pTooltip="Abrir chamado" class="pi pi-desktop {{styleClass}} cursor-pointer"></i>
+<p-drawer [modal]="true" [(visible)]="visible" styleClass="min-w-[100vw] lg:min-w-[50vw]">
+
+    <div class="min-h-screen flex justify-center items-start">
+        <div class="w-full bg-white dark:bg-transparent px-2 lg:px-6">
+
+            <div class="flex items-center gap-4">
+                <div class="w-20 h-10 rounded-2xl flex items-center justify-center text-white bg-primary">
+                    <span class="material-symbols-outlined text-4xl">support_agent</span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Abrir Novo Chamado</h2>
+            </div>
+
+            <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="tipo" class="block text-gray-700 dark:text-white text-sm font-medium mb-2">Tipo de Chamado</label>
+                    <p-dropdown id="tipo" [options]="tiposChamado" appendTo="body" optionLabel="label"
+                        placeholder="Selecione um tipo" [(ngModel)]="tipoSelecionado" [filter]="true" required
+                        styleClass="w-full !rounded-lg p-dropdown-lg" />
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="descricao" class="block text-gray-700 dark:text-white text-sm font-medium mb-2">Descrição Detalhada</label>
+                <textarea id="descricao" pTextarea [(ngModel)]="descricao" rows="6" required
+                    class="w-full !rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"></textarea>
+            </div>
+
+            @if (videoPreviewUrl()) {
+            <div class="mt-6 border border-gray-200 rounded-xl overflow-hidden bg-black shadow-inner animate-fade-in mb-4">
+                <div class="flex items-center justify-between bg-gray-800 px-4 py-2 text-white">
+                    <span class="text-xs font-mono uppercase tracking-widest opacity-70">Pré-visualização da
+                        Captura</span>
+                    <button (click)="limparCaptura()" class="hover:text-red-400 transition-colors">
+                        <i class="pi pi-trash"></i>
+                    </button>
+                </div>
+
+                <div class="aspect-video w-full flex items-center justify-center">
+                    <video [src]="videoPreviewUrl()" controls class="max-h-[400px] w-full"
+                        poster="assets/video-placeholder.png">
+                        Seu navegador não suporta a reprodução de vídeo.
+                    </video>
+                </div>
+
+                <div class="p-3 bg-gray-50 border-t flex items-center gap-2">
+                    <i class="pi pi-file-video text-teal-600"></i>
+                    <span class="text-sm text-gray-600 font-medium">{{ arquivoCapturado()?.name }}</span>
+                </div>
+            </div>
+            }
+
+            <div
+                class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 p-4 border rounded-lg bg-gray-50">
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-camera text-2xl text-teal-600"></i>
+                    <div>
+                        <span class="block text-gray-700 dark:text-white font-medium">Captura de Tela</span>
+                        <span class="block text-gray-500 text-sm">Anexe uma imagem da tela para ilustrar o
+                            problema.</span>
+                    </div>
+                </div>
+                <div>
+                    <p-button label="Fazer Captura" icon="pi pi-desktop" severity="help"
+                        class="p-button-sm !rounded-lg" (onClick)="abrirModalCaptura()" />
+                    @if(screenshotData()){
+                    <span class="ml-3 text-sm text-green-600 flex items-center gap-1">
+                        <i class="pi pi-check-circle"></i> Captura anexada
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="arquivos" class="block text-gray-700 dark:text-white text-sm font-medium mb-2">Anexar Arquivos
+                    (Opcional)</label>
+                <p-fileUpload name="demo[]" url="./upload.php" [multiple]="true" accept="image/*,application/pdf"
+                    maxFileSize="10485760" chooseLabel="Selecionar Arquivos" uploadLabel="Enviar" cancelLabel="Cancelar"
+                    [showUploadButton]="false" [showCancelButton]="false">
+                    <ng-template pTemplate="content">
+                        <ul class="list-disc pl-5 text-gray-600 text-sm">
+                            <li>Max. 10MB por arquivo.</li>
+                            <li>Tipos permitidos: Imagens, PDF.</li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
+            </div>
+
+            <div class="flex justify-end gap-4">
+                <p-button label="Limpar" icon="pi pi-times" severity="secondary" (onClick)="resetForm()"
+                    class="!rounded-lg" />
+                <p-button [disabled]="!capturadoTela" label="Enviar Chamado" icon="pi pi-send" [severity]="capturadoTela ? 'success' : 'secondary'" (onClick)="enviarChamado()"
+                    class="!rounded-lg" />
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Header -->
+
+
+</p-drawer>
+
+<p-dialog [(visible)]="showCaptureModal" [modal]="true" appendTo="body" styleClass="min-w-[90vw] lg:min-w-[35vw]"
+    [resizable]="false" [draggable]="false" (onHide)="showCaptureModal.set(false)">
+    <div class="h-full w-full flex flex-col">
+        <app-gravador-tela (stopEmit)="showCaptureModal.set(false)" />
+    </div>
+</p-dialog>

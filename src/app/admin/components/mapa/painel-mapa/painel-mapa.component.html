@@ -1,0 +1,9 @@
+@if(load) {
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div class="flex justify-center items-center h-40">
+    <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+  </div>
+  <p>Rederizando mapa...</p>
+</div>
+}
+<app-content-mapa *ngIf="tabSelect == 0"></app-content-mapa>

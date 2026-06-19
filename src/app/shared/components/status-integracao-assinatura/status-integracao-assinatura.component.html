@@ -1,0 +1,198 @@
+<div class="mx-auto min-w[100vw] lg:min-w-[45vw]">
+  <div class="rounded-3xl overflow-hidden">
+    <div class="p-8">
+      <div class="p-6 rounded-xl border-b mb-8 border-slate-100 dark:border-slate-800 flex justify-between items-start">
+        <div class="min-w-0 flex-1">
+          <span class="text-[15px] font-black text-blue-500 uppercase tracking-widest">Documento Modelo</span>
+          <h2
+            class="text-sm font-mono text-slate-500 truncate m-1 {{data?.modeloDocumento ? 'text-green-500' : 'text-gray-400'}}">
+            {{ data?.isCopiado ? 'Texto copiado' : data?.modeloDocumento }}
+            <span [cdkCopyToClipboard]="data?.modeloDocumento" (click)="data.isCopiado = true"
+              class="material-symbols-outlined text-sm cursor-pointer">{{data?.isCopiado ? 'check' :
+              'content_copy'}}</span>
+          </h2>
+        </div>
+        <p-tag [severity]="getSeverity(data?.statusGeral)" [value]="data?.statusGeral"
+          [icon]="data?.integracaoConcluida ? 'pi pi-check-circle' : 'pi pi-clock'" [rounded]="true"></p-tag>
+      </div>
+
+
+      <div
+        class="flex items-center gap-4 mb-8 p-4 bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/50 rounded-2xl">
+        <div class="w-16 h-16 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-600">
+          <span class="material-symbols-outlined text-3xl">folder_shared</span>
+        </div>
+        <div class="w-full">
+          <div class="flex justify-between">
+            <p class="text-[15px] font-bold text-blue-400 uppercase tracking-tighter mb-0">Cofre de Destino (Safe)</p>
+            <p class="text-slate-700 dark:text-slate-200 font-bold truncate m-0">{{ data?.safe ?? '- - -' }}</p>
+          </div>
+          <p class="text-slate-700 dark:text-slate-200 font-bold truncate m-0">{{ data?.safeName ?? '- - -' }}</p>
+          <p class="text-[11px] font-mono text-slate-500 truncate m-0">{{ data?.modeloDocumento ?? '- - -' }}</p>
+        </div>
+      </div>
+
+      <div class="">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-neutral-900 border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined text-purple-500">description</span>
+              <span class="text-xs font-bold text-slate-500 uppercase">{{data?.tipoIntegracao}}</span>
+            </div>
+            <p class="text-slate-700 dark:text-slate-200 font-semibold">{{ data?.statusDocumento }}</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-neutral-900 border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined text-orange-500">group</span>
+              <span class="text-xs font-bold text-slate-500 uppercase">Signatários</span>
+            </div>
+            <p class="text-slate-700 dark:text-slate-200 font-semibold">{{ data?.statusSignatarios }}</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-neutral-900 border border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined"
+                [class]="data?.integracaoConcluida ? 'text-emerald-500' : 'text-slate-500'">check_circle</span>
+              <span class="text-xs font-bold text-slate-500 uppercase">Finalização</span>
+            </div>
+            <p class="text-slate-700 dark:text-slate-200 font-semibold">
+              {{ data?.integracaoConcluida ? 'Concluída' : 'Em processamento' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-slate-500 uppercase mb-4">Checklist do Workflow</h3>
+
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between p-3 rounded-xl border"
+              [class]="data?.quantidadeDocumentos > 0 ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+              <div class="flex items-center gap-3">
+                <i
+                  [class]="data?.quantidadeDocumentos > 0 ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                <span class="text-sm"
+                  [class]="data?.quantidadeDocumentos > 0 ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                  Upload de documento ({{data?.quantidadeDocumentos ?? 0}})</span>
+              </div>
+              <span class="text-xs font-mono">{{ data?.quantidadeDocumentos > 0 ? 'OK' : 'PENDENTE' }}</span>
+            </div>
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.signatariosEnviados ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.signatariosEnviados ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.signatariosEnviados ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                    Envio de Signatários ({{data?.quantidadeSignatarios ?? 0}})</span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.signatariosEnviados ? 'OK' : 'PENDENTE' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.posicoesEnviados ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.posicoesEnviados ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.posicoesEnviados ? 'text-emerald-700 font-bold' : 'text-slate-500'">Mapeamento de
+                    Assinaturas ({{data?.posicoes}})</span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.posicoes > 0 ? 'OK' : 'NENHUM' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.anexadoDocumentos ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.anexadoDocumentos ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.anexadoDocumentos ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                    Anexos ({{data?.anexos?.length}})
+                  </span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.posicoes > 0 ? 'OK' : 'NENHUM' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.protocoloAnexado ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.protocoloAnexado ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.protocoloAnexado ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                    Protocolo Anexo
+                  </span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.protocoloAnexado > 0 ? data?.statusAnexoProtocolo : 'NENHUM' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.webhook ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.webhook ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm" [class]="data?.webhook ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                    Webhook
+                  </span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.webhook ? 'OK' : 'NENHUM' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.observadoresEnviados ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.observadoresEnviados ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.observadoresEnviados ? 'text-emerald-700 font-bold' : 'text-slate-500'">Observadores</span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.observadoresEnviados ? 'OK' : 'PENDENTE' }}</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.enviarNotificacao ||  (!data?.enviarNotificacao && data?.statusEnvido) ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.enviarNotificacao || (!data?.enviarNotificacao && data?.statusEnvido) ? 'pi pi-check-circle text-emerald-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.enviarNotificacao || (!data?.enviarNotificacao && data?.statusEnvido) ? 'text-emerald-700 font-bold' : 'text-slate-500'">
+                    Notificação de Assinaturas
+                  </span>
+                </div>
+                <span class="text-xs font-mono">
+                  {{ data?.enviarNotificacao ? 'OK' : data?.statusEnvido ? 'NÃO NOTIFICADO' : 'PENDENTE' }}
+                </span>
+              </div>
+
+              @if(!data?.enviarNotificacao && data?.statusEnvido){
+              <div class="flex items-center justify-between p-3 rounded-xl border"
+                [class]="data?.statusEnvido ? 'bg-blue-50 border-blue-100' : 'bg-slate-50 dark:bg-neutral-900 border-slate-100'">
+                <div class="flex items-center gap-3">
+                  <i
+                    [class]="data?.statusEnvido ? 'pi pi-check-circle text-blue-500' : 'pi pi-circle text-slate-300'"></i>
+                  <span class="text-sm"
+                    [class]="data?.statusEnvido ? 'text-blue-700 font-bold' : 'text-slate-500'">Situção
+                    notificação</span>
+                </div>
+                <span class="text-xs font-mono">{{ data?.statusEnvido }}</span>
+              </div>
+              }
+            </div>
+          </div>
+          @if(data?.integracaoConcluida){
+          <div class="flex flex-col gap-2 mt-8">
+            <button (click)="redirect()"
+              class="w-full py-3.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">rocket_launch</span>
+              Ver documento
+            </button>
+          </div>
+          }
+        </div>
+
+
+      </div>
+    </div>

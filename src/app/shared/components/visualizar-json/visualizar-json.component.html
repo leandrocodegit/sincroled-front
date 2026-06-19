@@ -1,0 +1,19 @@
+<div class="bg-surface-900 border border-surface-700 rounded-xl overflow-hidden shadow-2xl mt-4">
+  <div class="flex items-center justify-between px-4 py-2 bg-surface-800 border-b border-surface-700">
+    <div class="flex gap-1.5">
+      <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+      <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+      <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+    </div>
+    <span class="text-[10px] font-mono text-surface-400 uppercase tracking-widest">JSON Output</span>
+    <button [cdkCopyToClipboard]="json"
+            class="p-1 hover:bg-surface-700 rounded transition-colors"
+            pTooltip="Copiar JSON">
+      <i class="pi pi-copy text-surface-400 text-xs"></i>
+    </button>
+  </div>
+
+  <div class="p-4 max-h-[500px] overflow-auto custom-scrollbar">
+    <pre class="text-sm font-mono leading-relaxed"><code class="text-indigo-300">{{ json }}</code></pre>
+  </div>
+</div>

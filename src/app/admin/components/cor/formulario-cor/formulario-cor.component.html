@@ -1,0 +1,54 @@
+@if(novaCor){
+<p-button label="Nova Configuração" type="submit" (onClick)="view = true" size="small" [rounded]="true">
+  <span class="material-symbols-outlined">
+    add_circle
+  </span>
+</p-button>
+}@else{
+<button (click)="view = true"
+  class="p-button-rounded p-button-text text-slate-400 hover:text-blue-500 bg-transparent border-none cursor-pointer p-1 transition-colors">
+  <i class="pi pi-pencil text-sm"></i>
+</button>
+}
+
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false"
+  styleClass="min-w-[99vw] lg:min-w-[35vw]" [style]="{ maxWidth: '1100px' }">
+  <!-- Corpo do Formulário usando Grid Responsivo -->
+
+  <!-- Coluna 1: Dados do Dispositivo -->
+  <div class="flex flex-col gap-5 w-full">
+
+    <!-- Campo Nome -->
+    <div class="flex flex-col gap-2">
+      <label for="nome" class="text-sm font-semibold text-color">Nome *</label>
+      <input pInputText id="nome" type="text" [(ngModel)]="cor.nome" placeholder="Nome" class="w-full" />
+    </div>
+
+    <!-- Seção de Checkboxes / Flags -->
+    <div class="flex flex-col gap-2">
+      <label for="cliente" class="text-sm font-semibold text-color">Tipo de Ação *</label>
+      <p-select id="cliente" [options]="tipos" [(ngModel)]="cor.tipoAcao" optionLabel="nome" optionValue="value"
+        dataKey="value" appendTo="body" placeholder="Selecione um tipo" styleClass="w-full">
+      </p-select>
+    </div>
+
+    <div class="flex flex-col gap-2 w-full">
+      <label for="cliente" class="text-sm font-semibold text-color">Velocidade *</label>
+      <div class="grid grid-flow-row gap-3 w-full">
+        <p-slider [(ngModel)]="cor.velocidade" [min]="40" [max]="255" [step]="1" styleClass="!w-full grow" />
+        <p-tag [value]="cor?.velocidade?.toString()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé com as Ações do Formulário -->
+  <ng-template pTemplate="footer">
+    <div class="flex flex-nowrap justify-content-end gap-3 border-t border-solid border-300 pt-4 w-full">
+      <p-button [loading]="load" label="Fechar" severity="secondary" outlined="true" styleClass="px-5" [rounded]="true"
+        (onClick)="fechar()">
+      </p-button>
+      <p-button [disabled]="cor.nome == ''" label="Salvar" severity="primary" styleClass="px-5" (onClick)="salvar()" [rounded]="true">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>

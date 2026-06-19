@@ -1,0 +1,19 @@
+<div class="card">
+  <app-titulo-pesquisa [value]="{ botaoAdd: 'Novo Grupo', hideBack: true, showAtivos: true, showCustom: true }"
+    (customEmit)="grupoSelect = true" />
+  <app-tabela [auth]="{edit: 'ADM', delete: 'ADM'}" [page]="pagina" [view]="{ editEvent: true, delete: true }"
+    (editarEmit)="editarGrupo($event)" (excluirEmit)="removerGrupo($event)" [cols]="colsSignatarios"
+    [itens]="signatarios" />
+</div>
+
+<p-dialog [modal]="true" [modal]="true" [(visible)]="grupoSelect" styleClass="dialog-clean" [showHeader]="false"
+  [closable]="false" [contentStyle]="{'padding': '10px', 'border-radius': '0'}" styleClass="min-w-[99vw] lg:min-w-[60vw]"
+  appendTo="body">
+
+  <ng-template pTemplate="content">
+    @if(grupoSelect){
+    <app-formulario-grupo-signatario [grupo]="grupoSelect" (voltarEmit)="grupoSelect = undefined"
+      (updateEmit)="listarGrupos(); grupoSelect = false" />
+    }
+  </ng-template>
+</p-dialog>

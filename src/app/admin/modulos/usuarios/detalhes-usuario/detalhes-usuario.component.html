@@ -1,0 +1,82 @@
+<p-button [fluid]="true" [outlined]="true" icon="pi pi-id-card" styleClass="!text-cyan-400/90 !bg-white dark:!bg-gray-950 shadow-sm shadow-gray-200 dark:shadow-gray-700 h-full" (onClick)="op.toggle($event)"/>
+
+<p-popover #op styleClass="lg:min-w-[300px] popover-clean">
+  <div class="border-l h-full flex flex-col overflow-y-auto">
+
+    <div class="p-4 flex flex-col items-center border-b dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/30">
+      <div class="relative">
+        <p-avatar [image]="'assets/icons/scudo.png'" shape="circle" size="xlarge"
+          styleClass="border-2 border-white dark:border-neutral-700 shadow-sm">
+        </p-avatar>
+        <span [class]="user?.enabled ? 'bg-emerald-500' : 'bg-red-500'"
+          class="absolute bottom-1 right-1 block h-3 w-3 rounded-full border-2 border-white dark:border-neutral-900"
+          [pTooltip]="user?.enabled ? 'Conta Ativa' : 'Conta Desativada'">
+        </span>
+      </div>
+      <h3 class="mt-3 text-xs font-bold text-slate-800 dark:text-neutral-200 text-center leading-tight">
+        {{ user?.firstName }} {{ user?.lastName }}
+      </h3>
+      <span class="text-[9px] text-slate-400 font-mono break-all text-center px-2">ID: {{ user.id.split('-')[0]
+        }}...</span>
+    </div>
+
+    <div class="p-3 space-y-3 border-b dark:border-neutral-800">
+      <div class="flex flex-col gap-1">
+        <span class="text-[9px] font-black uppercase tracking-tighter text-slate-400">Contato</span>
+        <div class="flex items-center gap-2 overflow-hidden">
+          <i class="pi pi-envelope text-[10px] text-blue-500"></i>
+          <span class="text-[10px] text-slate-600 dark:text-neutral-400 truncate" [pTooltip]="user?.email">
+            {{ user.email }}
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i [class]="user.emailVerified ? 'pi pi-check-decagram text-emerald-500' : 'pi pi-exclamation-triangle text-orange-400'"
+            class="text-[10px]"></i>
+          <span class="text-[9px] font-semibold italic">{{ user?.emailVerified ? 'Verificado' : 'Não verificado'
+            }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1 pt-1">
+        <div class="flex items-center gap-2">
+          <i class="pi pi-phone text-[10px] text-slate-400"></i>
+          <span class="text-[10px] text-slate-600 dark:text-neutral-400">{{ user?.attributes?.phone[0] }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="pi pi-id-card text-[10px] text-slate-400"></i>
+          <span class="text-[10px] text-slate-600 dark:text-neutral-400">{{ user?.attributes?.cpf[0] }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3 space-y-2 border-b dark:border-neutral-800">
+      <span class="text-[9px] font-black uppercase tracking-tighter text-slate-400 block mb-2">Permissões</span>
+      <div class="grid grid-cols-5 gap-2 justify-items-center">
+        <i class="pi pi-eye text-xs" [ngClass]="user?.access?.view ? 'text-blue-500' : 'text-slate-200'"
+          pTooltip="Visualizar"></i>
+        <i class="pi pi-users text-xs" [ngClass]="user?.access?.viewMembers ? 'text-blue-500' : 'text-slate-200'"
+          pTooltip="Ver Membros"></i>
+        <i class="pi pi-user-edit text-xs" [ngClass]="user?.access?.manageMembers ? 'text-blue-500' : 'text-slate-200'"
+          pTooltip="Gerenciar Membros"></i>
+        <i class="pi pi-cog text-xs" [ngClass]="user?.access?.manage ? 'text-blue-500' : 'text-slate-200'"
+          pTooltip="Gerenciar"></i>
+        <i class="pi pi-shield text-xs" [ngClass]="user?.access?.manageMembership ? 'text-blue-500' : 'text-slate-200'"
+          pTooltip="Associações"></i>
+      </div>
+    </div>
+
+    <div class="p-3 bg-slate-50/50 dark:bg-neutral-800/20 grow">
+      <span class="text-[9px] font-black uppercase tracking-tighter text-slate-400 block mb-2">Legal</span>
+      <div
+        class="flex items-center justify-between p-2 bg-white dark:bg-neutral-800 rounded border border-slate-100 dark:border-neutral-700">
+        <span class="text-[9px] font-bold">Termos Aceitos</span>
+        <span class="text-[9px] font-mono text-blue-600">{{ user?.attributes?.terms_and_conditions?.length ? user?.attributes?.terms_and_conditions[0] : '' }}</span>
+      </div>
+    </div>
+
+    <div class="p-3 mt-auto">
+      <button routerLink="/painel/users/edit/{{user.id}}" pButton label="Editar Usuário" icon="pi pi-user-edit" class="p-button-sm w-full text-[10px] h-8"></button>
+    </div>
+  </div>
+
+</p-popover>

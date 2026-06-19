@@ -1,0 +1,29 @@
+:host {
+  display: inline-block;
+}
+
+.wifi-bars-container {
+  height: 16px;
+  width: 20px;
+  display: flex;
+  align-items: flex-end;
+
+  .barra {
+    display: block;
+    width: 3px;
+    background-color: currentColor;
+    opacity: 0.2; // Barras inativas ficam "apagadas" em segundo plano
+    border-round: 1px;
+    transition: opacity 0.3s ease, height 0.3s ease;
+
+    &.active {
+      opacity: 1; // Barra ativa brilha com a cor da severidade
+    }
+
+    // Alturas crescentes para o gráfico de barras tradicional
+    &.b-1 { height: 25%; }
+    &.b-2 { height: 50%; }
+    &.b-3 { height: 75%; }
+    &.b-4 { height: 100%; }
+  }
+}

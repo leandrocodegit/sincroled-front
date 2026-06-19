@@ -1,0 +1,147 @@
+<div
+  class="flex flex-col min-h-screen bg-[#f8fafc] dark:bg-[#0f1117] text-slate-700 dark:text-slate-200 font-sans p-4 sm:p-7">
+
+  <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
+    <div>
+      <h1 class="text-xl font-bold text-slate-900 dark:text-slate-100 m-0 leading-tight">Configurações de Cores</h1>
+      <span class="text-xs text-slate-500 dark:text-slate-500 mt-0.5 block">Gerenciamento de efeitos e pinos de saída
+        dos dispositivos</span>
+    </div>
+    <app-formulario-cor [novaCor]="true" (onSalve)="listaCores()" />
+  </div>
+
+    <div class="my-4">
+    <div class="hidden lg:block">
+      <p-selectButton (onOptionClick)="filtrar()" [options]="FILTROS_INCIDENTES" [(ngModel)]="filtroValue" optionLabel="label"
+        optionValue="key" styleClass="w-full text-sm" />
+    </div>
+  </div>
+
+  <div
+    class="bg-white dark:bg-[#161b27] border border-slate-200 dark:border-[#1e2736] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+    <p-table #dt [value]="cores" dataKey="id" [loading]="loading" responsiveLayout="scroll"
+      styleClass="p-datatable-striped">
+
+      <ng-template pTemplate="header">
+        <tr
+          class="bg-slate-50 dark:bg-[#111622] text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-[#1e2736]">
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider">Nome da Configuração</th>
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider text-center">Velocidade</th>
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider text-center">tipoCor</th>
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider text-center">Parametros</th>
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider text-center">Qtd Pinos</th>
+          <th class="p-4 font-semibold text-xs uppercase tracking-wider text-right"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-config let-expanded="expanded">
+        <tr
+          class="border-b border-slate-200 dark:border-[#1e2736]/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+          <td class="p-4 font-bold text-slate-800 dark:text-slate-200">{{ config.nome }}</td>
+          <td class="p-4 text-center font-mono">{{ config.velocidade }}</td>
+
+          <td class="p-4 text-center">
+            <span
+              [ngClass]="config.tipoAcao == 'EXCLUSIVA' ? 'bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-400' : 'bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400'"
+              class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border dark:border-none">
+              {{ config.tipoAcao }}
+            </span>
+          </td>
+          <td>
+            <app-label-cor [cor]="config" [agrupar]="true" />
+          </td>
+
+          <td class="p-4 text-center">
+            <span
+              class="bg-slate-100 dark:bg-white/5 px-2 py-1 rounded-lg text-xs font-semibold border dark:border-none font-mono">
+              {{ config.parametros.length }} canais
+            </span>
+          </td>
+
+
+
+          <td class="p-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <app-configuracao-cor-porta [deviceId]="deviceId" [icon]="true" [cor]="config" />
+              <app-formulario-cor [cor]="config" />
+              <button (click)="deletarConfiguracao(config.id)"
+                class="p-button-rounded p-button-text text-slate-400 hover:text-red-500 bg-transparent border-none cursor-pointer p-1 transition-colors">
+                <i class="pi pi-trash text-sm"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="rowexpansion" let-config>
+        <tr>
+          <td colspan="8" class="p-4 bg-slate-50/50 dark:bg-[#111521]/60">
+            <div
+              class="p-3 border border-slate-200 dark:border-[#1e2736] rounded-xl bg-white dark:bg-[#161b27] shadow-inner">
+              <div
+                class="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-3 px-1 flex items-center gap-1.5">
+                <i class="pi pi-sliders-h text-blue-500"></i>
+                Mapeamento de Pinos de Hardware e Espectro RGB
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div *ngFor="let param of config.parametros"
+                  class="border border-slate-200 dark:border-[#1e2736]/80 rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden bg-slate-50/30 dark:bg-[#121724]">
+
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold text-slate-800 dark:text-slate-100">Pino {{ param.pino }}</span>
+                      <span
+                        class="bg-blue-100 text-blue-700 dark:bg-blue-400/15 dark:text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        {{ param.efeito }}
+                      </span>
+                    </div>
+                    <span [ngClass]="param.ativo ? 'text-emerald-500' : 'text-slate-400'"
+                      class="text-[11px] font-semibold flex items-center gap-1">
+                      <i class="pi pi-circle-fill text-[8px]"></i> {{ param.ativo ? 'Ativo' : 'Inativo' }}
+                    </span>
+                  </div>
+
+                  <div
+                    class="grid grid-cols-3 gap-2 text-center text-xs text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161b27]/60 p-2 rounded-lg border border-slate-100 dark:border-none">
+                    <div>
+                      <div class="text-[10px] font-semibold uppercase text-slate-400 dark:text-slate-500">Leds</div>
+                      <div class="font-bold font-mono text-slate-700 dark:text-slate-200">{{ param.leds }} ud.</div>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold uppercase text-slate-400 dark:text-slate-500">Intensidade
+                      </div>
+                      <div class="font-bold font-mono text-slate-700 dark:text-slate-200">{{ param.intensidade }}/255
+                      </div>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold uppercase text-slate-400 dark:text-slate-500">Tipo Cor</div>
+                      <div class="font-bold text-blue-500 dark:text-blue-400 font-mono">{{ param.tipoCor }}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500 tracking-wide mb-1.5">
+                      Espectro de Cores:</div>
+                    <div class="flex gap-2">
+                      <div *ngFor="let color of param.corHexa"
+                        class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-white"
+                        [ngClass]="getBgColorClass(color)">
+                        <span class="w-1.5 h-1.5 bg-white rounded-full block animate-pulse"></span>
+                        <span class="capitalize text-[10px] font-semibold font-mono">{{ color }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+</div>

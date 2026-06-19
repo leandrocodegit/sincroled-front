@@ -1,0 +1,176 @@
+@if(icon){
+<i (click)="view = true;" class="cursor-pointer">📅</i>
+}@else if(authService.isPermiteEditarAgenda()){
+<p-button [label]="isEdicao ? '' : 'Nova Agenda'" type="submit" (onClick)="view = true; listaAgendas()" size="small"
+  [rounded]="true" [outlined]="outlined">
+  <span class="material-symbols-outlined">
+    {{isEdicao ? 'edit_calendar' : 'add_circle'}}
+  </span>
+</p-button>
+}
+
+<p-dialog [(visible)]="view"
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  [modal]="true" [dismissableMask]="true" [showHeader]="false">
+  <div class="bg-white p-6 dark:bg-neutral-900 text-gray-800 dark:text-neutral-100 rounded-xl max-w-4xl">
+
+    <div class="mb-6 border-b border-gray-150 dark:border-neutral-800 pb-4">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <span>📝</span> {{ isEdicao ? 'Editar Agendamento' : 'Novo Agendamento' }}
+      </h2>
+      <p class="text-xs text-gray-500 dark:text-neutral-400 mt-1">Configure os prazos, dispositivos e o perfil de cor
+        para automação.</p>
+    </div>
+
+    <div [formGroup]="agendaForm" class="space-y-6">
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <div class="md:col-span-7 space-y-4">
+
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400 mb-1.5">
+              Nome do Agendamento *
+            </label>
+            <input type="text" formControlName="nome" placeholder="Ex: Iluminação do Aquário - Manhã"
+              class="w-full bg-gray-50 dark:bg-neutral-950 border border-gray-300 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 focus:outline-none transition-all" />
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400 mb-1.5">
+              Período de Vigência *
+            </label>
+            <p-date-picker formControlName="periodo" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy"
+              appendTo="body" placeholder="Selecione data início e término" styleClass="w-full hybrid-calendar-input"
+              [showIcon]="true" appendTo="body">
+            </p-date-picker>
+            <span class="text-[11px] text-gray-400 dark:text-neutral-500 mt-1 block">Clique uma vez para o início e
+              outra para o término.</span>
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400 mb-1.5">
+              Perfil de Cor *
+            </label>
+            <p-select formControlName="cor" [options]="perfisCorDisponiveis" optionLabel="nome" dataKey="id"
+              styleClass="w-full" appendTo="body" optionValue="id">
+            </p-select>
+          </div>
+
+        </div>
+
+        <div
+          class="md:col-span-5 bg-gray-50/50 dark:bg-neutral-950/20 p-4 rounded-xl border border-gray-200 dark:border-neutral-800/60 space-y-5">
+
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400 mb-2">
+              Status da Automação
+            </label>
+            <div
+              class="flex items-center justify-between bg-white dark:bg-neutral-900 p-3 rounded-lg border border-gray-200 dark:border-neutral-800">
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-700 dark:text-neutral-300">Agenda Ativa</span>
+                <span class="text-[10px] text-gray-400">Determina se o hardware executará este plano</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="ativo" class="sr-only peer">
+                <div
+                  class="w-9 h-5 bg-gray-200 dark:bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-neutral-600 peer-checked:bg-indigo-600">
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400">
+              Dispositivos Alvo
+            </label>
+
+            <label
+              class="flex items-center gap-2 bg-white dark:bg-neutral-900 p-3 rounded-lg border border-gray-200 dark:border-neutral-800 cursor-pointer">
+              <input type="checkbox" formControlName="todos"
+                class="w-4 h-4 rounded border-gray-300 dark:border-neutral-800 text-indigo-600 focus:ring-indigo-500" />
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gray-700 dark:text-neutral-300">Aplicar a Todos</span>
+                <span class="text-[10px] text-gray-400">Envia o comando para qualquer hardware conectado</span>
+              </div>
+            </label>
+
+            <!--             @if (!agendaForm.get('todos')?.value) {
+            <div class="space-y-1.5">
+              <label class="text-[11px] font-medium text-gray-500 dark:text-neutral-400">IDs dos Hardwares (Separados
+                por vírgula)</label>
+              <input type="text" formControlName="dispositivosIdsStr" placeholder="Ex: 5021, 5022"
+                class="w-full bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:border-indigo-500" />
+            </div>
+            } -->
+          </div>
+
+        </div>
+      </div>
+
+      <div class="mt-3 space-y-2 w-full">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-neutral-500">
+            Dispositivos Mapeados ({{ devices.length }})
+          </span>
+          @if (devices.length > 0 && !agendaForm.get('todos')?.value) {
+          <button type="button" (click)="limparTodosDispositivos()"
+            class="text-[10px] text-red-500 hover:underline font-medium">
+            Limpar todos
+          </button>
+          }
+          @if(!agendaForm.get('todos')?.value){
+          <app-selecao-dispositivo [selecionados]="agendaParaEditar?.dispositivos ?? []" (onSalve)="selecionarDevices($event)" />
+          }
+        </div>
+
+        @if (agendaForm.get('todos')?.value) {
+        <div
+          class="p-3 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 flex items-center gap-2 text-xs text-indigo-700 dark:text-indigo-400 font-medium animate-fade-in">
+          <span>🌐</span> Broadcast Ativo: Todos os hardwares da rede receberão esta agenda.
+        </div>
+        } @else {
+        <div
+          class="flex flex-wrap gap-2 p-2.5 bg-gray-100 dark:bg-neutral-950 rounded-lg min-h-[46px] border border-gray-200 dark:border-neutral-800">
+
+          @for (device of selecionados; track device) {
+          <div
+            class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono font-bold bg-white dark:bg-neutral-900 text-gray-800 dark:text-neutral-200 border border-gray-200 dark:border-neutral-700 shadow-sm rounded-md hover:border-red-300 dark:hover:border-red-900/50 transition-colors group">
+            <span class="text-indigo-500 dark:text-indigo-400 uppercase">#</span>{{ device.nome }}
+
+            <button type="button" (click)="removerDispositivo(device.id)"
+              class="text-gray-400 hover:text-red-500 font-sans font-normal text-[10px] ml-1 transition-colors group-hover:text-gray-600 dark:group-hover:text-neutral-400">
+              ✕
+            </button>
+          </div>
+          } @empty {
+          <span class="text-xs text-gray-400 dark:text-neutral-500 my-auto italic pl-1">
+            Nenhum dispositivo digitado ainda...
+          </span>
+          }
+
+        </div>
+        }
+      </div>
+
+
+
+      <div
+        class="border-t border-gray-150 dark:border-neutral-800 pt-4 flex justify-end gap-1 bg-white dark:bg-neutral-900">
+        <p-button type="button" (click)="view = false" class=" text-xs font-medium" severity="secondary"
+          [rounded]="true">
+          Fechar
+        </p-button>
+        <p-button [loading]="loading" type="submit" (onClick)="salvar()" class="text-xs font-medium" [rounded]="true">
+          Salvar Agenda⚡
+        </p-button>
+      </div>
+
+    </div>
+  </div>
+</p-dialog>

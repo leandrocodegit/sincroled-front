@@ -1,0 +1,26 @@
+<span (click)="view = true; listaClientes()" class="ml-1 cursor-pointer" pTooltip="Configurar Cliente"
+  tooltipPosition="top">
+  ⚙️
+</span>
+
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false" styleClass="lg:min-w-[300px] p-2"
+  [dismissableMask]="true">
+
+  <!-- Campo Cliente -->
+  <div class="flex flex-col gap-2">
+    <label for="cliente" class="text-sm font-semibold text-color">Cliente *</label>
+    <p-select id="cliente" [options]="clientes" [(ngModel)]="device.cliente" optionLabel="nome" dataKey="id"
+      appendTo="body" placeholder="Selecione um Cliente" styleClass="w-full">
+    </p-select>
+  </div>
+
+  <!-- Rodapé com as Ações do Formulário -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-3 border-t border-solid border-300 pt-4 w-full">
+      <p-button label="Fechar" severity="secondary" outlined="true" styleClass="px-5" (onClick)="fechar()">
+      </p-button>
+      <p-button label="Salvar" severity="primary" styleClass="px-5" (onClick)="salvar()">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>

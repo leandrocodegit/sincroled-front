@@ -1,0 +1,130 @@
+<p-tabs [value]="tab" [scrollable]="true" (valueChange)="selectTab($event)">
+  <p-tablist>
+    <p-tab value="contas">
+      <i class="pi pi-database mr-3"></i>
+      <span>Usuários do Sistema</span>
+    </p-tab>
+    <p-tab value="grupos">
+      <i class="pi pi-play mr-3"></i>
+      <span>Permissões</span>
+    </p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="contas">
+      <div class="card">
+        <app-titulo-pesquisa [value]="{ customLabel: 'Novo usuário', showAtivos: true, showCustom: true}"
+          (searchEmit)="pesquisar($event)" (customEmit)="usuarioSelect = $event; view = true" />
+        <app-tabela [page]="pagina" [auth]="{edit: 'AUS', detail: 'AUS'}"
+          [view]="{ editEvent: true, delete: true, logout: true, lock: true , detail: true}"
+          (editarEmit)="editarUsuario($event)" (logoutEmit)="logout($event)" (detalhesEmit)="detalhesUsuario($event)"
+          (excluirEmit)="removerUsuario($event)" (lockEmit)="lock($event)" [cols]="cols" [itens]="itens">
+        </app-tabela>
+        <p-dialog header="Status da sessão" [(visible)]="showLogout" [breakpoints]="{ '960px': '75vw' }"
+          [style]="{ 'width': '30vw', 'lg:min-width': '30vw' }" [modal]="true">
+          <div class="p-4">
+            @if (sessoesUsuario?.length > 0) {
+            <div class="flex items-center gap-4 mb-6 p-2">
+              <div
+                class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                {{ userSelecionador?.firstName?.charAt(0) }}
+              </div>
+              <div>
+                <h4 class="m-0 font-bold text-gray-800 dark:text-white text-lg">
+                  {{ userSelecionador?.firstName }}
+                </h4>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-400">
+                  <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Sessão Ativa
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
+
+              <div class="flex items-start gap-3">
+                <i class="pi pi-calendar text-gray-400 mt-1"></i>
+                <div class="flex flex-col">
+                  <label class="text-[10px] uppercase font-bold tracking-wider text-gray-400">Início da Sessão</label>
+                  <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    {{ sessoesUsuario[0].start | date : 'dd/MM/yyyy HH:mm:ss' }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i class="pi pi-clock text-gray-400 mt-1"></i>
+                <div class="flex flex-col">
+                  <label class="text-[10px] uppercase font-bold tracking-wider text-gray-400">Visto por último</label>
+                  <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    {{ sessoesUsuario[0].lastAccess | anterior }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-2 items-start gap-3">
+                <i class="pi pi-map-marker text-gray-400 mt-1"></i>
+                <div class="flex flex-col">
+                  <label class="text-[10px] uppercase font-bold tracking-wider text-gray-400">Endereço IP</label>
+                  <code
+                    class="text-sm font-mono font-bold text-indigo-500 dark:text-indigo-400"> {{ sessoesUsuario[0].ipAddress }}</code>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i class="pi pi-desktop text-gray-400 mt-1"></i>
+                <div class="flex flex-col">
+                  <label class="text-[10px] uppercase font-bold tracking-wider text-gray-400">ID da Sessão</label>
+                  <p class="text-xs truncate w-32 text-gray-500" [title]="sessoesUsuario[0].id">
+                    {{ sessoesUsuario[0].id || 'N/A' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            } @else {
+            <div
+              class="flex flex-col items-center justify-center py-10 px-4 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
+              <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-full flex items-center justify-center mb-4">
+                <i class="pi pi-user-minus text-red-500 text-2xl"></i>
+              </div>
+              <h3 class="text-red-500 font-bold m-0 text-lg">Usuário offline</h3>
+              <p class="text-gray-500 text-sm text-center mt-1">Este usuário não possui sessões ativas no momento.</p>
+            </div>
+            }
+
+            <div class="flex justify-end items-center mt-8 gap-3">
+              <p-button (onClick)="showLogout = false" label="Fechar" styleClass="p-button-text p-button-secondary" />
+
+              <p-button [disabled]="!sessoesUsuario?.length" (click)="deslogar()" label="Encerrar Sessão"
+                severity="danger" icon="pi pi-power-off" styleClass="shadow-lg shadow-red-500/20" />
+            </div>
+          </div>
+        </p-dialog>
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="grupos">
+      <div class="card">
+        <app-lista-permissoes />
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<p-dialog [(visible)]="view"
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  [modal]="true" [dismissableMask]="true" [showHeader]="false">
+  @if(view){
+  <app-form-usuario [usuario]="usuarioSelect" (onClose)="view = false" />
+  }
+</p-dialog>
+
+
+<p-dialog [(visible)]="viewHistorico"
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  [modal]="true" [dismissableMask]="true" [showHeader]="true">
+  @if(viewHistorico){
+  <app-historico [authUser]="authUser"/>
+  }
+</p-dialog>

@@ -1,0 +1,47 @@
+<app-titulo-pesquisa [value]="{showCustom: true, customLabel: 'Nova Integração', showAtivos: true}"
+  (customEmit)="edit = true; listaCores();listarDispositivos()" />
+<app-tabela [page]="pagina" [auth]="{delete: 'CLI'}" [view]="{ delete: true }" [cols]="cols" [itens]="integracoes" (excluirEmit)="excluir($event)">
+
+
+  <p-dialog [(visible)]="edit" [modal]="true" [draggable]="false" [resizable]="false" appendTo="body"
+    [showHeader]="false" styleClass="min-w-[99vw] lg:min-w-[35vw]" [style]="{ maxWidth: '1100px' }">
+    @if(edit){
+    <div class="pt-8">
+      <div class="flex flex-col gap-2">
+        <label for="nome" class="text-sm font-semibold text-color">Nome *</label>
+        <input pInputText id="nome" type="text" [(ngModel)]="nome" placeholder="Nome" class="w-full" />
+      </div>
+            <div class="flex flex-col gap-2">
+        <label for="nome" class="text-sm font-semibold text-color">Origem *</label>
+        <input pInputText id="nome" type="text" [(ngModel)]="origem" placeholder="Deixe em branco para ignorar a origem" class="w-full" />
+      </div>
+
+            <div class="flex flex-col mb-4">
+        <label for="sensibilidade" class="font-semibold text-lg text-900">
+          Dispositivo
+        </label>
+        <p-select id="cliente" [loading]="corLoad" [options]="devices" [(ngModel)]="dispositivo" optionLabel="nome" dataKey="id"
+          appendTo="body" placeholder="Selecione uma cor" styleClass="w-full">
+        </p-select>
+      </div>
+
+      <div class="flex flex-col mb-4">
+        <label for="sensibilidade" class="font-semibold text-lg text-900">
+          Cor de Integração
+        </label>
+        <p-select id="cliente" [loading]="corLoad" [options]="cores" [(ngModel)]="cor" optionLabel="nome" dataKey="id"
+          appendTo="body" placeholder="Selecione uma cor" styleClass="w-full">
+        </p-select>
+        <p class="instruction-text !my-1">Defina a cor que será executada.</p>
+      </div>
+      <div class="pt-4 flex justify-end gap-1 bg-white dark:bg-neutral-900 my-2">
+        <p-button [loading]="load" label="Fechar" severity="secondary" outlined="true" styleClass="px-5"
+          [rounded]="true" (onClick)="edit = false">
+        </p-button>
+        <p-button [disabled]="nome == ''" label="Salvar" severity="primary" styleClass="px-5" (onClick)="criar()"
+          [rounded]="true">
+        </p-button>
+      </div>
+    </div>
+    }
+  </p-dialog>

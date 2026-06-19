@@ -1,0 +1,84 @@
+<div class="card border border-gray-200 rounded-xl shadow-sm overflow-hidden h-full flex flex-col">
+
+  <div class="p-2 w-full border-b border-gray-100 flex justify-between items-start">
+    <h3 class="text-lg font-bold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+      <i class="pi pi-list text-primary-500 dark:text-primary-100"></i>
+      Instâncias do Protocolo
+    </h3>
+    <span class="text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded-full">
+      {{instancias?.length || 0}} totais
+    </span>
+  </div>
+
+  <div class="py-4 w-full flex-1">
+    @if(isLoad){
+    <app-skeleton [list]="true" />
+    }@else{
+    <p-dataview #dv [value]="instancias">
+      <ng-template #list let-items>
+        <div class="flex flex-col gap-3">
+          <div *ngFor="let instancia of items"
+            class="group relative flex flex-col md:flex-row md:items-center p-5 border border-gray-100 rounded-xl transition-all duration-200 hover:shadow-md hover:border-primary-300 cursor-pointer">
+
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-3">
+                <span [ngClass]="{
+                    'bg-green-100 text-green-700 border-green-200': instancia?.state === 'COMPLETED',
+                    'bg-red-100 text-red-700 border-red-200': instancia?.state !== 'COMPLETED'
+                  }" class="px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider">
+                  {{statusTarefaDescriptions[instancia?.state]}}
+                </span>
+                @if (instancia?.superProcessInstanceId) {
+                <span
+                  class="bg-orange-100 text-orange-700 border-orange-200 px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider">
+                  SUB-PROCESSO
+                </span>
+                }
+
+                @if (instancia?.processDefinitionName) {
+                <span class="text-sm font-semibold text-gray-600 border-l pl-3 border-gray-300">
+                  {{instancia?.processDefinitionName}}
+                </span>
+                }
+              </div>
+
+              <div class="flex flex-wrap gap-y-2 gap-x-6">
+                <div class="flex flex-col">
+                  <span class="text-[10px] uppercase font-bold text-gray-400 tracking-tight">Criada em</span>
+                  <div class="flex items-center gap-1.5 text-gray-700">
+                    <i class="pi pi-calendar text-xs text-gray-400 dark:text-gray-100"></i>
+                    <span class="text-sm font-medium">{{instancia?.startTime | date : 'dd/MM/yyyy HH:mm'}}</span>
+                  </div>
+                </div>
+
+                @if (instancia?.endTime) {
+                <div class="flex flex-col">
+                  <span
+                    class="text-[10px] uppercase font-bold text-gray-400 tracking-tight text-orange-600">Conclusão</span>
+                  <div class="flex items-center gap-1.5 text-gray-700">
+                    <i class="pi pi-check-circle text-xs text-orange-400"></i>
+                    <span class="text-sm font-medium">{{instancia?.endTime | date : 'dd/MM/yyyy HH:mm'}}</span>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+
+            <div
+              class="flex flex-row md:flex-col items-center md:items-end justify-between mt-4 md:mt-0 gap-3 border-t md:border-t-0 pt-3 md:pt-0">
+              <span class="font-mono text-xs text-gray-400 bg-gray-50 dark:bg-gray-900 px-2 py-1 rounded">
+                #{{instancia?.businessKey || 'Sem Key'}}
+              </span>
+
+              <p-button routerLink="detalhes/{{instancia.id}}" (onClick)="instanciaEmit.emit(instancia)"
+                [severity]="instancia?.state == 'COMPLETED' ? 'success' : 'secondary'" icon="pi pi-chevron-right"
+                iconPos="right" [outlined]="true" size="small" label="Detalhes" class="w-full md:w-auto" />
+            </div>
+
+          </div>
+        </div>
+      </ng-template>
+    </p-dataview>
+    }
+  </div>
+</div>

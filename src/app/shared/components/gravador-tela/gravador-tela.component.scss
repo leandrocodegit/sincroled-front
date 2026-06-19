@@ -1,0 +1,71 @@
+        :root {
+            --primary: #4f46e5;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --dark: #0f172a;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #ffffff;
+            color: #1e293b;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+            width: 420px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .header h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        .header p { margin: 5px 0 20px; color: #64748b; font-size: 0.9rem; }
+
+        .status-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .dot { width: 10px; height: 10px; background: #cbd5e1; border-radius: 50%; }
+        .recording .dot { background: var(--danger); animation: blink 1s infinite; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        #timer { font-family: 'Courier New', monospace; font-size: 2rem; font-weight: bold; margin: 15px 0; }
+
+        .controls { display: flex; flex-direction: column; gap: 12px; }
+
+        button {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .btn-setup { background: var(--primary); color: white; }
+        .btn-setup:hover { background: #4338ca; }
+        .btn-start { background: var(--success); color: white; }
+        .btn-stop { background: var(--danger); color: white; }
+
+        button:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; }
+
+        .mic-indicator { font-size: 0.8rem; color: #64748b; margin-top: 10px; }

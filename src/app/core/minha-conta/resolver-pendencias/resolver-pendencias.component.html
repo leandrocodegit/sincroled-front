@@ -1,0 +1,12 @@
+<div class="card h-full !p-0">
+  <div *ngIf="isLoading" class="flex flex-col justify-center items-center h-80 w-full">
+    <p-progressSpinner />
+    <p class="mt-4 text-surface-500">Buscando informações do seu protocolo...</p>
+  </div>
+
+  @if(tarefa){
+  <app-execute-apps [tarefa]="tarefa" />
+  }@else if(!isLoading){
+  <p-message severity="error" text="Não foi encontrado nenhuma pendência para esse protocolo!"></p-message>
+  }
+</div>

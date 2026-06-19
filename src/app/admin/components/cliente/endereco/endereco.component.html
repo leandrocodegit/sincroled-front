@@ -1,0 +1,85 @@
+<div class="w-full flex flex-col gap-4 lg:max-w-[300px]" *ngIf="form" [formGroup]="form">
+
+  <div class="flex flex-col gap-1.5">
+    <label for="cep" class="text-sm font-semibold text-color">CEP</label>
+    <input
+      pInputText
+      id="cep"
+      type="text"
+      formControlName="cep"
+      [(ngModel)]="endereco.cep"
+      (input)="consultaCep($event)"
+      placeholder="00000-000"
+      class="w-full" />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="street" class="text-sm font-semibold text-color">Rua / Avenida</label>
+    <input
+      pInputText
+      id="street"
+      type="text"
+      formControlName="street"
+      [(ngModel)]="endereco.street"
+      placeholder="Ex: Av. Paulista"
+      class="w-full" />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="numero" class="text-sm font-semibold text-color">Número</label>
+    <input
+      pInputText
+      id="numero"
+      type="text"
+      formControlName="numero"
+      [(ngModel)]="endereco.numero"
+      placeholder="Ex: 123"
+      class="w-full" />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="neighborhood" class="text-sm font-semibold text-color">Bairro</label>
+    <input
+      pInputText
+      id="neighborhood"
+      type="text"
+      formControlName="neighborhood"
+      [(ngModel)]="endereco.neighborhood"
+      placeholder="Bairro"
+      class="w-full" />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="state" class="text-sm font-semibold text-color">Estado</label>
+    <p-select
+      id="state"
+      formControlName="state"
+      [options]="estados"
+      [(ngModel)]="endereco.state"
+      optionLabel="nome"
+      optionValue="sigla"
+      placeholder="Selecione o Estado"
+      (onChange)="atualizouEstado()"
+      styleClass="w-full">
+
+      <ng-template let-item pTemplate="item">
+        {{ item.sigla }} - {{ item.nome }}
+      </ng-template>
+    </p-select>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="city" class="text-sm font-semibold text-color">Cidade</label>
+    <p-select
+      id="city"
+      formControlName="city"
+      [options]="cidades"
+      [(ngModel)]="endereco.city"
+      placeholder="Selecione a Cidade"
+      [filter]="true"
+      filterPlaceholder="Buscar cidade..."
+      styleClass="w-full">
+    </p-select>
+  </div>
+
+</div>

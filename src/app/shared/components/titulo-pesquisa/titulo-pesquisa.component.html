@@ -1,0 +1,67 @@
+<div class="font-semibold text-3xl mb-4 text-primary">{{value?.titulo}}</div>
+<div class="flex gap-2 my-4 flex-wrap-reverse lg:flex-nowrap justify-between lg:justify-start">
+  <div class="flex justify-start gap-2 w-full">
+    <div class="flex gap-2 items-center w-full lg:w-[40%]">
+<!--       @if(!value?.hideBack){
+      <div (onClick)="voltar()"
+        class="flex items-center px-2 justify-center bg-gray-100 dark:bg-gray-400/10 border border-gray rounded-lg cursor-pointer"
+        style="width: 2.5rem; height: 2.4rem">
+        <i class="pi pi-arrow-left text-gray-500 !text-mediun"></i>
+      </div>
+      }
+      @if(value?.customBack){
+      <div (onClick)="voltarEmit.emit()"
+        class="flex items-center px-2 justify-center bg-gray-100 dark:bg-gray-400/10 border border-gray rounded-lg cursor-pointer"
+        style="width: 2.5rem; height: 2.4rem">
+        <i class="pi pi-arrow-left text-gray-500 !text-mediun"></i>
+      </div>
+      } -->
+      <div class="w-full grow">
+        <p-iconfield iconPosition="left" styleClass="!rounded-full">
+          <input pInputText type="text" #input (input)="pesquisar(input.value)" styleClass="!rounded-full" placeholder="Pesquisar" style="width: 100%;padding: 10px;border-radius: 20px;" />
+          <p-inputicon class="pi pi-search" />
+        </p-iconfield>
+      </div>
+    </div>
+    <div class="flex gap-2 items-center">
+      @if(value?.showAtivos){
+      <p-button [pTooltip]="ativos ? 'Mostrar Todos' : 'Mostrar apenas ativos'" tooltipPosition="top"
+        (onClick)=" ativos = !ativos; filtrarAtivos()" [severity]="ativos ? 'warn' : 'info'"
+        [icon]="ativos ? 'pi pi-filter-slash' : 'pi pi-filter'" [style]="{'min-width': '20px'}"
+        styleClass="border p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+      @else if(value?.showCustomAtivos){
+      <p-button (onClick)="ativos = !ativos; ativosEmit.emit(!ativos)"
+        [pTooltip]="ativos ? 'Mostrar Todos' : 'Mostrar apenas ' +  value?.ativosLabel[0]  " tooltipPosition="top"
+        [severity]="ativos ? 'warn' : 'info'"
+        [label]="!layoutService.isMobile() ? value?.ativosLabel[ativos ? 0 : 1] : ''"
+        [icon]="ativos ? 'pi pi-filter-slash' : 'pi pi-filter'" [style]="{'min-width': '20px'}" styleClass="p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+      @if(value?.showAdd){
+      <p-button [pTooltip]="layoutService.isMobile() ? value?.botaoAdd : '' " tooltipPosition="top"
+        [routerLink]="value?.routerLink" [label]="!layoutService.isMobile() ? value?.botaoAdd : ''" icon="pi pi-plus"
+        (onClick)="customAdd.emit()" [style]="{'min-width': '20px'}" styleClass="p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+      @if(value?.showCustom){
+      <p-button [pTooltip]="!layoutService.isMobile() ? value?.customLabel : '' " tooltipPosition="top"
+        [label]="!layoutService.isMobile() ? value?.customLabel : ''" icon="pi {{value.customIcon ?? 'pi-plus'}}"
+        (onClick)="customEmit.emit()" [style]="{'min-width': '20px'}" styleClass="p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+      @if(value?.showAdicional){
+      <p-button (onClick)="adicionalEmit.emit()" [pTooltip]="layoutService.isMobile() ? value?.adicionalLabel : '' "
+        tooltipPosition="top" [label]="!layoutService.isMobile() ? value?.adicionalLabel : ''"
+        icon="pi {{value?.adicionalIcon ?? ''}}" styleClass="p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+      @if(value?.showPrint){
+      <app-imprimir (printEmit)="printEmit.emit($event)" />
+      }
+
+      @if(value?.showLote){
+      <p-button [pTooltip]="layoutService.isMobile() ? 'Alterar em lote' : ''" tooltipPosition="top"
+        [label]="layoutService.isDesktop() ? 'Alterar em lote' : ''" icon="pi pi-book" (onClick)="visivel.lote = true"
+        [style]="{'min-width': '20px'}" styleClass="p-[10px] min-h-[34px]" [rounded]="true"></p-button>
+      }
+    </div>
+  </div>
+</div>
+<br>

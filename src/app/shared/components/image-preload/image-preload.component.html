@@ -1,0 +1,11 @@
+@if(iframe){
+<div class="thumbnail-wrapper border rounded-lg overflow-hidden shadow-sm">
+  <iframe [src]="url" class="w-full h-[400px] pointer-events-none scale-90 origin-top">
+  </iframe>
+</div>
+}@else{
+<div class="image-wrapper flex items-center justify-center h-full w-full overflow-hidden">
+  <img *ngIf="loaded" [src]="url" class="w-full h-full object-{{url?.startsWith('assets/icons') ? 'none' : 'cover'}}" />
+  <app-load *ngIf="!loaded" />
+</div>
+}

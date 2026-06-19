@@ -1,0 +1,108 @@
+<p-fluid>
+  <div
+    class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
+
+    <div class="bg-gray-50 dark:bg-gray-800/50 p-6 border-b border-gray-100 dark:border-gray-700">
+      <div class="flex items-center gap-3">
+        <div class="p-5 bg-indigo-400 rounded-lg">
+          <i class="pi pi-pencil text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-1">Editar Registro</h2>
+          <p class="text-sm text-gray-500">Preencha os campos dinâmicos abaixo</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="p-8">
+      <div class="grid grid-cols-{{isStringArrayValue() ? 1 : colunas?.length}} gap-x-8 gap-y-2">
+        @if(addVariavel){
+        <p-select (onChange)="updateType()" [options]="tiposVariavel" appendTo="body" [(ngModel)]="variavel.type"
+          label="label" optionValue="type" />
+        <input pInputText type="text" [(ngModel)]="variavel.name" class="w-full" placeholder="Nome da variável" />
+        }@if(variavel?.type == 'Json'){
+        <app-editor-json [jsonVariavel]="variavel" [editavel]="true" [edicaoVariavel]="true" (saveEmit)="salvar()" (closeEmit)="closeEmit.emit()"/>
+        }
+        @if(variavel?.type == 'Object'){
+        @for (valor of variavel.value; track $index; let i = $index) {
+        @if(isStringArrayValue()){
+        <div class="flex flex-col gap-2 w-full">
+          <label class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ 'Item ' + i }}
+          </label>
+          <input pInputText type="text" [(ngModel)]="variavel.value[i]" class="w-full"
+            [placeholder]="'Digite o item ' + i" />
+        </div>
+        }@else if(colunas){
+        @for (col of colunas; track col.key) {
+        <div class="flex flex-col gap-2 w-full">
+          <label [for]="col.key" class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ col.label }}
+          </label>
+          <input pInputText [id]="col.key" type="text" [(ngModel)]="variavel.value[i][col.key]" class="w-full"
+            [placeholder]="'Digite o ' + col.label" />
+        </div>
+        }
+        }}
+        }@else if(variavel?.type == 'String' || variavel?.type == 'Date'){
+        <div class="flex flex-col gap-2 w-full">
+          <label [for]="variavel.name"
+            class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ variavel.name }}
+          </label>
+          <input pInputText [id]="variavel.name" type="text" [(ngModel)]="variavel.value" class="w-full"
+            [placeholder]="'Digite o ' + variavel.name" />
+        </div>
+        }@else if(variavel?.type == 'Boolean'){
+        <div class="flex flex-col gap-2 w-full">
+          <label [for]="variavel.name"
+            class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ variavel.name }}
+          </label>
+
+          <div class="flex items-center">
+            <p-checkbox [inputId]="variavel.name" [name]="variavel.name" [value]="variavel.value" [binary]="true"
+              [(ngModel)]="variavel.value" />
+            <label [for]="variavel.name" class="ml-2"> {{variavel.name}} </label>
+          </div>
+        </div>
+        }@else if(variavel?.type === 'Integer' || variavel?.type === 'Double' || variavel?.type === 'Float'){
+        <div class="flex flex-col gap-2 w-full">
+          <label [for]="variavel.name"
+            class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ variavel.name }}
+          </label>
+          <p-inputnumber [inputId]="variavel.name" [(ngModel)]="variavel.value"
+            [minFractionDigits]="variavel?.type == 'Integer' ? 0 : 2"
+            [maxFractionDigits]="variavel?.type == 'Integer' ? 0 : 5" />
+        </div>
+        }@else{
+        <div class="flex flex-col gap-2 w-full">
+          <label [for]="variavel.name"
+            class="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            {{ variavel.name }}
+          </label>
+          <input pInputText [id]="variavel.name" type="text" [(ngModel)]="variavel.value" class="w-full"
+            [placeholder]="'Digite o ' + variavel.name" />
+        </div>
+        }
+
+      </div>
+    </div>
+
+    @if(variavel?.type != 'Json'){
+    <div
+      class="p-6 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+      <p-button label="Cancelar" icon="pi pi-times" [text]="true" severity="secondary" (click)="closeEmit.emit()" />
+      @if(variavel?.type == 'Object'){
+      <p-button label="Novo Item" icon="pi pi-plus-circle" [text]="true" severity="danger" (click)="adicionarItem()" />
+      }
+      <p-button label="Salvar Alterações" icon="pi pi-check" (click)="salvar()" severity="success"
+        class="shadow-lg shadow-emerald-500/20" />
+    </div>
+    }
+
+
+  </div>
+</p-fluid>

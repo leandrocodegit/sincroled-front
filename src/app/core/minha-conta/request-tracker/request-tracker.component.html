@@ -1,0 +1,171 @@
+<div class="bg-surface-ground flex justify-center">
+  <div class="card w-full">
+    <div class="flex items-start justify-between py-3">
+      <div class="flex items-start">
+        <i class="pi pi-compass mr-3 mt-[-3px] !text-2xl text-primary-500 !hidden lg:block"></i>
+        <div>
+          <span class="text-xl font-bold">Acompanhamento do Protocolo</span>
+          <p class="font-bold text-3xl text-green-400">{{ protocoloId }}</p>
+        </div>
+      </div>
+      <p-tag class="mt-1" [value]="statusTarefaDescriptions[protocolo?.instancia?.state]"
+        [severity]="getStatusSeverity(protocolo?.instancia?.state)"></p-tag>
+    </div>
+
+    @if(protocolo?.instancias?.length > 1 && !instanciaSelecionada){
+    <app-instancias-protocolo [tarefa]="protocolo.tarefa" [instancias]="protocolo?.instancias"
+      (instanciaEmit)="protocolo?.detalhe.instanceId = $event.id; protocolo.instancia = $event; instanciaSelecionada = true" />
+    }@else{
+    @if(servico){
+    <div class="flex flex-col my-4">
+      <div>
+        <div [style.background]="servico.color"
+          class="float-left mr-4 mt-1 flex items-center justify-center dark:bg-indigo-500/20 rounded-xl w-16 h-16 shrink-0">
+          <span class="material-symbols-outlined !text-white dark:text-indigo-400 text-5xl">
+            {{servico.icon}}
+          </span>
+        </div>
+        <h4 class="m-0 text-lg font-semibold text-gray-800 dark:text-gray-200">
+          {{servico.nome}}
+        </h4>
+        <div class="flex flex-wrap gap-y-2 gap-x-6">
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-tight">Criada em</span>
+            <div class="flex items-center gap-1.5 text-gray-700">
+              <i class="pi pi-calendar text-xs text-gray-400"></i>
+              <span class="text-xs font-medium">{{protocolo?.instancia?.startTime | date : 'dd/MM/yyyy HH:mm'}}</span>
+            </div>
+          </div>
+
+          @if (protocolo?.instancia?.endTime) {
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-tight text-orange-600">Conclusão</span>
+            <div class="flex items-center gap-1.5 text-gray-700">
+              <i class="pi pi-check-circle text-xs text-orange-400"></i>
+              <span class="text-xs font-medium">{{protocolo?.instancia?.endTime | date : 'dd/MM/yyyy HH:mm'}}</span>
+            </div>
+          </div>
+          }
+        </div>
+        <div class="clear-both"></div>
+      </div>
+    </div>
+    }
+
+    @if(instanciaSelecionada){
+    <div (click)="instanciaSelecionada = false"
+      class="flex items-center gap-2 text-orange-300 hover:text-teal-300 cursor-pointer">
+      <i class="pi pi-arrow-circle-left"></i>
+      <span>{{'Selecionar outra instância'}}</span>
+    </div>
+    }
+
+    <div class="flex flex-col" [ngClass]="{'flex-col-reverse': layoutService.isMobile()}">
+      @if(protocolo?.instancia?.id && protocolo?.detalhe?.processId && protocolo?.instancia?.state != 'SUSPENDED'){
+      <div class="my-6">
+        <app-timeline [vertical]="true"
+          [instancia]="{id: protocolo?.instancia?.id, processDefinitionId: protocolo?.detalhe?.processId, state: protocolo?.instancia?.state }" />
+      </div>
+      }
+
+      <div>
+        <!-- Estado de Carregamento -->
+        <div *ngIf="isLoading" class="flex flex-col justify-center items-center h-80 w-full">
+          <p-progressSpinner />
+          <p class="mt-4 text-surface-500">Buscando informações do seu pedido...</p>
+        </div>
+
+        <!-- Estado de Erro -->
+        <div *ngIf="error && !isLoading" class="mt-4">
+          <p-message severity="error" [text]="error"></p-message>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div *ngIf="!isLoading && !error && protocolo">
+
+          <!-- 1. Seção de Pendências do Cliente -->
+          @if(protocolo?.instancia?.state == 'ACTIVE'){
+          <div class="my-8 p-4 border-l-4 rounded-lg"
+            [ngClass]="protocolo?.tarefa ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'border-green-500 bg-green-50 dark:bg-green-900/20'">
+            <div class="flex items-start">
+              <i class="pi !text-2xl mr-3 mt-1"
+                [ngClass]="protocolo?.tarefa ? 'pi-exclamation-triangle text-orange-500' : 'pi-check-circle text-green-500'"></i>
+              <div>
+                <h3 class="font-bold text-lg m-0">
+                  {{ protocolo?.tarefa ? 'Ação Necessária' : 'Nenhuma Pendência' }}
+                </h3>
+                <div *ngIf="protocolo?.tarefa; else noPendingTasks">
+                  <div class="mt-2">
+                    <button pButton [label]="protocolo?.tarefa.name" icon="pi pi-arrow-right" iconPos="right"
+                      class="p-button-sm mt-2" (click)="onTaskAction()"></button>
+                  </div>
+                </div>
+                <ng-template #noPendingTasks>
+                  <p class="m-0 text-surface-600 dark:text-surface-300">Neste momento, não há nenhuma ação pendente da
+                    sua parte. Aguarde o andamento pelas nossas equipes.</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          }@else if(protocolo?.instancia?.state == 'ACTIVE') {
+          <div class="my-8 p-4 border-l-4 rounded-lg"
+            [ngClass]="protocolo?.instancia?.state == 'SUSPENDED' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20'">
+            <div class="flex items-start">
+              <i class="pi !text-2xl mr-3 mt-1"
+                [ngClass]="protocolo?.instancia?.state == 'SUSPENDED' ? 'pi-exclamation-triangle text-orange-500' : 'pi-check-circle text-cyan-500'"></i>
+              <div>
+                <h3 class="font-bold text-lg m-0">
+                  {{ protocolo?.instancia?.state == 'SUSPENDED' ? 'Processo foi parado ou cancelado.' : 'Processo foi concluído.' }}
+                </h3>
+                @if(protocolo?.instancia?.endTime){
+                <p class="text-lg text-gray-400">{{protocolo?.instancia?.endTime | date: formatDate()}}</p>
+                }
+                @if(protocolo?.instancia?.state == 'SUSPENDED'){
+                <p class="text-lg text-gray-400">A suspensão pode ser temporária ou definitiva.</p>
+                }
+              </div>
+            </div>
+          </div>
+          }
+
+          @if(protocolo?.tarefa?.comentarios?.length > 0){
+          <div class="flex my5 flex-col gap-2">
+            <h3 class="font-bold text-xl mb-4">Comentários da Tarefa</h3>
+            @for (comentario of protocolo?.tarefa?.comentarios; track $index) {
+            <div class="grid grid-cols-12 p-4 shadow-sm hover:border-primary-300 dark:border-b dark:border-gray-700">
+              <div class="col-span-1 hidden lg:block">
+                <div class="flex items-center justify-center bg-primary-900/30 dark:bg-primary-400/10 rounded-lg"
+                  style="width: 3.5rem; height: 3.5rem">
+                  <i class="pi pi-comment text-white !text-xl"></i>
+                </div>
+              </div>
+              <div class="col-span-11 lg:col-span-10 flex gap-8">
+                <div class="flex gap-2 flex-col">
+                  <p class="m-0 font-bold">{{''}}</p>
+                  <p class="font-light text-gray-600 dark:text-gray-300">{{comentario.time | date: formatDate()}}
+                  </p>
+                </div>
+                <div class="flex gap-2 flex-col">
+                  <p class="m-0 font-bold">{{comentario.message}}</p>
+                </div>
+              </div>
+              @if(false){
+              <div class="flex gap-2">
+                <div class="col-span-1 text-right">
+                  <i class="pi pi-trash text-orange-500 !text-xl cursor-pointer"></i>
+                </div>
+                <div class="col-span-1 text-right">
+                  <i class="pi pi-pen-to-square text-gray-500 !text-xl cursor-pointer"></i>
+                </div>
+              </div>
+              }
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      </div>
+      }
+    </div>
+</div>

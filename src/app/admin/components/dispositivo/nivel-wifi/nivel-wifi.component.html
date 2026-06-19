@@ -1,0 +1,11 @@
+<div *ngIf="conexao?.habilitarWifi" class="flex flex-col items-end gap-2">
+
+  <div class="wifi-bars-container flex align-items-end gap-1" [ngClass]="sinalConfig().classe">
+    <span class="barra b-1" [class.active]="sinalConfig().barras >= 1"></span>
+    <span class="barra b-2" [class.active]="sinalConfig().barras >= 2"></span>
+    <span class="barra b-3" [class.active]="sinalConfig().barras >= 3"></span>
+    <span class="barra b-4" [class.active]="sinalConfig().barras >= 4"></span>
+  </div>
+
+  <span class="font-mono text-xs text-gray-400 ml-1">{{ sinalConfig().descricao }}</span>
+</div>

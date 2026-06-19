@@ -1,0 +1,47 @@
+<p-menu [model]="model" styleClass="!border-0">
+  <ng-template #item let-item>
+    <a [class.justify-center]="layoutService.toogled() && layoutService.isDesktop()" class="p-menuitem-link flex items-center gap-2 p-3 cursor-pointer dark:text-cyan-400 text-lg"
+      (click)="item.action()">
+      <!-- Se for material-icon, renderiza conforme a regra do Google -->
+      @if (item.icon === 'material-icons') {
+      <span class="material-symbols-outlined" [style.color]="item.style?.color">
+        {{ item.automationId }}
+      </span>
+      } @else {
+      <span [class]="item.icon"></span>
+      }
+      @if(!layoutService.toogled() || layoutService.isMobile()){
+      <span class="p-menuitem-text">{{ item.label }}</span>
+      }
+    </a>
+  </ng-template>
+</p-menu>
+
+@if(!layoutService.toogled()){
+<div class="flex items-center gap-2 p-2 py-4 bg-slate-100 dark:bg-neutral-950">
+  <span class="material-symbols-outlined">
+    home_repair_service
+  </span>
+  Serviços
+</div>
+}
+
+<p-menu [model]="paginasMenu" styleClass="!border-0">
+  <ng-template #item let-item>
+    <a [class.justify-center]="layoutService.toogled() && layoutService.isDesktop()"
+      class="p-menuitem-link flex items-center gap-2 p-3 cursor-pointer border-b-2 border-slate-100"
+      (click)="item.action()">
+      <!-- Se for material-icon, renderiza conforme a regra do Google -->
+      @if (item.icon === 'material-icons') {
+      <span class="material-symbols-outlined" [style.color]="item.style?.color">
+        {{ item.automationId }}
+      </span>
+      } @else {
+      <span [class]="item.icon"></span>
+      }
+      @if(!layoutService.toogled() || layoutService.isMobile()){
+      <span class="p-menuitem-text">{{ item.label }}</span>
+      }
+    </a>
+  </ng-template>
+</p-menu>

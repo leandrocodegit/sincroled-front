@@ -1,0 +1,124 @@
+<p-button type="button" (onClick)="view = true; listarDispositivos()" size="small"
+  [outlined]="outlined" pTooltip="Selecionar Dispositivo" tooltipPosition="top" [rounded]="true">
+  <span class="material-symbols-outlined">add_to_queue</span>
+</p-button>
+
+<p-dialog [(visible)]="view" appendTo="body" [modal]="true" [dismissableMask]="true" [showHeader]="false"
+  styleClass="!p-0 !rounded-xl overflow-hidden w-[99vw] lg:w-[50VW]">
+
+  <!-- Header -->
+  <div class="px-6 pt-5 pb-4 border-b border-slate-100 dark:border-[#1e2736]">
+    <h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0">Selecionar dispositivos</h2>
+    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 mb-0">Escolha os dispositivos para aplicar a configuração</p>
+  </div>
+
+  <!-- Search + Filtro -->
+  <div class="flex gap-2 px-6 py-3 border-b border-slate-100 dark:border-[#1e2736]">
+    <div class="relative flex-1">
+      <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xs pointer-events-none"></i>
+      <input
+        [(ngModel)]="busca"
+        (ngModelChange)="filtrar()"
+        type="text"
+        placeholder="Buscar dispositivo..."
+        class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-[#1e2736] bg-slate-50 dark:bg-[#111622] text-slate-700 dark:text-slate-200 focus:outline-none focus:border-blue-400 transition-colors" />
+    </div>
+    <button (click)="setFiltro('todos')"
+      [class]="filtroAtivo === 'todos'
+        ? 'flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/30'
+        : 'flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-[#1e2736] text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-[#111622] transition-colors'">
+      Todos
+    </button>
+    <button (click)="setFiltro('online')"
+      [class]="filtroAtivo === 'online'
+        ? 'flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/30'
+        : 'flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-[#1e2736] text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-[#111622] transition-colors'">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      Online
+    </button>
+  </div>
+
+  <!-- Grid de devices -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-6 max-h-72 overflow-y-auto">
+
+    <div *ngIf="loading" class="col-span-3 flex justify-center py-8">
+      <i class="pi pi-spinner pi-spin text-slate-400 text-lg"></i>
+    </div>
+
+    <div *ngIf="!loading && devicesFiltrados.length === 0"
+      class="col-span-3 text-center py-8 text-xs text-slate-400 dark:text-slate-500">
+      Nenhum dispositivo encontrado
+    </div>
+
+    @if(!loading){
+    <div *ngFor="let device of devicesFiltrados"
+      (click)="toggleDevice(device)"
+      [class]="isSelecionado(device)
+        ? 'relative border rounded-xl p-3 cursor-pointer border-blue-300 dark:border-blue-500/50 bg-blue-50 dark:bg-blue-500/10 transition-all'
+        : 'relative border rounded-xl p-3 cursor-pointer border-slate-200 dark:border-[#1e2736] hover:border-slate-300 dark:hover:border-slate-600 bg-white dark:bg-[#161b27] transition-all'">
+
+      <!-- Checkbox -->
+      <div [class]="isSelecionado(device)
+          ? 'absolute top-2.5 right-2.5 w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center'
+          : 'absolute top-2.5 right-2.5 w-4 h-4 rounded-full border border-slate-200 dark:border-[#1e2736] bg-slate-50 dark:bg-[#111622]'">
+        <i *ngIf="isSelecionado(device)" class="pi pi-check text-white" style="font-size: 9px;"></i>
+      </div>
+
+      <!-- LED dots -->
+      <div class="flex gap-1.5 mb-2.5">
+        <span *ngFor="let cor of device.cor?.parametros?.[0]?.corHexa?.slice(0, 3)"
+          class="w-2.5 h-2.5 rounded-full"
+          [style.background]="cor">
+        </span>
+      </div>
+
+      <p class="text-xs font-semibold m-0 mb-1 truncate"
+        [class]="isSelecionado(device) ? 'text-blue-700 dark:text-blue-300' : 'text-slate-800 dark:text-slate-100'">
+        {{ device.nome }}
+      </p>
+
+      <div class="flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+          [class]="device.conexao?.status == 'Online' ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'">
+        </span>
+        <span class="text-[11px]"
+          [class]="device.conexao?.status  == 'Online' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'">
+          {{ device.conexao?.status ? 'Online' : 'Offline' }}
+        </span>
+      </div>
+
+    </div>
+  }
+  </div>
+
+  <!-- Footer com chips + ações -->
+  <div class="px-6 py-3 border-t border-slate-100 dark:border-[#1e2736] bg-slate-50 dark:bg-[#111622] flex items-center gap-3">
+
+    <!-- Chips dos selecionados -->
+    <div class="flex flex-wrap gap-1.5 flex-1 min-h-[28px]">
+      <span *ngIf="selecionados.length === 0" class="text-xs text-slate-400 dark:text-slate-500 self-center">
+        Nenhum dispositivo selecionado
+      </span>
+      <span *ngFor="let s of selecionados"
+        class="flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-md border bg-white dark:bg-[#161b27] border-slate-200 dark:border-[#1e2736] text-slate-600 dark:text-slate-300">
+        {{ s.nome }}
+        <i class="pi pi-times text-[9px] cursor-pointer text-slate-400 hover:text-red-500 transition-colors"
+          (click)="remover(s); $event.stopPropagation()"></i>
+      </span>
+    </div>
+
+    <!-- Botões -->
+    <div class="flex gap-2 flex-shrink-0">
+      <button (click)="view = false"
+        class="px-4 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-[#1e2736] text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-[#161b27] transition-colors">
+        Cancelar
+      </button>
+      <button (click)="confirmarAlteracao($event); view = false"
+        class="px-4 py-1.5 text-xs rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors">
+        Aplicar
+      </button>
+    </div>
+
+  </div>
+
+</p-dialog>

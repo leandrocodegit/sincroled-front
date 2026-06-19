@@ -1,0 +1,55 @@
+<div class="bg-slate-50 dark:bg-gray-800 p-8 transition-colors duration-300">
+  <div class="flex flex-col items-center justify-center font-sans">
+
+    <div class="w-full max-w-sm p-8 bg-white dark:bg-gray-800">
+
+      <div class="text-center mb-8">
+        <div class="inline-flex p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl mb-4 transition-all">
+          <i class="pi pi-shield text-blue-600 dark:text-blue-400 text-2xl"></i>
+        </div>
+
+        <h2 class="text-xl font-black text-slate-800 dark:text-white">Assinatura Digital</h2>
+
+        <p class="text-xs text-slate-500 dark:text-gray-400 mt-2 leading-relaxed">
+          Digite o código de verificação para confirmar a operação no
+          <strong class="text-blue-600 dark:text-blue-400">SIMOD</strong>.
+        </p>
+      </div>
+
+      <form [formGroup]="otpForm" (ngSubmit)="confirmar()" class="space-y-6">
+
+        <div class="flex justify-center otp-dark-container">
+          <p-inputOtp
+            formControlName="code"
+            [integerOnly]="true"
+            [length]="6"
+            (keyup.enter)="confirmar()">
+          </p-inputOtp>
+        </div>
+
+        <div class="pt-4 space-y-3">
+          <p-button
+            label="Confirmar Assinatura"
+            styleClass="w-full p-button-primary py-3.5 rounded-xl font-bold shadow-lg shadow-blue-500/20 dark:shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+            [loading]="loading"
+            [disabled]="otpForm.invalid"
+            type="submit">
+          </p-button>
+
+          <p-button
+            label="Cancelar"
+            styleClass="w-full p-button-secondary p-button-text font-bold text-slate-500 dark:text-gray-400 hover:dark:text-white"
+            (onClick)="cancelar()">
+          </p-button>
+        </div>
+
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-slate-100 dark:border-gray-700 text-center">
+        <span class="text-[10px] text-slate-400 dark:text-gray-500 font-bold uppercase tracking-widest">
+          Conformidade MP 2.200-2
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

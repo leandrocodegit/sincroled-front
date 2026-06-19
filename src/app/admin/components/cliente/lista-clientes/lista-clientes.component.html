@@ -1,0 +1,12 @@
+<app-titulo-pesquisa [value]="{showCustom: true, customLabel: 'Novo Cliente', showAtivos: true}"
+  (customEmit)="edit = true" />
+<app-tabela [page]="pagina" [auth]="{edit: 'CLI', lock: 'CLI'}" [view]="{ editEvent: true, delete: true, lock: true }"
+  [cols]="cols" [itens]="clientes" (lockEmit)="ativar($event)" (editarEmit)="editarCliente($event)">
+
+
+  <p-dialog [(visible)]="edit" [modal]="true" [draggable]="false" [resizable]="false" appendTo="body"
+    [showHeader]="false" styleClass="min-w-[99vw] lg:min-w-[35vw]" [style]="{ maxWidth: '1100px' }">
+    @if(edit){
+    <app-formulario-cliente [cliente]="clienteSelect" (onClose)="edit = false" />
+    }
+  </p-dialog>

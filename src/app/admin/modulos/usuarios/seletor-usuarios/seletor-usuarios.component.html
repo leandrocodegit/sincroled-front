@@ -1,0 +1,22 @@
+<div class="p-4 w-full">
+  @if(tipoEventoEditor.includes('GROUP')){
+
+  <div class="flex flex-col gap-2 w-full">
+    <label for="servicos" class="required">Grupo/Departamento</label>
+    <p-multiselect [options]="grupos" [(ngModel)]="canditatosSelecionados.groups" placeholder="Selecione Grupo"
+      appendTo="body" optionValue="name" optionLabel="name" dataKey="name" display="chip" class="w-full" />
+  </div>
+  }@else {
+
+  <div class="flex flex-col gap-2 w-full">
+    <label for="servicos" class="required">Usuários</label>
+    <p-multiselect [options]="usuarios" [selectionLimit]="assignee ? 1 : null" [(ngModel)]="canditatosSelecionados.users" placeholder="Selecione Usuário"
+      appendTo="body" optionValue="id" optionLabel="firstName" dataKey="id" display="chip" class="w-full" />
+  </div>
+  }
+
+  <div class="flex justify-end gap-2 mt-4">
+    <p-button label="fechar" (click)="fechar()" />
+    <p-button label="Aplicar" (click)="salvar()" />
+  </div>
+</div>

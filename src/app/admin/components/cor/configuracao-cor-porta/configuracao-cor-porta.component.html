@@ -1,0 +1,171 @@
+@if(icon){
+<span (click)="view = true" class="cursor-pointer select-none !text-sm hover:opacity-80 transition-opacity"
+  pTooltip="Todas Portas" tooltipPosition="top">
+  ⚙️
+</span>
+}@else {
+<p-button type="submit" (onClick)="view = true" size="small" pTooltip="Todas Portas" [outlined]="true"
+  tooltipPosition="top" [rounded]="true">
+  <span class="material-symbols-outlined">
+    palette
+  </span>
+</p-button>
+}
+
+<!-- O styleClass agora injeta classes que reagem a ambos os modos -->
+<p-dialog [(visible)]="view" #op
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  [modal]="true" [dismissableMask]="true" [showHeader]="false">
+
+  <div class="w-full bg-white dark:bg-neutral-900 text-gray-800 dark:text-neutral-100 rounded-xl overflow-hidden">
+
+    <!-- Cabeçalho do Formulário -->
+    <div
+      class="p-6 border-b border-gray-150 dark:border-neutral-800 flex justify-between items-center bg-gray-50/50 dark:bg-neutral-950/40">
+      <div>
+        <h1 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <span>⚙️</span> Parâmetros do Dispositivo: <span class="text-indigo-600 dark:text-indigo-400">{{ cor?.nome
+            }}</span>
+        </h1>
+        <p class="text-[11px] text-gray-500 dark:text-neutral-400 mt-0.5 font-mono">ID Único: {{ cor?.id }}</p>
+      </div>
+      <span
+        class="text-[11px] px-2.5 py-1 rounded-md font-mono bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
+        Portas Ativas: {{ parametros.length }}
+      </span>
+    </div>
+
+    <!-- Formulário Principal -->
+    <form [formGroup]="deviceForm" (ngSubmit)="salvarConfiguracoes()"
+      class="p-6 space-y-6 max-h-[78vh] overflow-y-auto custom-scrollbar">
+
+      <!-- Seção 1: Configurações Globais -->
+      <div class="bg-gray-50 dark:bg-neutral-800/40 p-4 rounded-xl border border-gray-200 dark:border-neutral-800">
+        <h2
+          class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-4 flex justify-between items-center">
+          <span>Velocidade do Efeito</span>
+          <strong
+            class="text-orange-600 dark:text-orange-400 font-mono text-sm bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-900/30">
+            {{deviceForm.get('velocidade')?.value}}
+          </strong>
+        </h2>
+        <p-slider (onSlideEnd)="salvarVelocidade()" min="5" max="255" formControlName="velocidade" class="w-full hybrid-slider" />
+      </div>
+
+      <!-- Seção 2: Portas de Cor Independentes (FormArray) -->
+      <div formArrayName="parametros" class="space-y-4">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-indigo-400/80">Configuração das
+          Portas de Saída</h2>
+
+        <div *ngFor="let paramForm of parametros.controls; let i = index" [formGroupName]="i"
+          class="bg-white dark:bg-neutral-800/30 border border-gray-200 dark:border-neutral-800 rounded-xl overflow-hidden transition-all duration-150 hover:border-gray-300 dark:hover:border-neutral-700">
+
+          <!-- Faixa Header do Pino -->
+          <div
+            class="bg-gray-50 dark:bg-neutral-950/30 px-4 py-2.5 flex justify-between items-center border-b border-gray-200 dark:border-neutral-800">
+            <span class="text-xs font-bold text-gray-600 dark:text-neutral-300 tracking-wide flex items-center gap-1.5">
+              <span class="text-indigo-600 dark:text-indigo-400">🔌</span> PORTA: <span
+                class="font-mono text-gray-900 dark:text-white">{{ paramForm.get('pino')?.value }}</span>
+            </span>
+            <span
+              class="text-[9px] uppercase font-mono px-2 py-0.5 rounded bg-gray-200 dark:bg-neutral-900 text-gray-600 dark:text-neutral-400 border border-gray-300 dark:border-neutral-800">
+              Hardware Map
+            </span>
+          </div>
+
+          <!-- Corpo dos Parâmetros do Pino -->
+          <div class="p-4 grid grid-cols-1 md:grid-cols-12 gap-4">
+
+            <!-- Controle de Efeito e Escopo -->
+            <div class="md:col-span-5 space-y-3">
+              <div>
+                <label class="block text-[11px] text-gray-500 dark:text-neutral-400 mb-1 font-medium">Efeito
+                  Luminoso</label>
+                <select formControlName="efeito"
+                  class="w-full bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-lg px-3 py-1.5 text-sm text-gray-800 dark:text-neutral-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 focus:outline-none transition-all">
+                  <option *ngFor="let ef of efeitosDisponiveis" [value]="ef">{{ ef }}</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 gap-2">
+                <div>
+                  <label class="block text-[11px] text-gray-500 dark:text-neutral-400 mb-1 font-medium">Qtd LEDs</label>
+                  <input type="number" formControlName="leds"
+                    class="w-full bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-lg px-2 py-1 text-sm text-center text-gray-900 dark:text-white font-mono focus:border-indigo-500 focus:outline-none" />
+                </div>
+                <div>
+                  <label
+                    class="block text-[11px] text-gray-500 dark:text-neutral-400 mb-1 font-medium">Intensidade</label>
+                  <div class="flex justify-between items-center gap-5 w-full">
+                    <p-slider min="0" max="255" formControlName="intensidade" class="w-full hybrid-slider" />
+                    <p-tag severity="success" [value]="paramForm.get('intensidade')?.value" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ajuste Fino das Portas de Cor -->
+            <div class="md:col-span-7 flex flex-col justify-between gap-3 h-full">
+              <div>
+                <label
+                  class="block text-[11px] text-gray-500 dark:text-neutral-400 mb-2 flex items-center gap-1 font-medium">
+                  <span>🎨</span> Canais da Paleta (Modificadores Físicos)
+                </label>
+
+                <!-- Cores Hexa -->
+                <div formArrayName="corHexa"
+                  class="grid grid-cols-3 gap-2 p-2 bg-gray-50 dark:bg-neutral-950/40 border border-gray-200 dark:border-neutral-800 rounded-lg ">
+                  <div *ngFor="let corCtrl of getCoresHexa(i).controls; let cIndex = index"
+                    class="relative flex flex-col items-center gap-1 bg-white dark:bg-neutral-900/80 p-1.5 rounded border border-gray-200 dark:border-neutral-800/60">
+                    <span class="text-[9px] text-gray-400 dark:text-neutral-500 uppercase font-mono">Slot 0{{ cIndex + 1
+                      }}</span>
+
+                    <!-- Bloco Interativo com o Input Color Oculto -->
+                    <div
+                      class="w-full h-[30px] rounded relative shadow-inner overflow-hidden border border-gray-300 dark:border-neutral-950 group">
+                      <input type="color" [formControlName]="cIndex"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                      <div [style.backgroundColor]="corCtrl.value"
+                        class="w-full h-full transition-transform group-hover:scale-105 flex items-center justify-center text-xs text-white">
+                        <span
+                          class="shadow-sm filter drop-shadow opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">✏️</span>
+                      </div>
+                    </div>
+
+                    <span class="text-[9px] font-mono text-gray-600 dark:text-neutral-400 select-all uppercase">{{
+                      corCtrl.value }}</span>
+                  </div>
+                </div>
+
+                <!-- Sliders de Correção -->
+                <div formArrayName="correcao"
+                  class="grid grid-cols-3 gap-2 p-2 bg-gray-50 dark:bg-neutral-950/40 border border-gray-200 dark:border-neutral-800 rounded-lg mt-2 grow">
+                  <div *ngFor="let corCtrl of getCorrecao(i).controls; let cIndex = index"
+                    class="relative flex flex-col items-center justify-center bg-white dark:bg-neutral-900/40 p-2 rounded border border-gray-200 dark:border-neutral-800/40">
+                    <p-slider min="40" max="255" [formControlName]="cIndex" class="w-full hybrid-slider" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div
+        class="border-t border-gray-150 dark:border-neutral-800 pt-4 flex justify-end gap-1 bg-white dark:bg-neutral-900">
+        <p-button type="button" (click)="initForm(); view = false" class=" text-xs font-medium" severity="secondary"
+          [rounded]="true">
+          Fechar
+        </p-button>
+        <p-button [loading]="loading" [disabled]="deviceForm.invalid" type="submit" class="text-xs font-medium"
+          [rounded]="true">
+          Salvar Parametros⚡
+        </p-button>
+      </div>
+
+    </form>
+
+  </div>
+</p-dialog>
