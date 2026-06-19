@@ -1,5 +1,5 @@
-<p-button *ngIf="authService.isPermiteSincronizar()" type="submit" (onClick)="view = true;iniciarMonitoramento()"
-  [rounded]="true" size="small" pTooltip="Sincronizar" [outlined]="true" tooltipPosition="top">
+<p-button *ngIf="authService.isPermiteEditarCliente()" type="submit" (onClick)="view = true;iniciarMonitoramento()"
+  [rounded]="true" size="small" pTooltip="Sincronizar" severity="warn" [outlined]="true" tooltipPosition="top">
   <span class="material-symbols-outlined">
     bug_report
   </span>

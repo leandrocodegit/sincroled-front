@@ -1,0 +1,22 @@
+<p-button *ngIf="authService.isPermiteEditarCliente()" type="submit" (onClick)="view = true;" [rounded]="true"
+  size="small" pTooltip="Sincronizar" severity="info" [outlined]="true" tooltipPosition="top">
+  <span class="material-symbols-outlined">
+    install_desktop
+  </span>
+</p-button>
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false"
+  styleClass="min-w-[99vw] lg:min-w-[60vw] p-2" [dismissableMask]="true">
+
+  <div class="p-4 w-full">
+
+    <p-fileupload [disabled]="loading" chooseLabel="Selecionar Firmware" [customUpload]="true" accept=".bin"
+      [multiple]="false" (uploadHandler)="onUpload($event)" (onClear)="view = false" maxFileSize="20971520"
+      mode="advanced" cancelLabel="Limpar" chooseIcon="pi pi-folder" />
+  </div>
+
+  <ol>
+    @for (item of mensagens; track $index) {
+    <li>{{item}}</li>
+    }
+  </ol>
+</p-dialog>

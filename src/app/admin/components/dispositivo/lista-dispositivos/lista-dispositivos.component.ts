@@ -23,6 +23,7 @@ import { NivelWIFIComponent } from '../nivel-wifi/nivel-wifi.component';
 import { FormularioAgendaComponent } from '../../agenda/formulario-agenda/formulario-agenda.component';
 import { ComandoSincronismoService } from '@/shared/services/ComandoSincronismoService';
 import { MessageService } from 'primeng/api';
+import { UpgradeComponent } from '../../firmware/upgrade/upgrade.component';
 
 @Component({
   selector: 'app-lista-dispositivos',
@@ -42,7 +43,8 @@ import { MessageService } from 'primeng/api';
     DebugMonitorComponent,
     MqttAppModule,
     NivelWIFIComponent,
-    FormularioAgendaComponent
+    FormularioAgendaComponent,
+    UpgradeComponent
   ],
   providers: [
     MqttService

@@ -18,6 +18,8 @@ import { ComandoSincronismoService, SincronismoEvento, SincronismoStatus } from 
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
+import { EFEITOS, TIPO_LED } from '@/shared/models/constantes/delegate-state';
+
 
 @Component({
   selector: 'app-configuracao-parametro-cor',
@@ -53,9 +55,8 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
   private statusAtual = signal<SincronismoStatus>('AGUARDANDO');
   private erroMensagem = signal<string | null>(null);
 
-  // Lista de efeitos simulados para o select do hardware
-  efeitosDisponiveis = ['BATIDA', 'COLORIDO', 'GIROFLEX', 'FIXO', 'DESLIGADO'];
-  tipoLed = ['RGB', 'RBG', 'GRB', 'GBR', 'BGR', 'BRG'];
+  protected efeitosDisponiveis = EFEITOS;
+  protected tipoLed = TIPO_LED;
 
 
   constructor(

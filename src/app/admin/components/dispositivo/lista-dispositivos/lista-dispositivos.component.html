@@ -191,6 +191,7 @@
             *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
           <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
           <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+          <app-upgrade *ngIf="device.conexao.status === 'Online'" [device]="device" />
         </div>
       </div>
 
@@ -317,6 +318,7 @@
 
               <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
               <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+              <app-upgrade *ngIf="device.conexao.status === 'Online'" [device]="device" />
             </div>
           </td>
 

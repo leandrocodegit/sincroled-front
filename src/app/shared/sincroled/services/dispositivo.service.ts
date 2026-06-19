@@ -143,4 +143,15 @@ export class DispositivoService {
     }
     return correcao;
   }
+
+  public uploadFirmware(id: string, file: File): Observable<any> {
+
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(`${environment.urlApi}/firmware/upload/${id}`, formData)
+  }
+
+    public updateFirmware(id: string): Observable<any> {
+    return this.http.post<any>(`${environment.urlApi}/firmware/update/${id}`, {})
+  }
 }

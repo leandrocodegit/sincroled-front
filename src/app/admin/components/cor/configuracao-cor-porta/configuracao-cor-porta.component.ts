@@ -1,4 +1,5 @@
 import { Configificacao } from '@/shared/models/comando-cor.model';
+import { EFEITOS, TIPO_LED } from '@/shared/models/constantes/delegate-state';
 import { Device } from '@/shared/models/device';
 import { ComandoSincronismoService, SincronismoEvento, SincronismoStatus } from '@/shared/services/ComandoSincronismoService';
 import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
@@ -53,10 +54,8 @@ export class ConfiguracaoCorPortaComponent implements OnInit {
   private statusAtual = signal<SincronismoStatus>('AGUARDANDO');
   private erroMensagem = signal<string | null>(null);
 
-  // Lista de efeitos simulados para o select do hardware
-  efeitosDisponiveis = ['BATIDA', 'COLORIDO', 'GIROFLEX'];
-  tipoLed = ['RGB', 'RBG', 'GRB', 'GBR', 'BGR', 'BRG'];
-
+  protected efeitosDisponiveis = EFEITOS;
+  protected tipoLed = TIPO_LED;
 
   constructor(
     private readonly corService: CorService,
