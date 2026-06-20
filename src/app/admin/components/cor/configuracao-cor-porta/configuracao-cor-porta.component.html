@@ -14,7 +14,7 @@
 
 <!-- O styleClass agora injeta classes que reagem a ambos os modos -->
 <p-dialog [(visible)]="view" #op
-  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean p-0 !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
   [modal]="true" [dismissableMask]="true" [showHeader]="false">
 
   <div class="w-full bg-white dark:bg-neutral-900 text-gray-800 dark:text-neutral-100 rounded-xl overflow-hidden">
@@ -24,20 +24,20 @@
       class="p-6 border-b border-gray-150 dark:border-neutral-800 flex justify-between items-center bg-gray-50/50 dark:bg-neutral-950/40">
       <div>
         <h1 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <span>⚙️</span> Parâmetros do Dispositivo: <span class="text-indigo-600 dark:text-indigo-400">{{ cor?.nome
+          <span>⚙️</span><span class="text-indigo-600 dark:text-indigo-400">{{ cor?.nome
             }}</span>
         </h1>
         <p class="text-[11px] text-gray-500 dark:text-neutral-400 mt-0.5 font-mono">ID Único: {{ cor?.id }}</p>
       </div>
       <span
         class="text-[11px] px-2.5 py-1 rounded-md font-mono bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
-        Portas Ativas: {{ parametros.length }}
+        P: {{ parametros.length }}
       </span>
     </div>
 
     <!-- Formulário Principal -->
     <form [formGroup]="deviceForm" (ngSubmit)="salvarConfiguracoes()"
-      class="p-6 space-y-6 max-h-[78vh] overflow-y-auto custom-scrollbar">
+      class="p-1 lg:p-6 space-y-6 max-h-[78vh] overflow-y-auto custom-scrollbar">
 
       <!-- Seção 1: Configurações Globais -->
       <div class="bg-gray-50 dark:bg-neutral-800/40 p-4 rounded-xl border border-gray-200 dark:border-neutral-800">
@@ -154,7 +154,7 @@
       </div>
 
       <div
-        class="border-t border-gray-150 dark:border-neutral-800 pt-4 flex justify-end gap-1 bg-white dark:bg-neutral-900">
+        class="border-t border-gray-150 dark:border-neutral-800 p-4 flex justify-end gap-1 bg-white dark:bg-neutral-900">
         <p-button type="button" (click)="initForm(); view = false" class=" text-xs font-medium" severity="secondary"
           [rounded]="true">
           Fechar

@@ -12,20 +12,18 @@
 
 <!-- O styleClass agora injeta classes que reagem a ambos os modos -->
 <p-dialog [(visible)]="view" #op
-  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
+  styleClass="lg:min-w-[50vw] min-w-[99vw] popover-clean p-0 !bg-white dark:!bg-neutral-900 !border-gray-200 dark:!border-neutral-700 !rounded-xl shadow-2xl"
   [modal]="true" [dismissableMask]="true" [showHeader]="false">
 
-  <div class="w-full bg-white dark:bg-neutral-900 text-gray-800 dark:text-neutral-100 rounded-xl py-4 overflow-hidden">
+  <div class="w-full bg-white dark:bg-neutral-900 text-gray-800 dark:text-neutral-100 rounded-t-xl overflow-hidden">
 
     <!-- Formulário Principal -->
 
     <!-- Seção 2: Portas de Cor Independentes (FormArray) -->
     <div class="space-y-4">
-      <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-indigo-400/80">Configuração das
-        Portas de Saída</h2>
 
       <div
-        class="bg-white dark:bg-neutral-800/30 border border-gray-200 dark:border-neutral-800 rounded-xl overflow-hidden transition-all duration-150 hover:border-gray-300 dark:hover:border-neutral-700">
+        class="bg-white dark:bg-neutral-800/30 border border-gray-200 dark:border-neutral-800 rounded-t-xl overflow-hidden transition-all duration-150 hover:border-gray-300 dark:hover:border-neutral-700">
 
       <div *ngIf="cor" class="bg-gray-50 dark:bg-neutral-800/40 p-4">
         <h2
@@ -154,7 +152,7 @@
 
     <!-- Rodapé com Botões de Ação -->
     <div
-      class="border-t border-gray-100 dark:border-neutral-800 pt-4 flex justify-end gap-3 bg-white dark:bg-neutral-900">
+      class="border-t border-gray-100 dark:border-neutral-800 pt-4 flex justify-end gap-3 bg-white dark:bg-neutral-900 p-4">
       <p-button type="button" (click)="view = false" class=" text-xs font-medium" severity="secondary" [rounded]="true">
         Fechar
       </p-button>
