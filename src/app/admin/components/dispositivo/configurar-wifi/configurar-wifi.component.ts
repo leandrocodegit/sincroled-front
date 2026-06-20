@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 import { NivelWIFIComponent } from '../nivel-wifi/nivel-wifi.component';
+import { AuthService } from '@/core/auth/services/auth.service';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class ConfigurarWifiComponent {
   @Output() onCancel = new EventEmitter<void>();
 
   private service = inject(ComandoSincronismoService);
+  protected authService = inject(AuthService);
   private messageService = inject(MessageService);
   private sub?: Subscription;
   protected view = false;

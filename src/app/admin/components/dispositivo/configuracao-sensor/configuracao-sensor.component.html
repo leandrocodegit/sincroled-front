@@ -27,10 +27,21 @@
 
       <hr class="separator" />
 
-      <div class="flex align-items-center gap-2 my-4">
-        <p-checkbox [(ngModel)]="device.conexao.vbHabilitado" [binary]="true" inputId="ativo"></p-checkbox>
-        <label for="ativo" class="cursor-pointer text-sm">Habilitar Vibração</label>
+      <div class="flex justify-between">
+        <div class="flex align-items-center gap-2 my-4">
+          <p-checkbox [(ngModel)]="device.conexao.vbHabilitado" [binary]="true" inputId="ativo"></p-checkbox>
+          <label for="ativo" class="cursor-pointer text-sm">Habilitar Vibração</label>
+        </div>
+        <div class="flex flex-col mb-4">
+          <label for="tipoCor" class="font-semibold text-lg text-900">
+            Tipo
+          </label>
+          <p-select id="tipoCor" [options]="tipoLed" [(ngModel)]="device.tipoCor" appendTo="body"
+            placeholder="Tipo de Led" styleClass="w-full">
+          </p-select>
+        </div>
       </div>
+
 
       <div *ngIf="device.conexao.vbHabilitado" class="slider-control-section py-4">
         <div class="flex flex-col mb-4">

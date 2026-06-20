@@ -1,3 +1,4 @@
+import { TIPO_LED } from '@/shared/models/constantes/delegate-state';
 import { ComandoSincronismoService, SincronismoEvento, SincronismoStatus } from '@/shared/services/ComandoSincronismoService';
 import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 import { Cor } from '@/shared/sincroled/models/cor.model';
@@ -51,6 +52,7 @@ export class ConfiguracaoSensorComponent {
   salvando: boolean = false;
   protected cores: Cor[] = [];
   protected corLoad = false;
+  protected tipoLed = TIPO_LED;
 
   private service = inject(ComandoSincronismoService);
   private messageService = inject(MessageService);

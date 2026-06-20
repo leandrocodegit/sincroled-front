@@ -19,7 +19,11 @@ export class IntegracaoService {
   constructor(
     private readonly http: HttpClient) { }
 
-  public criarIntegracao(integracao: {nome: string, dispositivo: string, origem: string, cor: string}): Observable<any> {
+  public testIntegracao(host: string): Observable<any> {
+    return this.http.get<any>(host)
+  }
+
+  public criarIntegracao(integracao: { nome: string, dispositivo: string, origem: string, cor: string }): Observable<any> {
     return this.http.post<any>(`${environment.urlApi}/integracao`, integracao)
   }
 

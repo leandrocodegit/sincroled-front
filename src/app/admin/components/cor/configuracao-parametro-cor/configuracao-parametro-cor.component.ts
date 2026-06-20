@@ -42,6 +42,7 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
 
   @Input({ required: true }) deviceId!: string;
   @Input({ required: true }) parametro: Parametro = new Parametro;
+  @Input({ required: true }) cor?: Cor;
   @Input() icon = false;
   protected view = false;
   protected loading = false;
@@ -56,8 +57,6 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
   private erroMensagem = signal<string | null>(null);
 
   protected efeitosDisponiveis = EFEITOS;
-  protected tipoLed = TIPO_LED;
-
 
   constructor(
     private readonly corService: CorService
@@ -94,6 +93,20 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
       error: () => this.loading = false
     })
   }
+
+  salvarVelocidade() {
+    this.loading = true
+
+    if (this.cor)
+      this.corService.salvarVelocidade(this.cor).subscribe({
+        next: () => {
+          this.enviarComando();
+        },
+        complete: () => this.loading = false,
+        error: () => this.loading = false
+      })
+  }
+
 
   deletarConfiguracao(id: string) {
     console.log('Deletando config:', id);

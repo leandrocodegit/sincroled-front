@@ -11,7 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { CorService } from '@/shared/sincroled/services/cor.service';
 import { Cor } from '@/shared/sincroled/models/cor.model';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DispositivoService } from '@/shared/sincroled/services/dispositivo.service';
 import { Dispositivo } from '@/shared/sincroled/models/dispositivo.model';
 
@@ -35,7 +35,7 @@ export class ListaIntegracaoComponent {
 
   protected readonly cols: any[] = [
     { header: 'Nome', field: 'nome' },
-    { header: 'Dispositivo', field: 'dispositivo', subfield: 'nome'  },
+    { header: 'Dispositivo', field: 'dispositivo', subfield: 'nome' },
     { header: 'Ativo', field: 'ativo', isTag: true },
     { header: 'Ip de Origem', field: 'origem' },
     { header: 'Host', field: 'host', isCopy: true }
@@ -62,6 +62,7 @@ export class ListaIntegracaoComponent {
   protected pagina = { page: 0, first: 0, rows: 20, pageCount: 20 };
 
   constructor(
+    private readonly messageService: MessageService,
     private readonly dispositivoService: DispositivoService,
     private readonly confirmationService: ConfirmationService,
     private readonly integracaoService: IntegracaoService,
@@ -132,6 +133,15 @@ export class ListaIntegracaoComponent {
         });
       }
     });
+  }
+
+  teste(value: any) {
+    this.integracaoService.testIntegracao(value.host).subscribe({
+      complete: () => this.messageService.add({ severity: 'success', detail: 'Teste executado com sucesso' }),
+      error: () => this.messageService.add({ severity: 'error', detail: 'Falha no teste' })
+    })
+
+
   }
 }
 

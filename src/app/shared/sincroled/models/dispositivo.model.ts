@@ -27,6 +27,7 @@ export interface Dispositivo {
   operacao: Operacao;
   sensibilidadeVibracao: number;
   tempoEvento: number;
+  tipoCor: string;
 }
 
 export interface Conexao

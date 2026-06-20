@@ -55,7 +55,6 @@ export class ConfiguracaoCorPortaComponent implements OnInit {
   private erroMensagem = signal<string | null>(null);
 
   protected efeitosDisponiveis = EFEITOS;
-  protected tipoLed = TIPO_LED;
 
   constructor(
     private readonly corService: CorService,

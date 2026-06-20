@@ -35,7 +35,7 @@
         <div class="flex justify-between">
           <div>
             <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" (change)="device.conexao.habilitarWifi = !device?.conexao?.habilitarWifi"
+              <input [disabled]="!authService.isPermiteAlterarWIFI()" type="checkbox" (change)="device.conexao.habilitarWifi = !device?.conexao?.habilitarWifi"
                 [checked]="conexao.habilitarWifi" [(ngModel)]="conexao.habilitarWifi" class="sr-only peer">
               <div
                 class="w-8 h-4 bg-gray-200 dark:bg-neutral-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-neutral-600 peer-checked:bg-indigo-600">
@@ -46,12 +46,12 @@
         </div>
         <div class="flex flex-col gap-2">
           <label for="nome" class="text-sm font-semibold text-color">SSID *</label>
-          <input pInputText id="nome" type="text" [(ngModel)]="conexao.ssid" placeholder="Nome" class="w-full" />
+          <input [disabled]="!authService.isPermiteAlterarWIFI()" pInputText id="nome" type="text" [(ngModel)]="conexao.ssid" placeholder="Nome" class="w-full" />
         </div>
 
         <div class="flex flex-col gap-2 w-full">
           <label for="nome" class="text-sm font-semibold text-color">Senha *</label>
-          <p-password [(ngModel)]="conexao.senha" placeholder="Senha" class="!w-full" />
+          <p-password [disabled]="!authService.isPermiteAlterarWIFI()" [(ngModel)]="conexao.senha" placeholder="Senha" class="!w-full" />
         </div>
       </div>
 
@@ -61,7 +61,7 @@
           <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [disabled]="salvando"
             (onClick)="cancelar(); op.hide()">
           </p-button>
-          <p-button label="Salvar Alteração" icon="pi pi-check" severity="primary" [loading]="salvando"
+          <p-button [disabled]="!authService.isPermiteAlterarWIFI()" label="Salvar Alteração" icon="pi pi-check" severity="primary" [loading]="salvando"
             (onClick)="confirmarAlteracao(); op.hide()">
           </p-button>
         </div>

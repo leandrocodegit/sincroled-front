@@ -59,7 +59,7 @@
               device.modelo }}</span>
           </div>
           <div class="flex">
-            <app-configurar-wifi *ngIf="authService.isPermiteAlterarWIFI()" [device]="device" />
+            <app-configurar-wifi [device]="device" />
             <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
           </div>
         </div>
@@ -149,9 +149,9 @@
           <div *ngFor="let param of device.cor.parametros">
             <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
               <div class="flex items-center gap-2">
-                <span class="font-medium">{{ param.efeito }}</span>
-                <app-configuracao-parametro-cor *ngIf="authService.isPermiteGerenciarCores()" [icon]="true"
+                <app-configuracao-parametro-cor *ngIf="authService.isPermiteGerenciarCores()" [cor]="device.cor" [icon]="true"
                   [parametro]="param" [deviceId]="device.id" />
+                <span class="font-medium">{{ param.efeito }}</span>
               </div>
               <span>Leds: {{ param.leds }}</span>
             </div>
@@ -223,7 +223,7 @@
                   <span class="font-bold text-gray-900 dark:text-white block uppercase">
                     Disp. {{ device.nome}}</span>
                   <div class="flex">
-                    <app-configurar-wifi *ngIf="authService.isPermiteAlterarWIFI()" [device]="device" />
+                    <app-configurar-wifi [device]="device" />
                     <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
                   </div>
 

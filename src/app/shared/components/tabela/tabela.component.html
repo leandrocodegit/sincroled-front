@@ -1,5 +1,6 @@
 <p-table #tabela [columns]="cols" [rows]="page.rows" [paginator]="page.rows > 0" [totalRecords]="120"
-  [rowsPerPageOptions]="[10, 20, 30]" [value]="itens" [globalFilterFields]="getField()" [scrollable]="true" scrollHeight="calc(100vh - 260px)">
+  [rowsPerPageOptions]="[10, 20, 30]" [value]="itens" [globalFilterFields]="getField()" [scrollable]="true"
+  scrollHeight="calc(100vh - 260px)">
   <ng-template #header let-columns>
     <tr>
       <th *ngFor="let col of columns">
@@ -12,7 +13,7 @@
   <ng-template #body let-rowData let-columns="columns">
     <tr class="td-max">
       <td *ngFor="let col of columns">
-         @if((col.isCopy || (col.field == 'id' || col.field == 'key' || col.field == 'assignee' || col.field ==
+        @if((col.isCopy || (col.field == 'id' || col.field == 'key' || col.field == 'assignee' || col.field ==
         'processId' || col.field == 'email' || col.field == 'username')) && rowData[col.field] && rowData[col.field] !=
         ''){
         <i (click)="copiar($event)" [cdkCopyToClipboard]="rowData[col.field]" pTooltip="Copiar" tooltipPosition="top"
@@ -109,8 +110,7 @@
         }
         }
         @if(col.isConfigJson && rowData[col.field] == 'Object'){
-        <i (click)="config(rowData)"
-          class="pi pi-cog hover cursor-pointer" style="font-size: 1.2rem"></i>
+        <i (click)="config(rowData)" class="pi pi-cog hover cursor-pointer" style="font-size: 1.2rem"></i>
         }
       </td>
       <td>
@@ -119,12 +119,9 @@
             style="font-size: 1.2rem" tooltipPosition="top" pTooltip="Status"></i>
           <i *ngIf="view?.stop" (click)="stop(rowData)"
             class="pi pi-{{rowData[view?.fieldPlay ?? 'suspended'] == (view?.condicaoPlay ?? false) ? 'play !text-blue-400' : 'pause-circle !text-red-400'}} hover cursor-pointer"
-            style="font-size: 1.2rem" tooltipPosition="top"
-            [pTooltip]="rowData[view?.fieldPlay ?? 'suspended'] ? 'Iníciar' : 'Parar'"></i>
-          <i *ngIf="view?.play" (click)="play(rowData)"
-            class="pi pi-{{rowData[view?.fieldPlay ?? 'suspended'] == (view?.condicaoPlay ?? false) ? 'play !text-blue-400' : 'pause-circle !text-red-400'}} hover cursor-pointer"
-            style="font-size: 1.2rem" tooltipPosition="top"
-            [pTooltip]="rowData[view?.fieldPlay ?? 'suspended'] == (view?.condicaoPlay ?? false) ? 'Iníciar' : 'Parar'"></i>
+            style="font-size: 1.2rem" tooltipPosition="top" [pTooltip]="'Testar Integração'"></i>
+          <i *ngIf="view?.play" (click)="play(rowData)" class="pi pi-play-circle !text-blue-400 hover cursor-pointer"
+            style="font-size: 1.2rem" tooltipPosition="top" [pTooltip]="'Testar Integração'"></i>
           <i *ngIf="view?.users && authService.hasGrupo(auth?.users)" pTooltip="Grupos de usuários"
             (click)="adicionarGrupo(rowData)" class="pi pi-users hover cursor-pointer" style="font-size: 1.2rem"></i>
           <i *ngIf="view?.deploy" tooltipPosition="top" pTooltip="Implantar" (click)="implantar(rowData['id'])"
@@ -153,7 +150,8 @@
             class="pi pi-info-circle hover cursor-pointer" style="font-size: 1.2rem"></i>
           <i *ngIf="view?.detailEmit && authService.hasGrupo(auth?.detail)" (click)="detalhes(rowData)"
             class="pi pi-info-circle hover cursor-pointer" style="font-size: 1.2rem"></i>
-          <i *ngIf="view?.lock" tooltipPosition="top" [pTooltip]="rowData['enabled'] || rowData['ativo']  ? 'Bloquear' : 'Desbloquear'"
+          <i *ngIf="view?.lock" tooltipPosition="top"
+            [pTooltip]="rowData['enabled'] || rowData['ativo']  ? 'Bloquear' : 'Desbloquear'"
             (click)="lock({id: rowData['id'], value: rowData['firstName']})"
             class="pi pi-{{rowData['enabled'] || rowData['ativo'] ? 'unlock' : 'lock text-orange-500' }} hover cursor-pointer"
             style="font-size: 1.2rem"></i>

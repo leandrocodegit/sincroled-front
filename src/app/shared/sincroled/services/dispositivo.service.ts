@@ -50,7 +50,8 @@ export class DispositivoService {
       corBotao: dispositivo?.operacao?.corBotao?.id,
       btHabilitado: dispositivo.conexao.btHabilitado,
       vbHabilitado: dispositivo.conexao.vbHabilitado,
-      tempoEvento: dispositivo.tempoEvento
+      tempoEvento: dispositivo.tempoEvento,
+      tipoCor: dispositivo.tipoCor
     })
   }
 
