@@ -13,7 +13,6 @@ import { DialogModule } from 'primeng/dialog';
 import { AuthService } from '@/core/auth/services/auth.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 
 @Component({
   selector: 'app-sincronismo',

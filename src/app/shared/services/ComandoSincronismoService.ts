@@ -360,4 +360,83 @@ export class ComandoSincronismoService {
       return () => eventSource.close();
     });
   }
+
+
+    sincronizarTodos(): Observable<any> {
+    return this.dispositivoService.listaTodosDispositivos().pipe(
+      // mergeMap não mata o fluxo interno quando o HTTP original completa
+      mergeMap((dispositivo) => {
+        return this.sincronizarTudo();
+      })
+    );
+  }
+
+  sincronizarTudo(): Observable<SincronismoEvento> {
+
+    const url = `${environment.urlApi}/comando/sincronizar/true`;
+
+    return new Observable<SincronismoEvento>((observer) => {
+      const eventSource = new EventSource(url + `?cliente=${environment.authConfig.clientId}&access_token=${this.ouathService.getAccessToken()}`);
+
+      eventSource.onmessage = (event) => {
+        this.ngZone.run(() => {
+          const raw: string = event.data ?? '';
+
+          try {
+            const body: RespostaBackend = JSON.parse(raw);
+
+            let severity = 'success';
+
+            if (body.tipoResposta == 'OK')
+              severity = 'info';
+            else if (body.tipoResposta == 'WARN')
+              severity = 'warn';
+            else if (body.tipoResposta == 'ERROR')
+              severity = 'error';
+
+            const evento: SincronismoEvento = {
+              status: body.tipoResposta as SincronismoStatus,
+              mensagem: body.mensagem,
+              deviceId: body.deviceId,
+              timestamp: new Date(),
+              payload: body,
+              toast: { severity: severity, detail: body.mensagem }
+            };
+
+            // resolveStream(body.tipoResposta, evento, eventSource, observer);
+            observer.next(evento);
+
+          } catch {
+              // Texto inesperado — trata como SUCESSO e encerra
+              observer.next({
+                status: 'SUCESSO',
+                mensagem: raw,
+                deviceId: '',
+                timestamp: new Date(),
+                toast: { severity: 'warn', detail: raw }
+              }); 
+          }
+        });
+      };
+
+      // Erro de transporte (rede, CORS, servidor indisponível)
+      eventSource.onerror = () => {
+        this.ngZone.run(() => {
+          //    eventSource.close();
+          observer.error({
+            status: 'ERROR',
+            mensagem: 'Falha na conexão com o servidor',
+            deviceId: '',
+            timestamp: new Date(),
+            toast: { severity: 'error', detail: 'Falha na conexão com o servidor' }
+          } as SincronismoEvento);
+        });
+      };
+
+      return () => eventSource.close();
+    });
+  }
 }
+
+
+

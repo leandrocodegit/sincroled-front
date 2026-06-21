@@ -28,7 +28,13 @@ import { TagModule } from 'primeng/tag';
 })
 export class FormularioClienteComponent {
 
-  @Input() cliente?: Cliente;
+  @Input() cliente: Cliente = {
+        nome: '',
+        ativo: false,
+        host: '',
+        logo: '',
+        email: ''
+      };
   @Output() onClose = new EventEmitter();
   @Output() onSalve = new EventEmitter();
   protected load = false;
@@ -43,7 +49,7 @@ export class FormularioClienteComponent {
     private readonly clienteService: ClienteService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {/*
     if (!this.cliente)
       this.cliente = {
         nome: '',
@@ -51,7 +57,7 @@ export class FormularioClienteComponent {
         host: '',
         logo: '',
         email: ''
-      };
+      }; */
   }
 
   salvar() {

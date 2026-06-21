@@ -1,4 +1,4 @@
-<p-button type="submit" pTooltip="Configurar WIFI" tooltipPosition="top"
+<p-button type="submit" pTooltip="Configurar WIFI" tooltipPosition="top" class="p-button-custom"
   [severity]="device?.conexao?.habilitarWifi ? device?.conexao?.wifiConectado ? 'success' : 'warn' : 'secondary'"
   [rounded]="true" [outlined]="true" (onClick)="op.toggle($event)" size="small">
   <span class="material-symbols-outlined">

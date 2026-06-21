@@ -3,7 +3,7 @@
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
 
- 
+
 body,
 .box-base,
 .body-wrapper {
@@ -1486,7 +1486,7 @@ p-togglebutton,
 
   &.shepherd-button-primary {
     background: #22c55e !important;
-    color: #0c5326  !important;
+    color: #0c5326 !important;
     border: none;
     width: 100%;
     font-weight: 700;
@@ -1593,20 +1593,20 @@ p-togglebutton,
   color: white !important;
 }
 
-.p-0 .p-drawer-content p-2, .p-0 .p-drawer-content .lg\:p-5
-{
+.p-0 .p-drawer-content p-2,
+.p-0 .p-drawer-content .lg\:p-5 {
   padding: 0 !important;
 }
 
-.p-accordionheader{
+.p-accordionheader {
   border-radius: 0 !important;
 }
 
-.p-menu{
+.p-menu {
   min-width: 0 !important;
 }
 
-.p-menu-item-content{
+.p-menu-item-content {
   border-radius: 0 !important;
 }
 
@@ -1614,28 +1614,29 @@ p-togglebutton,
   width: 100%;
 }
 
-.p-tree-node .p-disabled{
+.p-tree-node .p-disabled {
   display: none;
 }
 
-.p-0 .p-dialog-content{
-  padding: 0!important;
+.p-0 .p-dialog-content {
+  padding: 0 !important;
   border-radius: 7px;
 }
 
-.p-password, .p-inputtext{
-  width: 100%!important;
+.p-password,
+.p-inputtext {
+  width: 100% !important;
 }
 
-.p-card{
-  box-shadow: none!important;
+.p-card {
+  box-shadow: none !important;
 }
 
-.p-toast-message-content{
+.p-toast-message-content {
   align-items: center;
 }
 
-.p-toast-message-text{
+.p-toast-message-text {
   gap: 3px !important;
 }
 
@@ -1662,17 +1663,36 @@ p-togglebutton,
     }
 
     // Alturas crescentes para o gráfico de barras tradicional
-    &.b-1 { height: 25%; }
-    &.b-2 { height: 50%; }
-    &.b-3 { height: 75%; }
-    &.b-4 { height: 100%; }
+    &.b-1 {
+      height: 25%;
+    }
+
+    &.b-2 {
+      height: 50%;
+    }
+
+    &.b-3 {
+      height: 75%;
+    }
+
+    &.b-4 {
+      height: 100%;
+    }
   }
 }
 
-.p-toast-message-content{
+.p-toast-message-content {
   z-index: 99999;
 }
 
-.p-datepicker-calendar{
+.p-datepicker-calendar {
   height: 100%;
+}
+
+.mr-label-4 .p-button-label {
+  padding-right: 7px;
+}
+
+.p-button-custom .p-button-sm {
+  padding: 0 7px !important;
 }

@@ -8,6 +8,7 @@
     </div>
 
     <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+      <app-sincronizar-todos />
       <p-button type="button" (onClick)="listarDispositivos()" size="small" [rounded]="true">
         <span class="material-symbols-outlined">refresh</span>
       </p-button>
@@ -47,34 +48,41 @@
 
       <div class="p-5 w-full">
         <div class="flex items-start justify-between mb-3">
-          <div class="flex items-center gap-2">
+          <div class="flex items-start gap-2">
             <span
-              class="text-[10px] font-mono bg-gray-200 dark:bg-neutral-900 text-gray-700 dark:text-gray-300 px-1.5 py-0.5 rounded">ID:
-              {{ device.id }}</span>
-            <span *ngIf="device?.versao"
-              class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">v{{
-              device.versao }}</span>
-            <span *ngIf="device?.modelo"
-              class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">{{
-              device.modelo }}</span>
+              class="text-[10px] font-mono bg-gray-200 dark:bg-neutral-900 text-gray-700 dark:text-gray-300 px-1.5 py-0.5 rounded uppercase align-text-bottom">
+              {{ device.id }}<span class="material-symbols-outlined text-orange-400 cursor-pointer align-middle" [cdkCopyToClipboard]="device.id">content_copy</span></span>
+            <div class="flex flex-col gap-1">
+              <span *ngIf="device?.versao"
+                class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">v{{
+                device.versao }}</span>
+              <span *ngIf="device?.modelo"
+                class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">{{
+                device.modelo }}</span>
+            </div>
           </div>
-          <div class="flex">
+          <app-nivel-wifi *ngIf="device?.conexao?.tipoConexao == 'WIFI' && device.conexao.status === 'Online'"
+            [conexao]="device.conexao" />
+          <!-- <div class="flex">
             <app-configurar-wifi [device]="device" />
             <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
-          </div>
+          </div> -->
         </div>
 
         <div class="flex justify-between">
           <div class="mb-3">
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white m-0 uppercase">{{ device.nome }}</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400 m-0">Cliente: <span
-                class="font-medium text-gray-800 dark:text-gray-200">{{ device?.cliente?.nome ?? '- - -'
+            <div class="flex items-center">
+              <h2 class="text-lg font-bold text-gray-900 dark:text-white m-0 uppercase">{{ device.nome }}</h2>
+              <div class="flex">
+                <app-configurar-wifi [device]="device" />
+                <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 m-0"><span
+                class="font-medium text-teal-600 dark:text-teal-200">{{ device?.cliente?.nome ?? '- - -'
                 }}</span><app-dispositivo-form-cliente *ngIf="authService.isPermiteEditarCliente()" [device]="device" />
             </p>
           </div>
-          <app-nivel-wifi class="mr-4"
-            *ngIf="device?.conexao?.tipoConexao == 'WIFI' && device.conexao.status === 'Online'"
-            [conexao]="device.conexao" />
         </div>
 
         <div class="flex gap-1">
@@ -133,8 +141,6 @@
           <div class="text-gray-500 dark:text-gray-400 flex items-center gap-1">
             <span class="font-bold uppercase text-[10px]">Modo:</span>
             <span class="text-gray-700 dark:text-gray-200 font-medium">{{ device.operacao.modoOperacao }}
-              <app-configuracao-cor-porta [deviceId]="device.id"
-                *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [icon]="true" [cor]="device.cor" />
             </span>
           </div>
           <div *ngIf="device?.operacao?.agenda && device.operacao.modoOperacao == 'AGENDA'"
@@ -149,8 +155,8 @@
           <div *ngFor="let param of device.cor.parametros">
             <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
               <div class="flex items-center gap-2">
-                <app-configuracao-parametro-cor *ngIf="authService.isPermiteGerenciarCores()" [cor]="device.cor" [icon]="true"
-                  [parametro]="param" [deviceId]="device.id" />
+                <app-configuracao-parametro-cor *ngIf="authService.isPermiteGerenciarCores()" [cor]="device.cor"
+                  [icon]="true" [parametro]="param" [deviceId]="device.id" />
                 <span class="font-medium">{{ param.efeito }}</span>
               </div>
               <span>Leds: {{ param.leds }}</span>
@@ -172,21 +178,21 @@
         </div>
         <div class="flex">
           <p-button
-                *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
-                [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
-                [rounded]="true" [outlined]="true"
-                [styleClass]="'relative ' + (device.operacao?.modoOperacao === 'OCORRENCIA' ? 'shadow-[0_0_0_0_rgba(245,158,11,0.7)]' : '')"
-                (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
+            *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
+            [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
+            [rounded]="true" [outlined]="true"
+            [styleClass]="'relative ' + (device.operacao?.modoOperacao === 'OCORRENCIA' ? 'shadow-[0_0_0_0_rgba(245,158,11,0.7)]' : '')"
+            (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
 
-                <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
-                  class="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping pointer-events-none">
-                </span>
+            <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
+              class="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping pointer-events-none">
+            </span>
 
-                <span class="material-symbols-outlined relative z-10"
-                  [ngClass]="{'animate-pulse text-amber-600': device.operacao?.modoOperacao === 'OCORRENCIA'}">
-                  notification_sound
-                </span>
-              </p-button>
+            <span class="material-symbols-outlined relative z-10"
+              [ngClass]="{'animate-pulse text-amber-600': device.operacao?.modoOperacao === 'OCORRENCIA'}">
+              notification_sound
+            </span>
+          </p-button>
           <app-comandos-iluminacao [deviceId]="device.id"
             *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
           <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
@@ -221,14 +227,14 @@
               <div>
                 <div class="flex flex-nowrap items-center">
                   <span class="font-bold text-gray-900 dark:text-white block uppercase">
-                    Disp. {{ device.nome}}</span>
+                    {{ device.nome}}</span>
                   <div class="flex">
                     <app-configurar-wifi [device]="device" />
                     <app-dispositivo-form *ngIf="authService.isPermiteEditarDispositivo()" [device]="device" />
                   </div>
 
                 </div>
-                <span class="text-xs text-gray-400 block">Cli: {{ device?.cliente?.nome ?? '---'
+                <span class="text-xs text-teal-600 dark:text-teal-200 block">{{ device?.cliente?.nome ?? '---'
                   }}<app-dispositivo-form-cliente *ngIf="authService.isPermiteEditarCliente()"
                     [device]="device" /></span>
               </div>
@@ -285,8 +291,6 @@
               <app-formulario-agenda [agendaParaEditar]="device.operacao.agenda" [icon]="true" /> {{
               device.operacao.agenda.nome }}
             </span>
-            <app-configuracao-cor-porta [deviceId]="device.id"
-              *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [icon]="true" [cor]="device.cor" />
           </td>
 
           <td class="py-3 px-4">
@@ -313,8 +317,6 @@
               </p-button>
               <app-comandos-iluminacao [deviceId]="device.id"
                 *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
-              <app-configuracao-cor-porta [deviceId]="device.id"
-                *ngIf="device?.cor && authService.isPermiteGerenciarCores()" [cor]="device.cor" />
 
               <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
               <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />

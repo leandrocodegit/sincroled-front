@@ -1,7 +1,6 @@
 
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { ConfiguracaoCorPortaComponent } from '../../cor/configuracao-cor-porta/configuracao-cor-porta.component';
 import { ComandosIluminacaoComponent } from '../../cor/comandos-iluminacao/comandos-iluminacao.component';
 import { ConfiguracaoSensorComponent } from '../configuracao-sensor/configuracao-sensor.component';
 import { DispositivoFormComponent } from '../dispositivo-form/dispositivo-form.component';
@@ -24,6 +23,8 @@ import { FormularioAgendaComponent } from '../../agenda/formulario-agenda/formul
 import { ComandoSincronismoService } from '@/shared/services/ComandoSincronismoService';
 import { MessageService } from 'primeng/api';
 import { UpgradeComponent } from '../../firmware/upgrade/upgrade.component';
+import { SincronizarTodosComponent } from '../sincronizar-todos/sincronizar-todos.component';
+import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-lista-dispositivos',
@@ -31,7 +32,7 @@ import { UpgradeComponent } from '../../firmware/upgrade/upgrade.component';
     CommonModule,
     ButtonModule,
     TooltipModule,
-    ConfiguracaoCorPortaComponent,
+    CdkCopyToClipboard,
     ComandosIluminacaoComponent,
     ConfiguracaoSensorComponent,
     DispositivoFormComponent,
@@ -44,7 +45,8 @@ import { UpgradeComponent } from '../../firmware/upgrade/upgrade.component';
     MqttAppModule,
     NivelWIFIComponent,
     FormularioAgendaComponent,
-    UpgradeComponent
+    UpgradeComponent,
+    SincronizarTodosComponent
   ],
   providers: [
     MqttService
