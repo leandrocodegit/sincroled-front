@@ -112,8 +112,13 @@
               </div>
             </div>
 
-            <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'text-green-500' : 'text-red-500'"
-              class="font-semibold text-xs">{{ device.conexao.statusMCU }}</span>
+            <span
+              [ngClass]="device.conexao.statusMCU === 'Online' ? 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20'"
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+              <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'bg-green-400' : 'bg-red-400 animate-pulse'"
+                class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+              {{ device.conexao.statusMCU }}
+            </span>
           </div>
           <div
             class="bg-gray-50 dark:bg-neutral-900/50 p-2 rounded-lg border border-gray-200 dark:border-gray-700/50 flex flex-col justify-between">
@@ -262,9 +267,12 @@
           </td>
 
           <td class="py-3 px-4">
-            <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'text-green-500' : 'text-red-500'"
-              class="font-bold text-xs uppercase">
-              ● {{ device.conexao.statusMCU }}
+            <span
+              [ngClass]="device.conexao.statusMCU === 'Online' ? 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20'"
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border w-fit uppercase">
+              <span [ngClass]="device.conexao.statusMCU === 'Online' ? 'bg-green-400' : 'bg-red-400 animate-pulse'"
+                class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+              {{ device.conexao.statusMCU }}
             </span>
           </td>
 
