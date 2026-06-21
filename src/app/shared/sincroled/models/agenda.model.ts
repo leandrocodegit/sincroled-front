@@ -14,6 +14,7 @@ export class Agenda {
   dispositivos: Dispositivo[];   // Array de IDs de hardware [5021]
   todos: boolean;
   estaNoPrazo: boolean;
+  executarAnualmente: boolean;
 
   constructor(dados?: Partial<Agenda>) {
     this.id = dados?.id || crypto.randomUUID();
@@ -26,6 +27,7 @@ export class Agenda {
     this.dispositivos = dados?.dispositivos || [];
     this.todos = dados?.todos ?? false;
     this.estaNoPrazo = dados?.estaNoPrazo ?? false;
+    this.executarAnualmente = dados?.executarAnualmente ?? false;
     this.cor = dados?.cor ?? undefined;
   }
 
@@ -42,6 +44,7 @@ export class AgendaRequest {
   cor?: any;
   dispositivos: string[];
   todos: boolean;
+  executarAnualmente: boolean;
 
   constructor(dados?: Partial<AgendaRequest>) {
      this.id = dados?.id || undefined;
@@ -53,6 +56,7 @@ export class AgendaRequest {
     this.dispositivos = dados?.dispositivos || [];
     this.todos = dados?.todos ?? false;
     this.cor = dados?.cor ?? undefined;
+    this.executarAnualmente = dados?.executarAnualmente ?? false;
   }
 
 }

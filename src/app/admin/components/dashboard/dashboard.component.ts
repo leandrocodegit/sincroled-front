@@ -69,10 +69,10 @@ export class DashboardComponent implements OnInit {
     return total === 0 ? 0 : Math.round((online / total) * 100);
   }
 
-  getTotalLogs(): number {
-    if (!this.dashboardData?.logs)
+  getPercentualLogs(): number {
+    if (!this.dashboardData?.logs || this.dashboardData.logsHoje == 0)
       return 0;
-    return this.dashboardData.logs.reduce((s, l) => s, 0);
+    return this.dashboardData.logsHoje / this.dashboardData.logs.length * 100;
   }
 
   getCorePct(quantidade: number, lista: DashboardItem[]): number {
@@ -182,6 +182,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getIcon(comando: Comando) {
+    if (comando == Comando.SINCRONIZAR_TUDO)
+      return 'pi pi-sync';
     if (comando == Comando.SINCRONIZAR)
       return 'pi pi-refresh';
     else if (comando == Comando.VIBRACAO)
@@ -193,5 +195,17 @@ export class DashboardComponent implements OnInit {
     else if (comando == Comando.FIRMWARE)
       return 'pi pi-upload';
     else 'pi pi-check-circle';
+  }
+
+  getColor(comando: Comando) {
+    if (comando == Comando.SINCRONIZAR_TUDO)
+      return 'bg-teal-50 text-teal-600 border border-teal-100 dark:bg-teal-400/15 dark:text-teal-400 dark:border-none';
+    if (comando == Comando.OCORRENCIA)
+      return 'bg-amber-50 text-amber-600 border border-amber-100 dark:bg-amber-400/15 dark:text-amber-400 dark:border-none';
+    else if (comando == Comando.FIRMWARE)
+      return 'bg-purple-50 text-purple-600 border border-amber-100 dark:bg-purple-400/15 dark:text-purple-400 dark:border-none';
+    else if (comando == Comando.TIMER_CRIADO || comando == Comando.AGENDA_EXECUTADA)
+      return 'bg-red-50 text-red-600 border border-red-100 dark:bg-red-400/15 dark:text-red-400 dark:border-none';
+    else '';
   }
 }

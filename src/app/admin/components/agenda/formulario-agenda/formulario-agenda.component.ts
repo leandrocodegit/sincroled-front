@@ -133,6 +133,9 @@ export class FormularioAgendaComponent {
       ativo: [
         { value: this.agendaParaEditar?.ativo ?? false, disabled }
       ],
+      executarAnualmente: [
+        { value: this.agendaParaEditar?.executarAnualmente ?? false, disabled }
+      ],
       todos: [
         { value: this.agendaParaEditar?.todos ?? false, disabled }
       ],
@@ -167,6 +170,7 @@ export class FormularioAgendaComponent {
       inicio: this.formatarData(dataInicio),
       termino: this.formatarData(dataFim || dataInicio),
       todos: formValues.todos,
+      executarAnualmente: formValues.executarAnualmente,
       dispositivos: this.selecionados.map(device => device.id),
       cor: { id: formValues.cor }
     });

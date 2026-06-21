@@ -54,15 +54,21 @@
         </div>
 
         <div class="flex flex-col items-end gap-2">
-          <span
-            [class]="agenda.ativo
+          <div class="flex gap-2">
+            <span *ngIf="agenda.executarAnualmente"
+              class="bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-900/30 text-xs px-2.5 py-1 rounded-full font-medium border">
+              ● Anual
+            </span>
+            <span
+              [class]="agenda.ativo
                 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'
                 : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'">
-            ● {{ agenda.status }}
-          </span>
-
+              ● {{ agenda.status }}
+            </span>
+          </div>
           <label class="relative inline-flex items-center cursor-pointer mt-1">
-            <input [disabled]="!authService.isPermiteEditarAgenda()" (change)="ativarAgenda(agenda)" type="checkbox" [checked]="agenda.ativo" class="sr-only peer">
+            <input [disabled]="!authService.isPermiteEditarAgenda()" (change)="ativarAgenda(agenda)" type="checkbox"
+              [checked]="agenda.ativo" class="sr-only peer">
             <div
               class="w-9 h-5 bg-gray-200 dark:bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-neutral-600 peer-checked:bg-indigo-600">
             </div>
@@ -127,7 +133,8 @@
             (onSalve)="alterarAgenda(agenda, $event)" />
           }
           <app-formulario-agenda (onSalve)="listarAgendas()" [agendaParaEditar]="agenda" [outlined]="true" />
-          <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)" size="small" [outlined]="true" [rounded]="true">
+          <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)"
+            size="small" [outlined]="true" [rounded]="true">
             <span class="material-symbols-outlined">
               delete
             </span>
@@ -195,11 +202,19 @@
             </td>
 
             <td class="py-3.5 px-4">
-              <div class="flex items-center justify-center gap-2">
-                <span [class]="agenda.ativo ? 'text-emerald-500' : 'text-amber-500'"
-                  class="text-xs font-medium hidden lg:inline">
-                  {{ agenda.status }}
-                </span>
+              <div class="flex items-center justify-end gap-2">
+                <div class="flex gap-2">
+                  <span *ngIf="agenda.executarAnualmente"
+                    class="bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-900/30 text-xs px-2.5 py-1 rounded-full font-medium border">
+                    ● Anual
+                  </span>
+                  <span
+                    [class]="agenda.ativo
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'
+                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/30 text-xs px-2.5 py-1 rounded-full font-medium border'">
+                    ● {{ agenda.status }}
+                  </span>
+                </div>
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input (change)="ativarAgenda(agenda)" type="checkbox" [checked]="agenda.ativo" class="sr-only peer">
                   <div
@@ -216,7 +231,8 @@
                   (onSalve)="alterarAgenda(agenda, $event)" />
                 }
                 <app-formulario-agenda (onSalve)="listarAgendas()" [agendaParaEditar]="agenda" [outlined]="true" />
-                <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)" size="small" [outlined]="true" [rounded]="true">
+                <p-button *ngIf="authService.isPermiteEditarAgenda()" type="submit" (onClick)="excluir(agenda.id)"
+                  size="small" [outlined]="true" [rounded]="true">
                   <span class="material-symbols-outlined">
                     delete
                   </span>
