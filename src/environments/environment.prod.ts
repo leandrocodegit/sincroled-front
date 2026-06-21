@@ -5,7 +5,9 @@ export const environment = {
   portal: true,
   router: 'portal',
   urlApi: 'https://dev.simodapp.com:2087',
-  urlWebSocket: 'painel.sincroled.com.br',
+  urlWebSocket: 'broker.simodapp.com',
+  portaWebSocket: 9005,
+  protocoloWebSocket: 'wss' as 'wss' | 'ws',
   timeout: 30000,
   sitekey: '0x4AAAAAABer05zX5CdsZSWY',
   authConfig: {

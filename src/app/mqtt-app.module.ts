@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.urlWebSocket,
-  port: 9001,
-  protocol: 'wss',
+  port: environment.portaWebSocket,
+  protocol: environment.protocoloWebSocket,
   path: '/ws'
 }
 
