@@ -1,0 +1,36 @@
+<span class="text-purple-500 cursor-pointer hover:text-orange-500"
+  (click)="op.toggle($event); ">{{device.tipoCor}}</span>
+
+<p-popover #op styleClass="lg:min-w-[300px] popover-clean" [dismissable]="false">
+  <div class="settings-container">
+
+    <p-card header="Tipo de cor" subheader="Definição do tipo de Led do dispositivo"
+      styleClass="border-0 overflow-y-auto max-h-[500px]">
+
+      <hr class="separator" />
+
+      <div class="flex flex-col mb-4">
+        <label for="tipoCor" class="font-semibold text-lg text-900">
+          Tipo
+        </label>
+        <p-select (onChange)="confirmarAlteracao()" id="tipoCor" [options]="tipoLed" [(ngModel)]="device.tipoCor"
+          appendTo="body" placeholder="Tipo de Led" styleClass="w-full">
+        </p-select>
+      </div>
+
+      <!-- Rodapé com as Ações -->
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [disabled]="salvando"
+            (onClick)="cancelar(); op.hide()">
+          </p-button>
+          <p-button label="Salvar Alteração" icon="pi pi-check" severity="primary" [loading]="salvando"
+            (onClick)="confirmarAlteracao(); op.hide()">
+          </p-button>
+        </div>
+      </ng-template>
+
+    </p-card>
+  </div>
+
+</p-popover>

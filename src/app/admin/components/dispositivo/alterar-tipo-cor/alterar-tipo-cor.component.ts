@@ -19,8 +19,9 @@ import { SliderModule } from 'primeng/slider';
 import { TooltipModule } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 
+
 @Component({
-  selector: 'app-configuracao-sensor',
+  selector: 'app-alterar-tipo-cor',
   imports: [
     CommonModule,
     FormsModule,
@@ -33,12 +34,10 @@ import { Subscription } from 'rxjs';
     TooltipModule,
     CheckboxModule
   ],
-  templateUrl: './configuracao-sensor.component.html',
-  styleUrl: './configuracao-sensor.component.scss'
+  templateUrl: './alterar-tipo-cor.component.html',
+  styleUrl: './alterar-tipo-cor.component.scss'
 })
-export class ConfiguracaoSensorComponent {
-
-
+export class AlterarTipoCorComponent {
   @Input({ required: true }) device!: Dispositivo;
   @Input() showDetalhes = false;
 
@@ -51,6 +50,7 @@ export class ConfiguracaoSensorComponent {
   salvando: boolean = false;
   protected cores: Cor[] = [];
   protected corLoad = false;
+  protected tipoLed = TIPO_LED;
 
   private service = inject(ComandoSincronismoService);
   private messageService = inject(MessageService);
@@ -64,34 +64,9 @@ export class ConfiguracaoSensorComponent {
 
 
   constructor(
-    private readonly dispositivoService: DispositivoService,
-    private readonly corService: CorService
+    private readonly dispositivoService: DispositivoService
   ) { }
 
-  ngOnInit(): void {
-    if (this.device) {
-      this.valorSensibilidade = this.device.sensibilidadeVibracao;
-    }
-  }
-
-  listaCores() {
-    this.corLoad = true;
-    this.corService.listaCores(['EVENTO', 'TODOS']).subscribe({
-      next: response => {
-        this.cores = response.content;
-      },
-      error: () => this.corLoad = false,
-      complete: () => this.corLoad = false
-    })
-  }
-
-  get labelPorcentagem(): string {
-    return `${Math.round(this.device.sensibilidadeVibracao / 50 * 100)}%`;
-  }
-
-    get tempoPorcentagem(): string {
-    return `${Math.round(this.device.tempoEvento / 255 * 100)}%`;
-  }
 
   confirmarAlteracao(): void {
     this.salvando = true;
@@ -110,26 +85,7 @@ export class ConfiguracaoSensorComponent {
     this.onCancel.emit();
   }
 
-  gerarListaDecimal(): number[] {
-    const lista: number[] = [];
-    const inicio = 0.05;
-    const fim = 10.0;
-    const passo = 0.01;
-
-    // Usamos um loop baseado no número de iterações para evitar acúmulo de erro decimal
-    // (10.0 - 0.05) / 0.01 = 995 iterações
-    const totalIteracoes = Math.round((fim - inicio) / passo);
-
-    for (let i = 0; i <= totalIteracoes; i++) {
-      // Calculamos o valor multiplicando o índice para manter a precisão
-      const valor = parseFloat((inicio + i * passo).toFixed(2));
-      lista.push(valor);
-    }
-
-    return lista;
-  }
-
-  enviarComando(): void {
+ private enviarComando(): void {
     this.eventos.set([]);
     this.erroMensagem.set(null);
     this.carregando.set(true);
@@ -138,7 +94,7 @@ export class ConfiguracaoSensorComponent {
     if (!this.device.id)
       return;
 
-    this.sub = this.service.enviarComando(this.device.id, Tipoconfiguracao.MCU).subscribe({
+    this.sub = this.service.enviarComando(this.device.id).subscribe({
       next: (evento) => {
         this.eventos.update((lista) => [...lista, evento]);
         this.statusAtual.set(evento.status);

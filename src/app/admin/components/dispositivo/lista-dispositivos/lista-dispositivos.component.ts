@@ -25,6 +25,7 @@ import { MessageService } from 'primeng/api';
 import { UpgradeComponent } from '../../firmware/upgrade/upgrade.component';
 import { SincronizarTodosComponent } from '../sincronizar-todos/sincronizar-todos.component';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
+import { AlterarTipoCorComponent } from '../alterar-tipo-cor/alterar-tipo-cor.component';
 
 @Component({
   selector: 'app-lista-dispositivos',
@@ -46,7 +47,8 @@ import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
     NivelWIFIComponent,
     FormularioAgendaComponent,
     UpgradeComponent,
-    SincronizarTodosComponent
+    SincronizarTodosComponent,
+    AlterarTipoCorComponent
   ],
   providers: [
     MqttService

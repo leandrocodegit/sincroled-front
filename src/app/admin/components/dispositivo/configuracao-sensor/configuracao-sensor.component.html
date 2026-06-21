@@ -32,14 +32,6 @@
           <p-checkbox [(ngModel)]="device.conexao.vbHabilitado" [binary]="true" inputId="ativo"></p-checkbox>
           <label for="ativo" class="cursor-pointer text-sm">Habilitar Vibração</label>
         </div>
-        <div class="flex flex-col mb-4">
-          <label for="tipoCor" class="font-semibold text-lg text-900">
-            Tipo
-          </label>
-          <p-select id="tipoCor" [options]="tipoLed" [(ngModel)]="device.tipoCor" appendTo="body"
-            placeholder="Tipo de Led" styleClass="w-full">
-          </p-select>
-        </div>
       </div>
 
 
