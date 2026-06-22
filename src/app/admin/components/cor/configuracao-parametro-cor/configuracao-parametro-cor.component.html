@@ -144,7 +144,7 @@
                   '!border-blue-500': $index == 2
                 }"
                   class="relative border-b-4 py-4 flex flex-col items-center justify-center rounded">
-                 <p-slider [animate]="true" min="40" max="255" label="1" [(ngModel)]="parametro.correcao[$index]" class="w-full hybrid-slider" />
+                 <p-slider (onSlideEnd)="salvarVelocidade()" [animate]="true" min="40" max="255" label="1" [(ngModel)]="parametro.correcao[$index]" class="w-full hybrid-slider" />
                 </div>
                 }
               </div>
