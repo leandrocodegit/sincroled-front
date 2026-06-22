@@ -5,7 +5,7 @@ export const environment = {
   portal: true,
   router: 'portal',
   urlApi: 'https://dev.simodapp.com:2087',
-  urlWebSocket: '192.168.15.200',
+  urlWebSocket: 'client.simodapp.com',
   portaWebSocket: 9005,
   protocoloWebSocket: 'ws' as 'wss' | 'ws',
   timeout: 100000,

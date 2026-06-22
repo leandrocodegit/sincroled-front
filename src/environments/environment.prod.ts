@@ -7,7 +7,7 @@ export const environment = {
   urlApi: 'https://dev.simodapp.com:2087',
   urlWebSocket: 'client.simodapp.com',
   portaWebSocket: 9005,
-  protocoloWebSocket: 'ws' as 'wss' | 'ws',
+  protocoloWebSocket: 'wss' as 'wss' | 'ws',
   timeout: 30000,
   sitekey: '0x4AAAAAABer05zX5CdsZSWY',
   authConfig: {
