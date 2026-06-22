@@ -19,7 +19,6 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { AuthService } from './core/auth/services/auth.service';
 import { PT_BR } from './shared/services/util/DateUtil';
 import { LayoutService } from './shared/services/layout.service';
-import { MqttService } from 'ngx-mqtt';
 
 const maskConfig: Partial<NgxMaskConfig> = {
   validation: false,
@@ -54,7 +53,6 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true
     },
-    MqttService,
     MessageService,
     ConfirmationService,
     DialogService,

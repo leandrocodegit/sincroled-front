@@ -25,7 +25,7 @@ import { ListaAgendasComponent } from './admin/components/agenda/lista-agendas/l
 import { ListaClientesComponent } from './admin/components/cliente/lista-clientes/lista-clientes.component';
 import { SincronizarComponent } from './admin/components/dispositivo/sincronizar/sincronizar.component';
 import { ListaIntegracaoComponent } from './admin/components/integracao/lista-integracao/lista-integracao.component';
- 
+
 
 const painelRoutes: Routes = [
   {
@@ -72,7 +72,7 @@ const painelRoutes: Routes = [
   { path: 'login', component: LoginSocialComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'auth', component: AutenticacaoComponent },
-  { path: '**', component: DashboardComponent }
+  { path: '**', redirectTo: 'painel' }
 ];
 
 export const routes: Routes = painelRoutes;

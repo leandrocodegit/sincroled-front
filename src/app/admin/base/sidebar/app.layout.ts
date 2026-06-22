@@ -12,6 +12,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
+import { BrokerStatusComponent } from '@/shared/broker-status/broker-status.component';
+import { MqttService } from 'ngx-mqtt';
 
 @Component({
   selector: 'app-layout',
@@ -25,12 +27,13 @@ import { ButtonModule } from 'primeng/button';
     ToastModule,
     ConfirmDialogModule,
     TabsModule,
-    ButtonModule
+    ButtonModule,
+    BrokerStatusComponent
   ],
   template: `
 <div class="layout-wrapper" [ngClass]="containerClass">
   <app-top-bar></app-top-bar>
-  <app-sidebar></app-sidebar>
+    <app-sidebar></app-sidebar>
   <div class="layout-main-container">
     <div class="block lg:flex flex-col gap-4 h-[97%]">
         <div class="layout-main">
@@ -45,7 +48,10 @@ import { ButtonModule } from 'primeng/button';
   </div>
   <div class="layout-mask animate-fadein"></div>
 </div>
-  `
+  `,
+  providers: [
+    MqttService
+  ]
 })
 export class AppLayout {
   overlayMenuOpenSubscription: Subscription;

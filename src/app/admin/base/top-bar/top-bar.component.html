@@ -13,16 +13,18 @@
 
   <div class="layout-topbar-actions">
     <div class="layout-config-menu">
+
       <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
         <i
           [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
       </button>
-        <app-configurator />
+      <app-configurator />
       <div class="relative hidden lg:block">
         <button class="layout-topbar-action" (click)="op.toggle($event)">
           <i class="pi pi-user"></i>
         </button>
       </div>
+      <app-broker-status />
     </div>
 
     <button class="layout-topbar-menu-button layout-topbar-action" enterFromClass="hidden"

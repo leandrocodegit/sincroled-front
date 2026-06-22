@@ -11,6 +11,7 @@ import { LayoutService } from '../../../shared/services/layout.service';
 import { PopoverModule } from 'primeng/popover';
 import { ClienteService } from '@/shared/sincroled/services/cliente.service';
 import { Cliente } from '@/shared/sincroled/models/cliente.model';
+import { BrokerStatusComponent } from '@/shared/broker-status/broker-status.component';
 
 @Component({
   selector: 'app-top-bar',
@@ -22,7 +23,8 @@ import { Cliente } from '@/shared/sincroled/models/cliente.model';
     AppConfigurator,
     RouterModule,
     SelectModule,
-    PopoverModule
+    PopoverModule,
+    BrokerStatusComponent
   ],
   templateUrl: './top-bar.component.html'
 })
