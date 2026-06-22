@@ -8,10 +8,12 @@
     </div>
 
     <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-      <app-sincronizar-todos />
-      <p-button type="button" (onClick)="listarDispositivos()" size="small" [rounded]="true">
-        <span class="material-symbols-outlined">refresh</span>
-      </p-button>
+      <div class="flex gap-2">
+        <app-sincronizar-todos />
+        <p-button type="button" (onClick)="listarDispositivos()" size="small" [rounded]="true">
+          <span class="material-symbols-outlined">refresh</span>
+        </p-button>
+      </div>
       <div
         class="text-sm text-slate-700 dark:text-white bg-white dark:bg-neutral-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 hidden md:block">
         Total: <span class="font-bold text-indigo-500 dark:text-indigo-400">{{ devices.length }}</span>
