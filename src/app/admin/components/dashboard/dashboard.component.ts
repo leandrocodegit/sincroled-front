@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   getPercentualLogs(): number {
     if (!this.dashboardData?.logs || this.dashboardData.logsHoje == 0)
       return 0;
-    return this.dashboardData.logsHoje / this.dashboardData.logs.length * 100;
+    return (this.dashboardData.logsHoje / this.dashboardData.logs.length * 100).toFixed(0);
   }
 
   getCorePct(quantidade: number, lista: DashboardItem[]): number {
