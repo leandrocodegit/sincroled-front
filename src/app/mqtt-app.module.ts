@@ -5,9 +5,11 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.urlWebSocket,
   port: environment.portaWebSocket,
   protocol: environment.protocoloWebSocket,
-  path: '/ws'
+  path: '/ws',
+  username: 'cliente',
+  password: 'dbbb02ab86addf27'
 }
-
+//74e892085fed204e
 @NgModule({
   declarations:[
    ],
