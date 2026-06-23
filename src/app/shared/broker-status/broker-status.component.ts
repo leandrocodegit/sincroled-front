@@ -8,8 +8,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-broker-status',
   template: `
-    <i pTooltip="Conectado" class="pi pi-globe text-green-500 !text-[1.2rem]" *ngIf="conectado"></i>
-    <i pTooltip="Desconectado" class="pi pi-globe text-red-500 !text-[1.2rem]" *ngIf="!conectado"></i>
+    <i pTooltip="Conectado" class="pi pi-globe text-green-500 !text-[1.23rem]" *ngIf="conectado"></i>
+    <i pTooltip="Desconectado" class="pi pi-globe text-red-500 !text-[1.23rem]" *ngIf="!conectado"></i>
   `,
   imports: [
     CommonModule,
