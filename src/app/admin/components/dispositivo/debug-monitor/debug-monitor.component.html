@@ -4,93 +4,99 @@
     bug_report
   </span>
 </p-button>
-<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false" styleClass="min-w-[99vw] lg:min-w-[80vw] p-2"
+
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false" styleClass="w-[98vw] lg:w-[85vw] max-w-[1400px] p-0"
   [dismissableMask]="true">
 
-  <div class="p-4 w-full">
+  <div class="p-2 sm:p-4 w-full box-border">
 
-    <div class="flex flex-col md:flex-row justify-between align-items-start md:items-center gap-3 mb-4 bg-neutral-900 border-round p-3 shadow-2">
-      <div class="flex items-center gap-3">
-        <h2 class="m-0 text-xl font-bold text-white">📡 Console de Debug em Tempo Real</h2>
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 mb-4 bg-neutral-900 border-round p-3 shadow-2">
+      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+        <h2 class="m-0 text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+          <span>📡</span> Console de Debug
+        </h2>
         <p-tag [severity]="conectado() ? 'success' : 'danger'" [value]="conectado() ? 'STREAM ATIVA' : 'DESCONECTADO'">
         </p-tag>
       </div>
-      <div class="flex gap-2 w-full md:w-auto justify-content-end">
+      
+      <div class="flex flex-wrap gap-2 w-full lg:w-auto justify-start sm:justify-end">
         <button pButton [icon]="conectado() ? 'pi pi-bolt text-yellow-400' : 'pi pi-play'"
           [label]="conectado() ? 'Escutando...' : 'Reconectar'" [disabled]="conectado()"
-          (click)="iniciarMonitoramento()" class="p-button-outlined p-button-success p-button-sm">
+          (click)="iniciarMonitoramento()" class="p-button-outlined p-button-success p-button-sm flex-1 sm:flex-initial">
         </button>
         <button pButton icon="pi pi-stop" label="Pausar" [disabled]="!conectado()" (click)="pararMonitoramento()"
-          class="p-button-outlined p-button-danger p-button-sm">
+          class="p-button-outlined p-button-danger p-button-sm flex-1 sm:flex-initial">
         </button>
         <button pButton icon="pi pi-trash" label="Limpar" (click)="limparLogs()"
-          class="p-button-outlined p-button-secondary p-button-sm">
+          class="p-button-outlined p-button-secondary p-button-sm flex-1 sm:flex-initial">
         </button>
       </div>
     </div>
 
-    <div class="flex gap-6">
+    <div class="flex flex-col lg:flex-row gap-4 items-stretch">
 
-      <div class="col-12 lg:col-6 xl:col-7 w-full">
-        <p-card header="Histórico de Eventos (Broker MQTT)" styleClass="shadow-2 h-full">
-          <p-table [value]="logs()" [rows]="12" [paginator]="true" responsiveLayout="scroll" selectionMode="single"
-            styleClass="p-datatable-sm p-datatable-striped w-full">
+      <div class="w-full lg:w-7/12 xl:w-8/12">
+        <p-card header="Histórico de Eventos (Broker MQTT)" styleClass="shadow-2 h-full min-h-[350px]">
+          <div class="overflow-x-auto w-full">
+            <p-table [value]="logs()" [rows]="12" [paginator]="true" responsiveLayout="scroll" selectionMode="single"
+              styleClass="p-datatable-sm p-datatable-striped w-full table-layout-fixed">
 
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 15%">Horário</th>
-                <th style="width: 15%">Status</th>
-                <th style="width: 70%">Mensagem de Log</th>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 90px">Horário</th>
+                  <th style="width: 100px">Status</th>
+                  <th>Mensagem de Log</th>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="body" let-log>
-              <tr [className]="logSelecionado() === log ? 'bg-primary-reverse font-bold text-primary' : ''"
-                (click)="selecionarLog(log)" style="cursor: pointer;">
-                <td class="white-space-nowrap">{{ log.timestamp | date:'HH:mm:ss.SSS' }}</td>
-                <td>
-                  <p-tag [severity]="log.status === 'SUCESSO' || log.status === 'OK' ? 'success' : 'danger'"
-                    [value]="log.status">
-                  </p-tag>
-                </td>
-                <td>
-                  <span class="text-xs font-mono block white-space-nowrap overflow-hidden text-overflow-ellipsis">
-                    {{ log.mensagem }}
-                  </span>
-                </td>
-              </tr>
-            </ng-template>
+              <ng-template pTemplate="body" let-log>
+                <tr [className]="logSelecionado() === log ? 'bg-primary-reverse font-bold text-primary' : ''"
+                  (click)="selecionarLog(log)" style="cursor: pointer;">
+                  <td class="white-space-nowrap text-xs">{{ log.timestamp | date:'HH:mm:ss.SSS' }}</td>
+                  <td>
+                    <p-tag [severity]="log.status === 'SUCESSO' || log.status === 'OK' ? 'success' : 'danger'"
+                      [value]="log.status" styleClass="text-xs">
+                    </p-tag>
+                  </td>
+                  <td class="max-w-[200px] sm:max-w-none">
+                    <span class="text-xs font-mono block truncate">
+                      {{ log.mensagem }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
 
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="3" class="text-center p-5 text-muted shadow-none">
-                  <i class="pi pi-spin pi-spinner mr-2"></i> Aguardando pacotes do dispositivo
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" class="text-center p-5 text-muted shadow-none">
+                    <i class="pi pi-spin pi-spinner mr-2"></i> Aguardando pacotes do dispositivo
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
         </p-card>
       </div>
 
-      <div class="col-12 lg:col-6 xl:col-5">
-        <div class="flex flex-col gap-3 h-full">
+      <div class="w-full lg:w-5/12 xl:w-4/12">
+        <div class="h-full">
 
           @if (logSelecionado()) {
             <p-card styleClass="shadow-2 border-1 border-gray-800 bg-gray-900 text-white h-full">
               <ng-template pTemplate="header">
-                <div class="flex items-center justify-between p-3 border-bottom-1 border-gray-800 bg-black-alpha-20">
+                <div class="flex items-center justify-between p-3 border-bottom-1 border-gray-800 bg-black-alpha-20 flex-wrap gap-2">
                   <div class="flex items-center gap-2">
                     <i class="pi pi-code text-cyan-400"></i>
-                    <span class="font-bold">Inspetor de Dados Estruturado</span>
+                    <span class="font-bold text-sm sm:text-base">Inspetor de Dados</span>
                   </div>
-                  <small class="font-mono text-gray-500 text-xs">{{ logSelecionado()?.deviceId }}</small>
+                  <small class="font-mono text-gray-500 text-xs truncate max-w-[150px]">{{ logSelecionado()?.deviceId }}</small>
                 </div>
               </ng-template>
 
               <div class="p-fluid flex flex-col gap-3">
-                <div class="surface-card p-3 border-round border-left-3 border-cyan-500 bg-black-alpha-10">
+                <div class="surface-card p-3 border-round border-left-3 border-cyan-500 bg-black-alpha-10 break-all">
                   <div class="text-xs font-bold text-gray-400 mb-1 font-mono">TEXTO REPASSADO PELO BROKER:</div>
-                  <div class="text-sm font-medium text-white font-mono">
+                  <div class="text-xs sm:text-sm font-medium text-white font-mono">
                     {{ logSelecionado()?.mensagem }}
                   </div>
                 </div>
@@ -104,8 +110,8 @@
                       <small class="ml-2 text-gray-400 font-bold">payload_highlighter.json</small>
                     </div>
 
-                    <div class="pt-4 mt-1">
-                      <p-scrollPanel [style]="{ width: '100%', height: '280px' }" styleClass="custombar">
+                    <div class="pt-5">
+                      <p-scrollPanel [style]="{ width: '100%', height: '220px' }" styleClass="custombar">
                         <pre class="m-0 p-0 text-left line-height-3 overflow-x-auto"><code [innerHTML]="logSelecionado()?.payload | jsonHighlighter"></code></pre>
                       </p-scrollPanel>
                     </div>
@@ -114,16 +120,16 @@
 
                 <div class="flex flex-col gap-1 mt-1">
                   <span class="text-xs font-bold text-gray-400 font-mono">JSON COMPLETO (RAW):</span>
-                  <p-scrollPanel [style]="{ width: '100%', height: '200px' }" styleClass="custombar">
+                  <p-scrollPanel [style]="{ width: '100%', height: '180px' }" styleClass="custombar">
                     <pre class="m-0 p-3 bg-black-alpha-40 text-green-400 border-round font-mono text-xs overflow-x-auto border-1 border-gray-800" style="line-height: 1.4;"><code>{{ extrairEFormatarJson(logSelecionado()) }}</code></pre>
                   </p-scrollPanel>
                 </div>
               </div>
             </p-card>
           } @else {
-            <div class="flex items-center justify-content-center h-full min-h-[400px] border-round bg-gray-900 border-1 border-gray-800 text-gray-500 font-mono text-center p-4">
+            <div class="flex items-center justify-content-center h-full min-h-[250px] lg:min-h-[400px] border-round bg-gray-900 border-1 border-gray-800 text-gray-500 font-mono text-center p-4">
               <div>
-                <i class="pi pi-info-circle text-4xl mb-3 block text-gray-600"></i>
+                <i class="pi pi-info-circle text-3xl mb-2 block text-gray-600"></i>
                 Selecione uma linha do histórico para inspecionar os parâmetros detalhados do hardware.
               </div>
             </div>
