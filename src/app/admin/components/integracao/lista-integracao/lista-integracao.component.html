@@ -7,7 +7,7 @@
   <p-dialog [(visible)]="edit" [modal]="true" [draggable]="false" [resizable]="false" appendTo="body"
     [showHeader]="false" styleClass="min-w-[99vw] lg:min-w-[35vw]" [style]="{ maxWidth: '1100px' }">
     @if(edit){
-    <div class="pt-8">
+    <div class="pt-8 px-2 flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <label for="nome" class="text-sm font-semibold text-color">Nome *</label>
         <input pInputText id="nome" type="text" [(ngModel)]="nome" placeholder="Nome" class="w-full" />
