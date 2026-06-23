@@ -6,10 +6,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   port: environment.portaWebSocket,
   protocol: environment.protocoloWebSocket,
   path: '/ws',
-  //username: 'cliente',
- // password: 'dbbb02ab86addf27'
- username: 'device',
- password: '74e892085fed204e'
+  username: 'cliente',
+  password: 'dbbb02ab86addf27'
 }
 //74e892085fed204e
 @NgModule({
