@@ -1,7 +1,9 @@
 @if(icon){
-<span (click)="view = true" class="cursor-pointer select-none !text-sm hover:opacity-80 transition-opacity"
+<span (click)="view = true" class="cursor-pointer select-none !text-sm hover:opacity-80 transition-opacity align-middle"
   pTooltip="Todas Portas" tooltipPosition="top">
-  ⚙️
+   <span class="material-symbols-outlined">
+settings
+</span>
 </span>
 }@else {
 <p-button type="submit" (onClick)="view = true" size="small" pTooltip="Todas Portas" [outlined]="true"
