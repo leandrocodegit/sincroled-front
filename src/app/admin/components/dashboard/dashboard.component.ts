@@ -69,9 +69,9 @@ export class DashboardComponent implements OnInit {
     return total === 0 ? 0 : Math.round((online / total) * 100);
   }
 
-  getPercentualLogs(): number {
+  getPercentualLogs(): string {
     if (!this.dashboardData?.logs || this.dashboardData.logsHoje == 0)
-      return 0;
+      return '0'
     return (this.dashboardData.logsHoje / this.dashboardData.logs.length * 100).toFixed(0);
   }
 
