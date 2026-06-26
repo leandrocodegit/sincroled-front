@@ -156,4 +156,10 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
+
+  formatFaixa(){
+    if(this.parametro.faixa > this.parametro.leds){
+      this.parametro.faixa = this.parametro.leds - 2;
+    }
+  }
 }

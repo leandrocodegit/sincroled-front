@@ -316,7 +316,6 @@
                 *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
                 [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
                 [rounded]="true" [outlined]="true"
-                [styleClass]="'!bg-orange-200/40 relative ' + (device.operacao?.modoOperacao === 'OCORRENCIA' ? 'shadow-[0_0_0_0_rgba(245,158,11,0.7)]' : '')"
                 (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
 
                 <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
