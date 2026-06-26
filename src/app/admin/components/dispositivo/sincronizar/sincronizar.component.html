@@ -5,7 +5,7 @@
   </span>
 </p-button>
 
-<p-dialog [(visible)]="view" [modal]="true" [draggable]="false" 
+<p-dialog [(visible)]="view" [modal]="true" [draggable]="false"
   styleClass="w-full max-w-xl md:w-[500px] mx-4 p-0 overflow-hidden" [dismissableMask]="true">
 
   <section class="text-zinc-100 flex flex-col p-4 sm:p-6 font-mono max-h-[85vh] overflow-y-auto invisible-scrollbar">
@@ -13,10 +13,18 @@
     <div class="w-full">
 
       <div class="flex flex-wrap gap-3 mb-4">
-        <p-button [disabled]="carregando()" [loading]="carregando()" [label]="carregando() ? 'Reiniciando...' : 'Reiniciar Módulo'" *ngIf="authService.isPermiteSincronizar()" type="submit"
-          (onClick)="enviarComando('LED_RESTART')" [rounded]="true" size="small" [outlined]="false">
+        <p-button [disabled]="carregando()" [loading]="carregando()"
+          [label]="carregando() ? 'Reiniciando...' : 'Reiniciar Módulo'" *ngIf="authService.isPermiteSincronizar()"
+          type="submit" (onClick)="enviarComando('LED_RESTART')" [rounded]="true" size="small" [outlined]="false">
           <span class="material-symbols-outlined">
             power_settings_circle
+          </span>
+        </p-button>
+        <p-button [disabled]="carregando()" [loading]="carregando()"
+          [label]="carregando() ? 'Reiniciando...' : 'Resetar Módulo'" *ngIf="authService.isPermiteSincronizar()"
+          type="submit" (onClick)="enviarComando('LIMPAR_FLASH')" [rounded]="true" size="small" [outlined]="false">
+          <span class="material-symbols-outlined">
+            memory_alt
           </span>
         </p-button>
       </div>
@@ -136,7 +144,8 @@
 
         <ul class="divide-y divide-zinc-800/60 max-h-48 sm:max-h-64 overflow-y-auto">
           <li *ngFor="let e of eventos()"
-            class="flex items-start gap-2.5 px-3 sm:px-4 py-2.5 text-[11px] sm:text-xs transition-colors hover:bg-zinc-800/30" [ngClass]="{
+            class="flex items-start gap-2.5 px-3 sm:px-4 py-2.5 text-[11px] sm:text-xs transition-colors hover:bg-zinc-800/30"
+            [ngClass]="{
             'bg-sky-950/20':    e.status === 'OK',
             'bg-orange-950/20': e.status === 'TIMEOUT',
             'bg-red-950/20':    e.status === 'ERROR',
@@ -163,7 +172,8 @@
               }">
                 {{ e.mensagem }}
               </p>
-              <span *ngIf="e.payload" class="inline-block mt-0.5 text-[9px] uppercase tracking-widest text-zinc-600 truncate max-w-full">
+              <span *ngIf="e.payload"
+                class="inline-block mt-0.5 text-[9px] uppercase tracking-widest text-zinc-600 truncate max-w-full">
                 tipo: {{ e.payload.tipoResposta }}
               </span>
             </div>
