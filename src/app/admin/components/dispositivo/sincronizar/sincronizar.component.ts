@@ -52,7 +52,7 @@ export class SincronizarComponent implements OnDestroy {
    * inclusive durante o estado OK (ainda aguardando processamento).
    */
 
-  reset(id: string) {
+  reset() {
     this.confirmationService.confirm({
       message: 'Isso irá limpar a memória do modulo!',
       header: 'Confirmar ação',
