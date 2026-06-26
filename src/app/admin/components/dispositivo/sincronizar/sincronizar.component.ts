@@ -12,7 +12,8 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AuthService } from '@/core/auth/services/auth.service';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 
 @Component({
   selector: 'app-sincronismo',
@@ -34,13 +35,14 @@ export class SincronizarComponent implements OnDestroy {
   private service = inject(ComandoSincronismoService);
   private messageService = inject(MessageService);
   public authService = inject(AuthService);
+  private confirmationService = inject(ConfirmationService);
   private sub?: Subscription;
   protected view = false;
 
- protected eventos = signal<SincronismoEvento[]>([]);
- protected carregando = signal(false);
- protected statusAtual = signal<SincronismoStatus>('AGUARDANDO');
- protected erroMensagem = signal<string | null>(null);
+  protected eventos = signal<SincronismoEvento[]>([]);
+  protected carregando = signal(false);
+  protected statusAtual = signal<SincronismoStatus>('AGUARDANDO');
+  protected erroMensagem = signal<string | null>(null);
 
   /**
    * Fluxo de status esperado:
@@ -50,6 +52,26 @@ export class SincronizarComponent implements OnDestroy {
    * inclusive durante o estado OK (ainda aguardando processamento).
    */
 
+  reset(id: string) {
+    this.confirmationService.confirm({
+      message: 'Isso irá limpar a memória do modulo!',
+      header: 'Confirmar ação',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-trash',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'danger',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Sim, Remover',
+      },
+      accept: () => {
+       this.enviarComando(Tipoconfiguracao.LIMPAR_FLASH);
+      }
+    });
+  }
 
   enviarComando(tipoConfiguracao?: any): void {
     this.eventos.set([]);

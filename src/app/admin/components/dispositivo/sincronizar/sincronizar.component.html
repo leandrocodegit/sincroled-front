@@ -22,7 +22,7 @@
         </p-button>
         <p-button [disabled]="carregando()" [loading]="carregando()"
           [label]="carregando() ? 'Reiniciando...' : 'Resetar Módulo'" *ngIf="authService.isPermiteSincronizar()"
-          type="submit" (onClick)="enviarComando('LIMPAR_FLASH')" [rounded]="true" size="small" [outlined]="false">
+          type="submit" (onClick)="reset()" [rounded]="true" size="small" [outlined]="false">
           <span class="material-symbols-outlined">
             memory_alt
           </span>
