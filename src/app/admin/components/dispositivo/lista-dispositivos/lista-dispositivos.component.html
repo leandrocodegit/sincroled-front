@@ -221,6 +221,7 @@
           class="bg-gray-100 dark:bg-neutral-800 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
           <th class="py-3 px-4">Dispositivo / Cliente</th>
           <th class="py-3 px-4 w-28">Status Redes</th>
+          <th class="py-3 px-4 w-28">Versão</th>
           <th class="py-3 px-4 w-24">Sensor</th>
           <th class="py-3 px-4 w-32">Sensibilidade</th>
           <th class="py-3 px-4">Modo/Agenda</th>
@@ -265,6 +266,17 @@
                 <span class="h-1.5 rounded-full text-center"></span>
                 {{ device.conexao.tipoConexao}}
               </span>
+            </div>
+          </td>
+
+          <td class="py-3 px-4">
+            <div class="flex gap-1">
+              <span *ngIf="device?.versao"
+                class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded-full">v{{
+                device.versao }}</span>
+              <span *ngIf="device?.modelo"
+                class="text-[10px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded-full">{{
+                device.modelo }}</span>
             </div>
           </td>
 
@@ -315,8 +327,7 @@
               <p-button
                 *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
                 [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
-                [rounded]="true" [outlined]="true"
-                (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
+                [rounded]="true" [outlined]="true" (onClick)="executarComando(device.id, 'VIBRACAO')" size="small">
 
                 <span *ngIf="device.operacao?.modoOperacao === 'OCORRENCIA'"
                   class="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping pointer-events-none">
