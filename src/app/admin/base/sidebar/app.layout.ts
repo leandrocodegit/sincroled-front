@@ -27,8 +27,7 @@ import { MqttService } from 'ngx-mqtt';
     ToastModule,
     ConfirmDialogModule,
     TabsModule,
-    ButtonModule,
-    BrokerStatusComponent
+    ButtonModule
   ],
   template: `
 <div class="layout-wrapper" [ngClass]="containerClass">

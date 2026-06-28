@@ -185,7 +185,7 @@
           <span class="text-xs text-gray-600 dark:text-gray-400 font-mono">{{ device.conexao.ultimaAtualizacao |
             date:'dd/MM HH:mm' }}</span>
         </div>
-        <div class="flex">
+        <div class="flex justify-end w-[250px]">
           <p-button
             *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
             [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
@@ -323,7 +323,7 @@
           </td>
 
           <td class="py-3 px-4">
-            <div class="flex items-center justify-end">
+            <div class="flex items-center justify-end w-[200px]">
               <p-button
                 *ngIf="device.conexao.status === 'Online' && device.operacao?.corVibracao && authService.isPermiteEnviarComando()"
                 [loading]="loading" type="submit" pTooltip="Acionar Evento" tooltipPosition="top" severity="warn"
