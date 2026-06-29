@@ -14,9 +14,16 @@
       <div>
         <p class="text-sm font-semibold text-slate-800 dark:text-slate-300 m-0 leading-tight">
           Comandos de Iluminação
+          <span
+          [ngClass]="device?.conexao?.status === 'Online' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
+          class="inline-flex items-center text-xs font-medium w-fit uppercase ml-4">
+          <span [ngClass]="device?.conexao?.status === 'Online' ? 'bg-green-400' : 'bg-red-400 animate-pulse'"
+            class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+          {{ device?.conexao?.status }}
+        </span>
         </p>
         <p class="text-xs text-slate-400 m-0 leading-tight">
-          Selecione um card para enviar ao dispositivo
+          Tempo do Evento: {{device?.tempoEvento}}
         </p>
       </div>
     </div>
@@ -105,7 +112,7 @@
           {{ item.nome }}
         </span>
         <div class="flex items-center justify-between">
-          <span class="text-[10px] text-slate-400">{{ item.velocidade }}(s)</span>
+          <span class="text-[10px] text-slate-400">{{ item.velocidade }}(ms)</span>
           <span class="text-[10px] text-slate-400">{{ item.parametros.length }} pino(s)</span>
         </div>
       </div>

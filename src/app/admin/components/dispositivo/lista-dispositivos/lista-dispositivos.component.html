@@ -202,10 +202,10 @@
               notification_sound
             </span>
           </p-button>
-          <app-comandos-iluminacao [deviceId]="device.id"
-            *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
+          <app-comandos-iluminacao [device]="device"
+            *ngIf="authService.isPermiteEnviarComando()" />
           <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
-          <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+          <app-debug-monitor [deviceId]="device.id" />
           <app-upgrade *ngIf="device.conexao.status === 'Online'" [device]="device" />
         </div>
       </div>
@@ -338,11 +338,11 @@
                   notification_sound
                 </span>
               </p-button>
-              <app-comandos-iluminacao [deviceId]="device.id"
-                *ngIf="device.conexao.status === 'Online' && authService.isPermiteEnviarComando()" />
+              <app-comandos-iluminacao [device]="device"
+                *ngIf="authService.isPermiteEnviarComando()" />
 
               <app-sincronismo *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
-              <app-debug-monitor *ngIf="device.conexao.status === 'Online'" [deviceId]="device.id" />
+              <app-debug-monitor [deviceId]="device.id" />
               <app-upgrade *ngIf="device.conexao.status === 'Online'" [device]="device" />
             </div>
           </td>

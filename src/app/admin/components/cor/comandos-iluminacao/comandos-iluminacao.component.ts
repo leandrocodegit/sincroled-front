@@ -1,6 +1,7 @@
 import { ComandoSincronismoService, SincronismoEvento, SincronismoStatus } from '@/shared/services/ComandoSincronismoService';
 import { Tipoconfiguracao } from '@/shared/sincroled/models/constantes/tipo-configuracao';
 import { Cor } from '@/shared/sincroled/models/cor.model';
+import { Dispositivo } from '@/shared/sincroled/models/dispositivo.model';
 import { CorService } from '@/shared/sincroled/services/cor.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
@@ -25,7 +26,7 @@ import { Subscription } from 'rxjs';
 })
 export class ComandosIluminacaoComponent implements OnInit, OnDestroy {
 
-  @Input({ required: true }) deviceId?: string;
+  @Input({ required: true }) device?: Dispositivo;
   @Output() onSendCommand = new EventEmitter<Cor>();
 
   protected listaComandos: Cor[] = [];
@@ -104,7 +105,7 @@ export class ComandosIluminacaoComponent implements OnInit, OnDestroy {
     // Bloqueia novo envio enquanto um já está em andamento
     if (this.enviandoId() !== null) return;
 
-    if (!this.deviceId) {
+    if (!this.device?.id) {
       this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: 'Device não identificado.' });
       return;
     }
@@ -120,7 +121,7 @@ export class ComandosIluminacaoComponent implements OnInit, OnDestroy {
     // Cancela subscription anterior se houver
     this.sub?.unsubscribe();
 
-    this.sub = this.service.enviarCor(cor?.id ?? '', this.deviceId!, cancelar, Tipoconfiguracao.LED).subscribe({
+    this.sub = this.service.enviarCor(cor?.id ?? '', this.device?.id!, cancelar, Tipoconfiguracao.LED).subscribe({
       next: (evento: SincronismoEvento) => {
         this.statusAtual.set(evento.status);
         this.messageService.add(evento.toast);
