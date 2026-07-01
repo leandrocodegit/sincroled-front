@@ -6,11 +6,18 @@ import { DashboardService } from '@/shared/sincroled/services/dashboard.service'
 import { Dashboard } from '@/shared/sincroled/models/dashboard.model';
 import { Comando } from '@/shared/sincroled/models/constantes/comando';
 import { DashboardItem } from '@/shared/sincroled/models/dashboard-item.model';
+import { MqttService } from 'ngx-mqtt';
+import { MqttAppModule } from '@/mqtt-app.module';
+import { Dispositivo } from '@/shared/sincroled/models/dispositivo.model';
 
 @Component({
   selector: 'app-iot-dashboard',
   standalone: true,
-  imports: [CommonModule, ChartModule],
+  imports: [
+    CommonModule,
+    ChartModule,
+    MqttAppModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -34,10 +41,19 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private readonly dashboardService: DashboardService,
-    private readonly layoutService: LayoutService) { }
+    private readonly layoutService: LayoutService,
+    private readonly mqttSevice: MqttService) { }
 
   ngOnInit(): void {
     this.buscarDash();
+    this.mqttSevice.observe(`device/update/v2/#`).subscribe((message: any) => {
+
+      const jsonString = String.fromCharCode(...message.payload);
+      const payload = JSON.parse(jsonString) as Dispositivo[];
+
+      if (payload?.length)
+        this.buscarDash();
+    });
   }
 
 

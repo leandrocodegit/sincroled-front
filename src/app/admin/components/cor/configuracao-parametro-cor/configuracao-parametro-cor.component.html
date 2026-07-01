@@ -1,9 +1,9 @@
 @if(icon){
 <span (click)="view = true" class="cursor-pointer select-none !text-sm hover:opacity-80 transition-opacity"
   pTooltip="Configurar Porta" tooltipPosition="top">
-  <span class="material-symbols-outlined align-middle">
-settings
-</span>
+  <span class="material-symbols-outlined align-text-bottom !text-[14px]">
+    settings
+  </span>
 </span>
 }@else {
 <button (click)="view = true" pTooltip="Configurar Porta" tooltipPosition="top"
@@ -36,7 +36,7 @@ settings
               {{cor?.velocidade}}
             </strong>
           </h2>
-          <p-slider  [animate]="true" (onSlideEnd)="salvarVelocidade()" min="40" max="255" [(ngModel)]="cor.velocidade"
+          <p-slider [animate]="true" (onSlideEnd)="salvarVelocidade()" min="40" max="255" [(ngModel)]="cor.velocidade"
             class="w-full hybrid-slider mx-4" />
         </div>
         <!-- Faixa Header do Pino -->
@@ -93,8 +93,8 @@ settings
             <div class="pt-2">
               <label class="block text-[11px] text-gray-500 dark:text-neutral-400 mb-2 font-medium">Intensidade</label>
               <div class="flex justify-between items-center gap-5 w-full">
-                <p-slider  [animate]="true" (onSlideEnd)="salvarConfiguracoes()" min="0" max="255" [(ngModel)]="parametro.intensidade"
-                  class="w-full hybrid-slider" />
+                <p-slider [animate]="true" (onSlideEnd)="salvarConfiguracoes()" min="0" max="255"
+                  [(ngModel)]="parametro.intensidade" class="w-full hybrid-slider" />
                 <p-tag severity="success" [value]="parametro.intensidade.toString()" />
               </div>
             </div>
@@ -144,9 +144,9 @@ settings
                   '!border-red-500': $index == 0,
                   '!border-green-500': $index == 1,
                   '!border-blue-500': $index == 2
-                }"
-                  class="relative border-b-4 py-4 flex flex-col items-center justify-center rounded">
-                 <p-slider (onSlideEnd)="salvarVelocidade()" [animate]="true" max="255" label="1" [(ngModel)]="parametro.correcao[$index]" class="w-full hybrid-slider" />
+                }" class="relative border-b-4 py-4 flex flex-col items-center justify-center rounded">
+                  <p-slider (onSlideEnd)="salvarVelocidade()" [animate]="true" max="255" label="1"
+                    [(ngModel)]="parametro.correcao[$index]" class="w-full hybrid-slider" />
                 </div>
                 }
               </div>
