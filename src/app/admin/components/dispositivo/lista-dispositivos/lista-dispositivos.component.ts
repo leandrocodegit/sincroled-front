@@ -92,6 +92,7 @@ export class ListaDispositivosComponent {
 
         if (dipositivo) {
           dipositivo.conexao.status = device.conexao.status;
+          dipositivo.conexao.tipoConexao = device.conexao.tipoConexao;
           dipositivo.conexao.wifiConectado = device.conexao.wifiConectado;
           dipositivo.conexao.statusMCU = device.conexao.statusMCU;
           dipositivo.conexao.wifiRssi = device.conexao.wifiRssi;

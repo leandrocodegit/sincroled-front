@@ -414,7 +414,7 @@ export class ComandoSincronismoService {
                 deviceId: '',
                 timestamp: new Date(),
                 toast: { severity: 'warn', detail: raw }
-              }); 
+              });
           }
         });
       };

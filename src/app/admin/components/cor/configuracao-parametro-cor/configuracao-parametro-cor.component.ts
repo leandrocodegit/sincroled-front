@@ -87,7 +87,7 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
 
     this.corService.salvarParametro(this.deviceId, this.parametro).subscribe({
       next: () => {
-        this.enviarComando();
+        this.enviarComando(true);
       },
       complete: () => this.loading = false,
       error: () => this.loading = false
@@ -116,7 +116,7 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
     console.log('Editando config:', config.nome);
   }
 
-  enviarComando(): void {
+  enviarComando(notifique?: boolean): void {
     this.eventos.set([]);
     this.erroMensagem.set(null);
     this.carregando.set(true);
@@ -129,6 +129,7 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
       next: (evento) => {
         this.eventos.update((lista) => [...lista, evento]);
         this.statusAtual.set(evento.status);
+        if(notifique)
         this.messageService.add(evento.toast);
       },
       error: (e: SincronismoEvento) => {
