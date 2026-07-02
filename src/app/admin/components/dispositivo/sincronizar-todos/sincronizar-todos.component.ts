@@ -49,6 +49,8 @@ export class SincronizarTodosComponent {
   public iniciarMonitoramento(): void {
     this.conectado.set(true);
 
+    this.logs.set([]);
+
 
     this.debugSubscription = this.comandoService.sincronizarTodos().subscribe({
       next: (novoEvento: SincronismoEvento) => {

@@ -1,18 +1,19 @@
 <p-button *ngIf="authService.isPermiteEditarCliente()" type="submit" (onClick)="view = true;" [rounded]="true"
-  size="small" label="Sincronizar Tudo" pTooltip="Sincronizar" severity="warn" styleClass="mr-label-4" [outlined]="false" tooltipPosition="top">
+  size="small" label="Sincronizar Tudo" pTooltip="Sincronizar" severity="warn" styleClass="mr-label-4"
+  [outlined]="false" tooltipPosition="top">
   <span class="material-symbols-outlined">
     cloud_sync
   </span>
 </p-button>
 <p-dialog [(visible)]="view" [modal]="true" [draggable]="false" [resizable]="false"
-  styleClass="min-w-[99vw] lg:min-w-[80vw] p-2" [dismissableMask]="true">
+  styleClass="min-w-[99vw] lg:min-w-[45vw] p-2" [dismissableMask]="true">
 
   <div class="lg:p-3 w-full">
 
     <div class="flex gap-6">
 
       <div class="col-12 lg:col-6 xl:col-7 w-full">
-        <p-card styleClass="shadow-2 h-full">
+        <p-card styleClass="shadow-2 h-full p-0">
           <p-table [value]="logs()" [rows]="12" [paginator]="true" responsiveLayout="scroll" selectionMode="single"
             styleClass="p-datatable-sm p-datatable-striped w-full">
 
@@ -24,7 +25,7 @@
               </tr>
             </ng-template>
 
-                        <ng-template pTemplate="body" let-log>
+            <ng-template pTemplate="body" let-log>
               <tr [className]="logSelecionado() === log ? 'bg-primary-reverse font-bold text-primary' : ''"
                 (click)="selecionarLog(log)" style="cursor: pointer;">
                 <td class="white-space-nowrap">{{ log.timestamp | date:'HH:mm:ss.SSS' }}</td>
@@ -53,7 +54,7 @@
       </div>
     </div>
 
-    <button [disabled]="carregando()" (click)="iniciarMonitoramento()" class="w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all duration-200
+    <button [disabled]="carregando()" (click)="iniciarMonitoramento()" class="w-full py-2 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all duration-200
              bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-zinc-950
              disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:scale-100
              focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-950">
