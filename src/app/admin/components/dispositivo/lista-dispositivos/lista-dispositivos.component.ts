@@ -121,6 +121,7 @@ export class ListaDispositivosComponent {
     this.loading = true;
     this.comandoService.enviarComando(deviceId, comando).subscribe({
       next: (evento) => {
+        this.messageService.clear();
         this.messageService.add(evento.toast);
       },
       complete: () => this.loading = false,

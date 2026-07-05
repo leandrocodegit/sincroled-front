@@ -68,7 +68,7 @@ export class SincronizarComponent implements OnDestroy {
         label: 'Sim, Remover',
       },
       accept: () => {
-       this.enviarComando(Tipoconfiguracao.LIMPAR_FLASH);
+        this.enviarComando(Tipoconfiguracao.LIMPAR_FLASH);
       }
     });
   }
@@ -86,6 +86,7 @@ export class SincronizarComponent implements OnDestroy {
       next: (evento) => {
         this.eventos.update((lista) => [...lista, evento]);
         this.statusAtual.set(evento.status);
+        this.messageService.clear();
         this.messageService.add(evento.toast);
       },
       error: (e: SincronismoEvento) => {

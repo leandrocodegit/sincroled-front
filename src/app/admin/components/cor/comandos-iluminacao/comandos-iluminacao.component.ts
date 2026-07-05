@@ -124,6 +124,7 @@ export class ComandosIluminacaoComponent implements OnInit, OnDestroy {
     this.sub = this.service.enviarCor(cor?.id ?? '', this.device?.id!, cancelar, Tipoconfiguracao.LED).subscribe({
       next: (evento: SincronismoEvento) => {
         this.statusAtual.set(evento.status);
+        this.messageService.clear();
         this.messageService.add(evento.toast);
       },
       error: (e: SincronismoEvento) => {

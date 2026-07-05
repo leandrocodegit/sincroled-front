@@ -51,7 +51,6 @@ export class SincronizarTodosComponent {
 
     this.logs.set([]);
 
-
     this.debugSubscription = this.comandoService.sincronizarTodos().subscribe({
       next: (novoEvento: SincronismoEvento) => {
         this.logs.update(listaAtual => [novoEvento, ...listaAtual]);

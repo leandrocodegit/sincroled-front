@@ -199,6 +199,7 @@ export class ConfiguracaoCorPortaComponent implements OnInit {
       next: (evento) => {
         this.eventos.update((lista) => [...lista, evento]);
         this.statusAtual.set(evento.status);
+        this.messageService.clear();
         this.messageService.add(evento.toast);
       },
       error: (e: SincronismoEvento) => {

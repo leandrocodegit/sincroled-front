@@ -129,6 +129,7 @@ export class ConfiguracaoParametroCorComponent implements OnInit {
       next: (evento) => {
         this.eventos.update((lista) => [...lista, evento]);
         this.statusAtual.set(evento.status);
+        this.messageService.clear();
         if(notifique)
         this.messageService.add(evento.toast);
       },
