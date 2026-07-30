@@ -49,7 +49,7 @@ export class FormularioClienteComponent {
     private readonly clienteService: ClienteService
   ) { }
 
-  ngOnInit(): void {/*
+  ngOnInit(): void {
     if (!this.cliente)
       this.cliente = {
         nome: '',
@@ -57,7 +57,7 @@ export class FormularioClienteComponent {
         host: '',
         logo: '',
         email: ''
-      }; */
+      }; 
   }
 
   salvar() {
