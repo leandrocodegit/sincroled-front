@@ -11,7 +11,7 @@ export const environment = {
   timeout: 100000,
   sitekey: '1x00000000000000000000AA',
   authConfig: {
-    issuer: `http://auth.simodapp.com:8443/realms/simod`,
+    issuer: `http://auth.simodapp.com/realms/simod`,
     redirectUri: window.location.origin + '/auth',
     postLogoutRedirectUri: window.location.origin,
     clientId: 'sincroled',
