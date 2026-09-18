@@ -4,7 +4,7 @@ export const environment = {
   production: false,
   portal: true,
   router: 'portal',
-  urlApi: 'https://dev.simodapp.com:2087',
+  urlApi: 'https://api.bipeme.com',
   urlWebSocket: 'broker.simodapp.com',
   portaWebSocket: 3053,
   protocoloWebSocket: 'wss' as 'wss' | 'ws',
